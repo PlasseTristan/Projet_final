@@ -1,72 +1,99 @@
-# 1. Initialisation d'une matrice vide de 33x33
-A <- matrix(0, nrow = 33, ncol = 33)
+# Creation du nom de chaque stade
+noms_stades <- c("Egg", "Larva", "Fry", paste0("Age", 1:30))
+# Nombre de stades
+n_stades <- length(noms_stades)
 
-# 2. Définition des noms des classes
-age_names <- c("Egg", "Early_life", "Fry", paste0("Age_", 1:30))
-rownames(A) <- colnames(A) <- age_names
+# 2. Créer une matrice vide (remplie de 0)
+measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
+                     dimnames = list(noms_stades, noms_stades))
 
-# 3. Remplissage de la FÉCONDITÉ (Ligne 1)
-# Indices [1, 1] à [1, 12] sont à 0 (déjà initialisés)
-A[1, 13] <- 18096  # Age 10
-A[1, 14] <- 21035  # Age 11
-A[1, 15] <- 24114  # Age 12
-A[1, 16] <- 27133  # Age 13
-A[1, 17] <- 29563  # Age 14
-A[1, 18] <- 31934  # Age 15
-A[1, 19] <- 34142  # Age 16
-A[1, 20] <- 35761  # Age 17
-A[1, 21] <- 37062  # Age 18
-A[1, 22] <- 38435  # Age 19
-A[1, 23] <- 39821  # Age 20
-A[1, 24] <- 40936  # Age 21
-A[1, 25] <- 41923  # Age 22
-A[1, 26] <- 42972  # Age 23
-A[1, 27] <- 44075  # Age 24
-A[1, 28] <- 45086  # Age 25
-A[1, 29] <- 46025  # Age 26
-A[1, 30] <- 46914  # Age 27
-A[1, 31] <- 47767  # Age 28
-A[1, 32] <- 48568  # Age 29
-# A[1, 33] est noté "-" dans vos données, donc laissé à 0.
+# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
+# Les indices correspondent aux colonnes où la reproduction commence
+fecondite <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
+               37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
+               46025, 46914, 47767, 48568)
 
-# 4. Remplissage de la SURVIE (Sous-diagonale [j+1, j])
-A[2, 1] <- 0.073    # Egg -> Early life
-A[3, 2] <- 0.023    # Early life -> Fry
-A[4, 3] <- 0.006    # Fry -> Age 1
-A[5, 4] <- 0.609    # Age 1 -> Age 2
-A[6, 5] <- 0.723    # Age 2 -> Age 3
-A[7, 6] <- 0.778    # Age 3 -> Age 4
-A[8, 7] <- 0.812    # Age 4 -> Age 5
-A[9, 8] <- 0.836    # Age 5 -> Age 6
-A[10, 9] <- 0.851   # Age 6 -> Age 7
-A[11, 10] <- 0.863  # Age 7 -> Age 8
-A[12, 11] <- 0.875  # Age 8 -> Age 9
-A[13, 12] <- 0.887  # Age 9 -> Age 10
-A[14, 13] <- 0.893  # Age 10 -> Age 11
-A[15, 14] <- 0.895  # Age 11 -> Age 12
-A[16, 15] <- 0.898  # Age 12 -> Age 13
-A[17, 16] <- 0.902  # Age 13 -> Age 14
-A[18, 17] <- 0.903  # Age 14 -> Age 15
-A[19, 18] <- 0.905  # Age 15 -> Age 16
-A[20, 19] <- 0.908  # Age 16 -> Age 17
-A[21, 20] <- 0.910  # Age 17 -> Age 18
-A[22, 21] <- 0.910  # Age 18 -> Age 19
-A[23, 22] <- 0.910  # Age 19 -> Age 20
-A[24, 23] <- 0.911  # Age 20 -> Age 21
-A[25, 24] <- 0.912  # Age 21 -> Age 22
-A[26, 25] <- 0.911  # Age 22 -> Age 23
-A[27, 26] <- 0.911  # Age 23 -> Age 24
-A[28, 27] <- 0.912  # Age 24 -> Age 25
-A[29, 28] <- 0.912  # Age 25 -> Age 26
-A[30, 29] <- 0.912  # Age 26 -> Age 27
-A[31, 30] <- 0.913  # Age 27 -> Age 28
-A[32, 31] <- 0.913  # Age 28 -> Age 29
-A[33, 32] <- 0.913  # Age 29 -> Age 30
+# On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33) 
+# Avant = pas à maturité sexuelle
+measured[1, 13:32] <- fecondite
 
-# Afficher la matrice (les premières lignes et colonnes pour vérification)
-print(A)
+# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
+# On liste les probabilités de passage d'un stade au suivant
+survie <- c(
+  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
+  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
+  0.912, 0.912, 0.912, 0.913, 0.913, 0.913 # Fin
+)
 
-# Optionnel : Calculer le taux de croissance (lambda) si vous avez la librairie popbio
-# install.packages("popbio")
-# library(popbio)
-# lambda(A)
+# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
+for(i in 1:length(survie)) {
+  measured[i+1, i] <- survie[i]
+}
+
+
+max(Re(eigen(measured)$values)) # Donne la même valeur de lambda que l'étude
+
+
+
+# 2. Créer une matrice vide (remplie de 0)
+endangered <- matrix(0, nrow = n_stades, ncol = n_stades, 
+                 dimnames = list(noms_stades, noms_stades))
+
+# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
+# Les indices correspondent aux colonnes où la reproduction commence
+fecondite <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699, 
+               38034, 39442, 40865, 42009, 43022, 44098, 45230, 46268, 
+               47231, 48144, 49019, 49841)
+
+# On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33)
+endangered[1, 14:33] <- fecondite
+
+# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
+# On liste les probabilités de passage d'un stade au suivant
+survie <- c(
+  0.075, 0.023, 0.007, 0.625, 0.741, 0.798, 0.833, 0.857, 0.873, 0.885, 0.898, 0.910, 0.916, # Jusqu'à Age 10
+  0.918, 0.921, 0.926, 0.927, 0.929, 0.932, 0.933, 0.933, 0.934, 0.935, 0.935, 0.935, 0.935, # Suite
+  0.936, 0.936, 0.936, 0.937, 0.937, 0.937 # Fin
+)
+
+# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
+for(i in 1:length(survie)) {
+  endangered[i+1, i] <- survie[i]
+}
+
+# --- Vérification ---
+# Afficher les 5 premières lignes et colonnes
+print(endangered[1:5, 1:5])
+
+max(Re(eigen(endangered)$values)) # Même chose que dans l'étude
+
+
+
+null_pred <- matrix(0, nrow = n_stades, ncol = n_stades, 
+                    dimnames = list(noms_stades, noms_stades))
+
+# 2. Remplissage de la Fécondité (Ligne 1)
+# Valeurs extraites de ton texte (Age 10 à Age 29)
+fecondite <- c(
+  18822, 21920, 25150, 28298, 30830, 33301, 35604, 37292, 38649, 40080, 
+  41526, 42689, 43718, 44811, 45962, 47017, 47996, 48923, 49813, 50648
+)
+
+# On les place de la colonne 13 (Age 10) à la colonne 32 (Age 29)
+null_pred[1, 13:32] <- fecondite
+
+# 3. Remplissage de la Survie (Sous-diagonale)
+# Valeurs extraites de ton texte (32 transitions au total)
+survie <- c(
+  0.076, 0.024, 0.007, 0.635, 0.753, 0.811, 0.847, 0.871, 0.888, 0.899, 0.912, 0.924, 0.931, 
+  0.933, 0.936, 0.941, 0.942, 0.944, 0.947, 0.949, 0.949, 0.949, 0.950, 0.951, 0.950, 0.950, 
+  0.951, 0.951, 0.951, 0.952, 0.952, 0.952
+)
+
+for(i in 1:length(survie)) {
+  null_pred[i+1, i] <- survie[i]
+}
+
+# 4. Calcul du Lambda (Taux de croissance)
+max(Re(eigen(null_pred)$values)) # Même chose que dans l'étude
+
