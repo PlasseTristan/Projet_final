@@ -10,9 +10,8 @@ simulate_complex <- function(stocking_val, stage_to_stock, years = 100) {
   
   # Mapping des noms pour le stocking
   stock_idx <- switch(stage_to_stock,
-                      "oeuf" = 1,
-                      "fry" = 2,
-                      "larvae" = 3,
+                      "larvae" = 2,
+                      "fry" = 3,
                       "age1" = 4,
                       "mature" = 13) # Index 13 = Individu de 10 ans
   
@@ -63,7 +62,7 @@ find_stocking <- function(stage) {
 }
 
 # 3. Résultats
-noms_stades <- c("oeuf", "fry", "larvae", "age1", "mature")
+noms_stades <- c("larvae", "fry", "age1", "mature")
 resultats <- data.frame(
   Stade_Stocke = noms_stades,
   Individus_Par_An = sapply(noms_stades, find_stocking)
