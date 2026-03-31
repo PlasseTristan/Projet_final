@@ -109,7 +109,7 @@ stockage_propose<-c(0,500000,15000)
 ### Creation de la boucle 
 
 
-# Créer une vecteur vide (remplie de 0)
+# Créer un vecteur vide (rempli de 0)
 nombre_ind <- vector("numeric", length =  n_stades)
 names(nombre_ind)<-noms_stades
 
@@ -197,3 +197,11 @@ for (t in 1:n_annees) {
 }
 
 simulation[,101]
+
+
+#Nombre d'individus matures après 100 ans (avec stock)
+#pas trop clair mais gap de 10 ans avant stock (maturité à 10ans)
+
+stock_max <- 5000
+
+#
