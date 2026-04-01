@@ -1,8 +1,16 @@
 # --- PRÉ-REQUIS : CHARGEZ VOS VECTEURS ICI ---
-f_rates <- taux_fecondite # Fécondités spécifiques (0 pour index 1-12)
-s_rates <- taux_survie # Survies spécifiques (Dernière valeur = 0)
+f_rates <- c(0,0,0,0,0,0,0,0,0,0,0,0,18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
+             37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
+             46025, 46914, 47767, 48568,0)
+length(f_rates)
+# Fécondités spécifiques (0 pour index 1-12)
+s_rates <- c(
+  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
+  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
+  0.912, 0.912, 0.912, 0.913, 0.913, 0.913,0 # Fin
+) # Survies spécifiques (Dernière valeur = 0)
 # ensure lengths are correct
-
+length(s_rates)
 # Install/Load libraries
 if(!require(ggplot2)) install.packages("ggplot2")
 if(!require(tidyr)) install.packages("tidyr")
@@ -83,3 +91,4 @@ ggplot(df_long, aes(x = Stocking, y = Abundance_Mature, group = Stocking_Stage))
   annotate("text", x = 1.5e5, y = 5100, label = "Fry\nstocking", fontface="bold") +
   annotate("text", x = 1e3*1.5, y = 5100, label = "Age 1\nstocking", fontface="bold") +
   annotate("text", x = 10^2.1, y = 5100, label = "Age 10\nstocking", fontface="bold")
+
