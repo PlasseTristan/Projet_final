@@ -1,19 +1,24 @@
 # 1. Préparation des vecteurs (longueur 33)
-# Indices : 1=Oeuf, 2=Fry, 3=Larvae, 4=Age1 ... 33=Age30
+# Indices : 2=Larva, 3=Fry, 4=Age1 ... 33=Age30
 s_rates <- taux_survie
+
+length(taux_survie)
+taux_survie
 # Fecundité : Seuls les adultes (indices 13 à 33, correspondant aux âges 10-30) pondent
 f_rates <- taux_fecondite
+f_rates
+length(taux_fecondite)
 
-simulate_complex <- function(stocking_val, stage_to_stock, years = 100) {
+simulate_complex <- function(stocking_val, stage_to_stock, years =100) {
   max_idx <- 33
   pop <- rep(0, max_idx)
   
   # Mapping des noms pour le stocking
   stock_idx <- switch(stage_to_stock,
-                      "larvae" = 2,
-                      "fry" = 3,
-                      "age1" = 4,
-                      "mature" = 13) # Index 13 = Individu de 10 ans
+                      "Larva" = 2,
+                      "Fry" = 3,
+                      "Age1" = 4,
+                      "Mature" = 13) # Index 13 = Individu de 10 ans
   
   for (t in 1:years) {
     new_pop <- rep(0, max_idx)
@@ -27,7 +32,7 @@ simulate_complex <- function(stocking_val, stage_to_stock, years = 100) {
     }
     
     # --- Logique de Stockage ---
-    if (stage_to_stock == "mature") {
+    if (stage_to_stock == "Mature") {
       if (t > 10) { # Délai de 10 ans pour produire des matures
         new_pop[13] <- new_pop[13] + stocking_val
       }
@@ -62,7 +67,7 @@ find_stocking <- function(stage) {
 }
 
 # 3. Résultats
-noms_stades <- c("larvae", "fry", "age1", "mature")
+noms_stades <- c("Larva", "Fry", "Age1", "Mature")
 resultats <- data.frame(
   Stade_Stocke = noms_stades,
   Individus_Par_An = sapply(noms_stades, find_stocking)

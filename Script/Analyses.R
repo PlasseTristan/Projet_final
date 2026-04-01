@@ -10,7 +10,7 @@ n_stades <- length(noms_stades)
 # 2. Créer une matrice vide (remplie de 0)
 measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
                      dimnames = list(noms_stades, noms_stades))
-
+measured
 # 3. Remplir la PREMIÈRE LIGNE (Fécondité)
 # Les indices correspondent aux colonnes où la reproduction commence
 fecondite <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
@@ -199,9 +199,13 @@ for (t in 1:n_annees) {
 simulation[,101]
 
 
-#Nombre d'individus matures après 100 ans (avec stock)
-#pas trop clair mais gap de 10 ans avant stock (maturité à 10ans)
+simulation
 
-stock_max <- 5000
+#Nombre d'individus matures (10 ans ou plus) après 100 ans (avec stock)
+#pas trop clair mais gap de 10 ans avant stock (maturité à 10ans)
+pop_final <- 5000
+
+
+
 
 #
