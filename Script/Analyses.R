@@ -14,35 +14,6 @@ pop_ini_measured_500 <- calculer_structure_initiale(measured, 500)
 # Scénario Null
 # pop_null <- calculer_structure_initiale(null_prev, 500)
 
-
-### Générateur de stochasité sur la fécondité
-taux_fecondite <- (1 + rnorm(n_stades, mean = 0, sd = 0.25))*measured[1,]
-
-# Vérification
-print(taux_fecondite)
-
-# 1. Définir tes paramètres Beta (le "poids" de la certitude)
-# On crée un vecteur de 32 valeurs (pour les 32 transitions de survie)
-b_params <- c(5.05, 20, 75, rep(0.75, 29)) 
-
-# 2. Extraire les taux de survie réels de la matrice (sous-diagonale)
-# On récupère les valeurs où row = col + 1
-p_mesure <- diag(measured[-1, -ncol(measured)])
-
-# 3. Calculer Alpha pour que la moyenne de la Beta soit égale à p_mesure
-alpha_params <- (p_mesure * b_params) / (1 - p_mesure)
-
-# 4. Tirer les taux de survie
-taux_survie <- rbeta(n = length(alpha_params), 
-                               shape1 = alpha_params, 
-                               shape2 = b_params)
-print(taux_survie)
-print(p_mesure)
-mean(taux_survie-p_mesure)
-
-
-
-
 ### Runner les modèles 100 ans ###
 
 n_annees <- 100
