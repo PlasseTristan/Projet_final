@@ -11,6 +11,12 @@ s_rates <- c(
 ) # Survies spécifiques (Dernière valeur = 0)
 # ensure lengths are correct
 length(s_rates)
+
+
+
+
+
+
 # Install/Load libraries
 if(!require(ggplot2)) install.packages("ggplot2")
 if(!require(tidyr)) install.packages("tidyr")
