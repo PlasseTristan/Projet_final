@@ -26,7 +26,7 @@ survie_m <- c(
 )
 
 # On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
-for(i in 1:length(survie)) {
+for(i in 1:length(survie_m)) {
   measured[i+1, i] <- survie_m[i]
 }
 
@@ -57,7 +57,7 @@ survie_e <- c(
 )
 
 # On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
-for(i in 1:length(survie)) {
+for(i in 1:length(survie_e)) {
   endangered[i+1, i] <- survie_e[i]
 }
 
@@ -90,7 +90,7 @@ survie_n <- c(
   0.951, 0.951, 0.951, 0.952, 0.952, 0.952
 )
 
-for(i in 1:length(survie)) {
+for(i in 1:length(survie_n)) {
   null_pred[i+1, i] <- survie_n[i]
 }
 
