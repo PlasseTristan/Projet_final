@@ -1,0 +1,33 @@
+---
+title: "Rapport_partie_1"
+author: "Tristan Plasse & Yohan Wegener"
+date: "2026-04-07"
+output: html_document
+---
+
+# Partie 1 : Recréation des résultats d'une expérience
+
+Dans le cadre de ce projet, nous allons recréer les résultats de Bannester-Marchand et al. (2025)
+
+
+AJOUTER BIBLIOGRAPHIE
+
+
+## Question biologique
+
+## Hypothèse
+
+## Données et/ou informations pertinentes
+
+## Méthode
+
+## Supposition
+
+## Calcul
+
+## Résultats
+
+## Interprétations biologiques
+
+
+# Partie 2
