@@ -52,9 +52,9 @@ stockage_present  <- c(231185, 14868)
 stockage_propose  <- c(500000, 15000)
 
 # Calculs
-res_nul     <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_nul, "Nul (0)")
-res_present <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_present, "Actuel (231k/14k)")
-res_propose <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_propose, "Proposé (500k/15k)")
+res_nul     <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_nul, "No stocking")
+res_present <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_present, "Actual stocking")
+res_propose <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_propose, "Theoretical stocking")
 
 # Fusion
 df_final <- bind_rows(res_nul, res_present, res_propose)
@@ -65,40 +65,45 @@ df_final <- df_final %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~ifelse(.x <=
 ggplot(df_final, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
   # 1. Intervalle de confiance (Ruban)
   # On précise que ymin et ymax ne servent que pour le ruban
-  geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.15, color = NA) +
+  geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
-  # Maintenant, il trouve "y" automatiquement dans l'aes principal
-  geom_line(linewidth = 1) +
+  geom_smooth(linewidth = 1, span = 0.2) +
+  
+  # Annotation "(a)" en haut à gauche
+  annotate("text", x = 0, y = 40000, label = "(a)", size = 6, hjust = 0) +
   
   # Configuration des axes et thèmes
   scale_y_log10(
-    limits = c(1, 12000),
+    limits = c(1, 50000),
     # Utilise l'expression mathématique 10^x
     labels = label_log(), 
     # Force les coupures à chaque puissance de 10
     breaks = trans_breaks("log10", function(x) 10^x),
     oob = scales::squish
   ) +
+  scale_x_continuous(expand = c(0, 0)) +
   
   # Couleurs (Gris, Bleu, Orange)
-  scale_color_manual(values = c("Nul (0)" = "red", 
-                                "Actuel (231k/14k)" = "steelblue", 
-                                "Proposé (500k/15k)" = "green")) +
-  scale_fill_manual(values = c("Nul (0)" = "red", 
-                               "Actuel (231k/14k)" = "steelblue", 
-                               "Proposé (500k/15k)" = "green")) +
+  scale_color_manual(values = c("No stocking" = "#b00014", 
+                                "Actual stocking" = "#29abe2", 
+                                "Theoretical stocking" = "#43a047")) +
+  scale_fill_manual(values = c("No stocking" = "#b00014", 
+                               "Actual stocking" = "#29abe2", 
+                               "Theoretical stocking" = "#43a047")) +
   
   theme_minimal() +
   labs(
-    title = "Comparaison des scénarios d'ensemencement",
-    subtitle = "Évolution de la population mature (Médiane et IC 95%)",
-    x = "Années",
-    y = "Abondance (échelle log)",
-    color = "Scénario",
-    fill = "Scénario"
+    x = "Time(yr)",
+    y = "Abundance",
+    color = NULL,
+    fill = NULL
+    
   ) +
   theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank()
+    legend.position = c(0.3, 0.2), # Légende à l'intérieur (x, y)
+    legend.background = element_blank(),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12, color = "black"),
+    axis.line = element_line(linewidth = 0.8)
   )
