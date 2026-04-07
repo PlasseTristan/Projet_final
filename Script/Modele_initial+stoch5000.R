@@ -1,16 +1,8 @@
 library(tidyverse)
 
-### 1. Paramètres globaux ###
-n_simulations <- 500
-n_annees <- 100
-n_stades <- nrow(null_pred)
-b_params <- c(5.05, 20, 75, rep(0.75, 29)) # Tes paramètres de survie
-
-# Matrice pour stocker uniquement les matures : 51 lignes (années 0-100) x 50 colonnes
-resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_simulations)
-
 fig2<-function(matrice,n_iterations,n_annees, n_ini){
-  
+  # Matrice pour stocker uniquement les matures : 51 lignes (années 0-100) x 50 colonnes
+  resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
   n_stades <- nrow(matrice)
   ### 2. Boucle des 5000 simulations ###
   for (i in 1:n_iterations) {
@@ -45,7 +37,7 @@ fig2<-function(matrice,n_iterations,n_annees, n_ini){
       sim_temp[, t+1] <- M_t %*% sim_temp[, t]
       
       # Stockage de la somme des matures (stades 13 à 33)
-      resultats_matures[t+1, s] <- sum(sim_temp[13:33, t+1])
+      resultats_matures[t+1, i] <- sum(sim_temp[13:33, t+1])
     }
   }
 
@@ -70,7 +62,7 @@ fig2<-function(matrice,n_iterations,n_annees, n_ini){
     
     # Échelle logarithmique formatée
     scale_y_log10(
-      limits = c(0.1, 10000),
+      limits = c(0.1, 12000),
       breaks = c(0.1, 1, 10, 100, 1000, 10000),
       labels = c("0", "1", "10", "100", "1 000", "10 000"),
       oob = scales::squish
