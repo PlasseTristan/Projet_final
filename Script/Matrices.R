@@ -6,7 +6,6 @@ n_stades <- length(noms_stades)
 # 2. Créer une matrice vide (remplie de 0)
 measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
                    dimnames = list(noms_stades, noms_stades))
-measured
 # 3. Remplir la PREMIÈRE LIGNE (Fécondité)
 # Les indices correspondent aux colonnes où la reproduction commence
 fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
@@ -61,10 +60,6 @@ for(i in 1:length(survie_e)) {
   endangered[i+1, i] <- survie_e[i]
 }
 
-# --- Vérification ---
-# Afficher les 5 premières lignes et colonnes
-print(endangered[1:5, 1:5])
-
 max(Re(eigen(endangered)$values)) # Même chose que dans l'étude
 
 
@@ -95,4 +90,4 @@ for(i in 1:length(survie_n)) {
 }
 
 # 4. Calcul du Lambda (Taux de croissance)
-max(Re(eigen(null_pred)$values)) # Même chose que dans l'étude
+lambda<-max(Re(eigen(null_pred)$values)) # Même chose que dans l'étude
