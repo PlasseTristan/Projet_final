@@ -1,3 +1,5 @@
+source("Script/structure_initiale.R")
+
 # 1. Copie de la matrice
 mat_annuelle <- null_pred
 
