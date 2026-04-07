@@ -1,5 +1,9 @@
 library(tidyverse)
 
+source("Script/structure_initiale.R")
+source("Script/matrices_stochastiques.R")
+
+
 fig2<-function(matrice,n_iterations,n_annees, n_ini){
   # Matrice pour stocker uniquement les matures : 51 lignes (années 0-100) x 50 colonnes
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
