@@ -120,6 +120,14 @@ for(i in 1:length(survie_n)) {
 lambda<-max(Re(eigen(null_pred)$values)) # Même chose que dans l'étude
 ```
 
+3 scénarios différents d'ensemencement ont été analysés : L'absence d'ensmencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins.
+
+```{r}
+stockage_nul      <- c(0, 0)
+stockage_present  <- c(231185, 14868)
+stockage_propose  <- c(500000, 15000)
+```
+
 ## Méthode
 
 ## Supposition
