@@ -308,10 +308,9 @@ df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~ifelse(.x <= 0
 
 ## Résultats
 
-```{r}
+```{r,fig.width=8, fig.height=12}
 graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
   # 1. Intervalle de confiance (Ruban)
-  # On précise que ymin et ymax ne servent que pour le ruban
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
@@ -331,7 +330,7 @@ graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill =
   ) +
   scale_x_continuous(expand = c(0, 0)) +
   
-  # Couleurs (Gris, Bleu, Orange)
+  # Couleurs 
   scale_color_manual(values = c("No stocking" = "#b00014", 
                                 "Actual stocking" = "#29abe2", 
                                 "Theoretical stocking" = "#43a047")) +
@@ -357,13 +356,12 @@ graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill =
   )
 graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
   # 1. Intervalle de confiance (Ruban)
-  # On précise que ymin et ymax ne servent que pour le ruban
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
   geom_smooth(linewidth = 1, span = 0.2) +
   
-  # Annotation "(a)" en haut à gauche
+  # Annotation "(b)" en haut à gauche
   annotate("text", x = 0, y = 40000, label = "(b)", size = 6, hjust = 0) +
   
   # Configuration des axes et thèmes
@@ -377,7 +375,7 @@ graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = S
   ) +
   scale_x_continuous(expand = c(0, 0)) +
   
-  # Couleurs (Gris, Bleu, Orange)
+  # Couleurs 
   scale_color_manual(values = c("No stocking" = "#b00014", 
                                 "Actual stocking" = "#29abe2", 
                                 "Theoretical stocking" = "#43a047")) +
@@ -394,8 +392,7 @@ graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = S
     
   ) +
   theme(
-    legend.position = "none", # Légende à l'intérieur (x, y)
-    legend.background = element_blank(),
+    legend.position = "none", # Pas de légende
     axis.title = element_text(size = 14),
     axis.text.y = element_text(size = 12, color = "black"),
     axis.text.x = element_blank(),
@@ -403,13 +400,12 @@ graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = S
   )
 graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
   # 1. Intervalle de confiance (Ruban)
-  # On précise que ymin et ymax ne servent que pour le ruban
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
   geom_smooth(linewidth = 1, span = 0.2) +
   
-  # Annotation "(a)" en haut à gauche
+  # Annotation "(c)" en haut à gauche
   annotate("text", x = 0, y = 40000, label = "(c)", size = 6, hjust = 0) +
   
   # Configuration des axes et thèmes
@@ -423,7 +419,7 @@ graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill 
   ) +
   scale_x_continuous(expand = c(0, 0)) +
   
-  # Couleurs (Gris, Bleu, Orange)
+  # Couleurs 
   scale_color_manual(values = c("No stocking" = "#b00014", 
                                 "Actual stocking" = "#29abe2", 
                                 "Theoretical stocking" = "#43a047")) +
@@ -440,8 +436,7 @@ graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill 
     
   ) +
   theme(
-    legend.position = "none", # Légende à l'intérieur (x, y)
-    legend.background = element_blank(),
+    legend.position = "none",
     axis.title = element_text(size = 14),
     axis.text = element_text(size = 12, color = "black"),
     axis.line = element_line(linewidth = 0.8)
