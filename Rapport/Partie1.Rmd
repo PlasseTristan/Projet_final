@@ -187,8 +187,8 @@ fecondite_stochastique <- function(matrice, n_annees){
   # 1. Identifier le nombre de stades (33 dans ton cas)
   n_stades <- nrow(matrice)
   
-  # 2. Extraire la ligne de fécondité moyenne (la ligne 1)
-  f_moyenne <- matrice[1, ]
+  # 2. Extraire la ligne de fécondité théorique (la ligne 1)
+  f_theo <- matrice[1, ]
   
   # 3. Générer les multiplicateurs stochastiques
   # On crée une matrice de multiplicateurs centrés sur 1
@@ -197,9 +197,8 @@ fecondite_stochastique <- function(matrice, n_annees){
                             nrow = n_stades, 
                             ncol = n_annees)
   
-  # 4. Appliquer ces multiplicateurs à nos fécondités moyennes
-  # R va multiplier chaque colonne de 'multiplicateurs' par le vecteur 'f_moyenne'
-  taux_fec <- multiplicateurs * f_moyenne
+  # 4. Appliquer ces multiplicateurs à nos fécondités théoriques
+  taux_fec <- multiplicateurs * f_theo
   
   # 5. Sécurité : La fécondité ne peut pas être négative
   taux_fec[taux_fec < 0] <- 0
@@ -232,7 +231,7 @@ survie_stochastique <- function(matrice, n_annees) {
 ```
 
 ```{r}
-calculer_scenario <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
+fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
   n_larves <- stockage[1]
   n_fry <- stockage[2]
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
@@ -277,44 +276,39 @@ calculer_scenario <- function(matrice, n_iterations, n_annees, n_ini, stockage, 
   )
 }
 
-# Définition des scénarios
-stockage_nul      <- c(0, 0)
-stockage_present  <- c(231185, 14868)
-stockage_propose  <- c(500000, 15000)
-
 # Calculs
-null_nul     <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_nul, "No stocking")
-null_present <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_present, "Actual stocking")
-null_propose <- calculer_scenario(null_pred, 5000, 100, 2000, stockage_propose, "Theoretical stocking")
+null_nul     <- fig_2(null_pred, 1000, 100, 1000, stockage_nul, "No stocking")
+null_present <- fig_2(null_pred, 1000, 100, 1000, stockage_present, "Actual stocking")
+null_propose <- fig_2(null_pred, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-end_nul     <- calculer_scenario(endangered, 5000, 100, 2000, stockage_nul, "No stocking")
-end_present <- calculer_scenario(endangered, 5000, 100, 2000, stockage_present, "Actual stocking")
-end_propose <- calculer_scenario(endangered, 5000, 100, 2000, stockage_propose, "Theoretical stocking")
+end_nul     <- fig_2(endangered, 1000, 100, 1000, stockage_nul, "No stocking")
+end_present <- fig_2(endangered, 1000, 100, 1000, stockage_present, "Actual stocking")
+end_propose <- fig_2(endangered, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-meas_nul     <- calculer_scenario(measured, 5000, 100, 2000, stockage_nul, "No stocking")
-meas_present <- calculer_scenario(measured, 5000, 100, 2000, stockage_present, "Actual stocking")
-meas_propose <- calculer_scenario(measured, 5000, 100, 2000, stockage_propose, "Theoretical stocking")
+meas_nul     <- fig_2(measured, 1000, 100, 1000, stockage_nul, "No stocking")
+meas_present <- fig_2(measured, 1000, 100, 1000, stockage_present, "Actual stocking")
+meas_propose <- fig_2(measured, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
 
 # Fusion
 df_null <- bind_rows(null_nul, null_present, null_propose)
 df_end <- bind_rows(end_nul, end_present, end_propose)
 df_meas <- bind_rows(meas_nul, meas_present, meas_propose)
 
-# Sécurité log (on remplace 0 par 0.1 pour pas faire planter le log)
-df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~ifelse(.x <= 0.1, 0.1, .x)))
-df_end <- df_end %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~ifelse(.x <= 0.1, 0.1, .x)))
-df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~ifelse(.x <= 0.1, 0.1, .x)))
+# Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
+df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
+df_end  <- df_end  %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
+df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
 ```
 
 ## Résultats
 
-```{r,fig.width=8, fig.height=12}
+```{r,fig.width=5, fig.height=10}
 graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
   # 1. Intervalle de confiance (Ruban)
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
-  geom_smooth(linewidth = 1, span = 0.2) +
+  geom_line(linewidth = 1) +
   
   # Annotation "(a)" en haut à gauche
   annotate("text", x = 0, y = 40000, label = "(a)", size = 6, hjust = 0) +
@@ -359,7 +353,7 @@ graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = S
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
-  geom_smooth(linewidth = 1, span = 0.2) +
+  geom_line(linewidth = 1) +
   
   # Annotation "(b)" en haut à gauche
   annotate("text", x = 0, y = 40000, label = "(b)", size = 6, hjust = 0) +
@@ -403,7 +397,7 @@ graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill 
   geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
   
   # 2. Lignes médianes 
-  geom_smooth(linewidth = 1, span = 0.2) +
+  geom_line(linewidth = 1) +
   
   # Annotation "(c)" en haut à gauche
   annotate("text", x = 0, y = 40000, label = "(c)", size = 6, hjust = 0) +
