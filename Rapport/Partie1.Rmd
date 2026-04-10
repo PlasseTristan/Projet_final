@@ -224,7 +224,7 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
   # Normaliser pour avoir n_mature_cible matures (stades 13-33)
   facteur <- n_mature_cible / sum(pop[13:33])
   
-  return(pop * facteur)
+  return(round(pop * facteur))
 }
 ```
 
@@ -278,65 +278,63 @@ survie_stochastique <- function(matrice, n_annees) {
 }
 ```
 
+### Figure 2
+
 ```{r}
-fig_2<- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
+fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
   n_larves_supp <- stockage[1]
   n_fry_supp <- stockage[2]
   n_stades <- nrow(matrice)
   
+  # Matrice pour stocker la somme des matures pour chaque année et chaque itération
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
   
   for (i in 1:n_iterations) {
-    # 1. Génération de la stochasticité
+    # 1. Génération de la stochasticité pour CETTE itération
     mat_fec_stoch <- fecondite_stochastique(matrice, n_annees)
     mat_surv_stoch <- survie_stochastique(matrice, n_annees)
     
+    # 2. INITIALISATION de sim_temp (C'est ici qu'elle doit être créée)
     sim_temp <- matrix(0, nrow = n_stades, ncol = n_annees + 1)
     
-    # 2. Initialisation (Structure stable)
-    # On commence avec une population établie (stades 4 à 33)
+    # Structure initiale arrondie
     pop_init <- calculer_structure_initiale(matrice, n_ini)
     sim_temp[, 1] <- pop_init
+    
+    # Stocker le compte initial de matures (stades 13 à 33)
     resultats_matures[1, i] <- sum(sim_temp[13:33, 1])
     
     for (t in 1:n_annees) {
       # --- ÉTAPE A : Survie des adultes (Age 1 à Age 30) ---
-      # Les individus aux stades 4:32 passent aux stades 5:33
       for (s in 4:(n_stades - 1)) {
-        sim_temp[s + 1, t + 1] <- sim_temp[s, t] * mat_surv_stoch[s, t]
+        # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
+        sim_temp[s + 1, t + 1] <- round(sim_temp[s, t] * mat_surv_stoch[s, t])
       }
       
       # --- ÉTAPE B : Reproduction et stades intra-annuels ---
-      # 1. Ponte (Production d'œufs au temps t)
-      n_oeufs <- sum(sim_temp[13:33, t] * mat_fec_stoch[13:33, t]) 
+      # 1. Ponte (Production d'œufs arrondie)
+      n_oeufs <- round(sum(sim_temp[13:33, t] * mat_fec_stoch[13:33, t]))
       
-      # 2. Traversée des stades 1-2-3 (Intra-année)
-      # On calcule combien survivent jusqu'à devenir "Age 1" (stade 4) à t+1
-      s1 <- mat_surv_stoch[1, t] # Egg -> Larva
-      s2 <- mat_surv_stoch[2, t] # Larva -> Fry
-      s3 <- mat_surv_stoch[3, t] # Fry -> Age 1
-      # Juste après le calcul de n_oeufs, ajouter temporairement :
-      if (t == 1 && i == 1) {
-        cat("n_oeufs:", n_oeufs, "\n")
-        cat("s1:", s1, "s2:", s2, "s3:", s3, "\n")
-        cat("survie_totale_oeufs:", s1*s2*s3, "\n")
-        cat("recrutement stade 4:", n_oeufs * s1*s2*s3, "\n")
-      }
-      # 3. Recrutement au stade 4 (Nés sur place + Apports externes)
-      survie_totale_oeufs <- s1 * s2 * s3
-      survie_totale_larves <- s2 * s3
-      survie_totale_fry <- s3
+      # 2. Traversée des stades 1-2-3 (Egg -> Larva -> Fry -> Age 1)
+      # On arrondit à chaque transition pour simuler des individus réels
+      n_larves <- round(n_oeufs * mat_surv_stoch[1, t])
+      n_fry    <- round(n_larves * mat_surv_stoch[2, t])
       
-      sim_temp[4, t + 1] <- (n_oeufs * survie_totale_oeufs) + 
-        (n_larves_supp * survie_totale_larves) + 
-        (n_fry_supp * survie_totale_fry)
+      # Ajout de l'ensemencement (stocking) aux stades appropriés
+      n_larves_tot <- n_larves + n_larves_supp
+      n_fry_tot    <- n_fry + n_fry_supp
       
-      # Stockage des résultats
+      # 3. Recrutement final au stade 4 (Age 1) au temps t+1
+      # Survie des larves et des alevins (fry) jusqu'au stade Age 1
+      # Note : Ici on applique la survie restante pour atteindre le stade 4
+      sim_temp[4, t + 1] <- round(n_fry_tot * mat_surv_stoch[3, t])
+      
+      # Stockage du résultat total des matures pour l'année t+1
       resultats_matures[t+1, i] <- sum(sim_temp[13:33, t+1])
     }
   }
   
-  # Formatage du data.frame de sortie
+  # Formatage du data.frame de sortie (Médiane et Intervalles de confiance)
   return(data.frame(
     Annee = 0:n_annees,
     Mediane = apply(resultats_matures, 1, median),
@@ -347,17 +345,17 @@ fig_2<- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario)
 }
 
 # Calculs
-null_nul     <- fig_2(null_pred, 1000, 100, 1000, stockage_nul, "No stocking")
-null_present <- fig_2(null_pred, 1000, 100, 1000, stockage_present, "Actual stocking")
-null_propose <- fig_2(null_pred, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
+null_nul     <- fig_2(null_pred, 5000, 100, 1000, stockage_nul, "No stocking")
+null_present <- fig_2(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking")
+null_propose <- fig_2(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-end_nul     <- fig_2(endangered, 1000, 100, 1000, stockage_nul, "No stocking")
-end_present <- fig_2(endangered, 1000, 100, 1000, stockage_present, "Actual stocking")
-end_propose <- fig_2(endangered, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
+end_nul     <- fig_2(endangered, 5000, 100, 1000, stockage_nul, "No stocking")
+end_present <- fig_2(endangered, 5000, 100, 1000, stockage_present, "Actual stocking")
+end_propose <- fig_2(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-meas_nul     <- fig_2(measured, 1000, 100, 1000, stockage_nul, "No stocking")
-meas_present <- fig_2(measured, 1000, 100, 1000, stockage_present, "Actual stocking")
-meas_propose <- fig_2(measured, 1000, 100, 1000, stockage_propose, "Theoretical stocking")
+meas_nul     <- fig_2(measured, 5000, 100, 1000, stockage_nul, "No stocking")
+meas_present <- fig_2(measured, 5000, 100, 1000, stockage_present, "Actual stocking")
+meas_propose <- fig_2(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
 # Fusion
 df_null <- bind_rows(null_nul, null_present, null_propose)
@@ -370,6 +368,116 @@ df_end  <- df_end  %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
 ```
 
+### Figure 3
+
+```{r}
+library(tidyverse)
+
+# ==========================================================
+# 1. SIMULATION
+# ==========================================================
+fig_3 <- function(matrice, n_iterations, n_annees = 100) {
+  n_stades <- nrow(matrice)
+  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
+  
+  n_larves <- 0
+  n_fry    <- 0
+  
+  for (i in 1:n_iterations) {
+    mat_fec  <- fecondite_stochastique(matrice, n_annees)
+    mat_surv <- survie_stochastique(matrice, n_annees)
+    
+    # On arrondit la structure initiale
+    pop <- round(calculer_structure_initiale(matrice, 1000))
+    pop[1:3] <- 0
+    
+    historique[i, 1] <- sum(pop[13:33])
+    
+    for (t in 1:n_annees) {
+      M_t <- matrix(0, nrow = n_stades, ncol = n_stades)
+      
+      diag(M_t[-1, -n_stades]) <- mat_surv[1:(n_stades - 1), t]
+      
+      s_an1_t <- prod(mat_surv[1:3, t])
+      M_t[4, 13:33] <- mat_fec[13:33, t] * s_an1_t
+      M_t[2,1] <- 0; M_t[3,2] <- 0; M_t[4,3] <- 0
+      
+      # Projection matricielle
+      pop <- M_t %*% pop
+      
+      # Ajout des apports externes / survies spécifiques
+      # On arrondit ici car ces calculs génèrent des décimales
+      pop[4] <- pop[4] + 
+                (pop[1] * mat_surv[1,t] * mat_surv[2,t] * mat_surv[3,t]) + 
+                ((pop[2] + n_larves) * mat_surv[2,t] * mat_surv[3,t]) + 
+                ((pop[3] + n_fry) * mat_surv[3,t])
+      
+      # CRUCIAL : On arrondit le vecteur population à chaque pas de temps
+      # On ne peut pas avoir un demi-poisson qui se reproduit au temps t+1
+      pop <- round(pop)
+      
+      historique[i, t + 1] <- sum(pop[13:33])
+    }
+  }
+  return(historique)
+}
+
+# ==========================================================
+# 2. STATISTIQUES (quantiles directs sur 5000 simulations)
+# ==========================================================
+calculer_stats <- function(historique, nom_scenario) {
+  seuils <- seq(0, 1000, by = 1)
+  n_sims <- nrow(historique)
+  
+  temps_sous_seuil <- matrix(0, nrow = n_sims, ncol = length(seuils))
+  for (j in seq_along(seuils)) {
+    temps_sous_seuil[, j] <- rowMeans(historique < seuils[j])
+  }
+  
+  data.frame(
+    Threshold = seuils,
+    Median    = apply(temps_sous_seuil, 2, median),
+    Inf_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.15),
+    Sup_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.85),
+    Scenario  = factor(nom_scenario, levels = c("Null", "Endangered", "Measured"))
+  )
+}
+
+# ==========================================================
+# 3. EXÉCUTION
+# ==========================================================
+hist_null <- fig_3(null_pred,  5000)
+hist_end  <- fig_3(endangered, 5000)
+hist_meas <- fig_3(measured,   5000)
+
+df_final <- bind_rows(
+  calculer_stats(hist_null, "Null"),
+  calculer_stats(hist_end,  "Endangered"),
+  calculer_stats(hist_meas, "Measured")
+)
+
+# ==========================================================
+# 4. LISSAGE AVEC ANCRAGE À (0, 0)
+# ==========================================================
+df_final$Scenario <- factor(df_final$Scenario, levels = c("Measured", "Endangered", "Null"))
+
+df_smoothed <- df_final %>%
+  group_by(Scenario) %>%
+  mutate(
+    Median = predict(loess(Median ~ Threshold, span = 0.15)),
+    Inf_70 = predict(loess(Inf_70 ~ Threshold, span = 0.15)),
+    Sup_70 = predict(loess(Sup_70 ~ Threshold, span = 0.15)),
+   
+    # Empêche les valeurs négatives dues au lissage
+    Median = pmax(Median, 0),
+    Inf_70 = pmax(Inf_70, 0),
+    Sup_70 = pmax(Sup_70, 0)
+  ) %>%
+  ungroup()
+
+```
+
+
 ### Figure 4
 
 ```{r}
@@ -377,40 +485,36 @@ simulate_point <- function(stocking_val, stage_to_stock) {
   L <- measured 
   n_stades <- nrow(L)
   
-  # On crée une matrice de transition SANS la reproduction (pour l'équilibre du stocking)
-  # Car on veut isoler l'effet du stocking sur l'abondance stable
+  # Matrice de transition sans reproduction
   L_trans <- L
   L_trans[1, ] <- 0 
   
   I <- diag(n_stades)
   b <- numeric(n_stades)
   
-  # --- CORRECTION ICI ---
-  # On injecte les poissons directement au stade où ils commencent leur vie annuelle
+  # On arrondit le nombre de poissons qui survivent jusqu'au recrutement (stade 4 ou 13)
+  # car on ne peut pas recruter 0.5 poisson.
   if (stage_to_stock == "Larva") {
-    # Une larve ensemencée doit encore subir la mortalité Larve->Fry et Fry->Age 1
-    # Mais elle devient Age 1 au printemps suivant (t+1)
-    b[4] <- stocking_val * (L[3,2] * L[4,3]) 
+    # Survie Larve -> Fry -> Age 1
+    b[4] <- round(stocking_val * (L[3,2] * L[4,3])) 
   } else if (stage_to_stock == "Fry") {
-    # Un Fry ensemencé en automne n'a que Fry->Age 1 à traverser (quelques mois)
-    # On utilise souvent une survie plus élevée (ex: sqrt(s)) ou on injecte plus près de l'Age 1
-    b[4] <- stocking_val * L[4,3] 
+    # Survie Fry -> Age 1
+    b[4] <- round(stocking_val * L[4,3]) 
   } else if (stage_to_stock == "Age 1") {
-    b[4] <- stocking_val
+    b[4] <- round(stocking_val)
   } else if (stage_to_stock == "Age 10") {
-    b[13] <- stocking_val 
+    b[13] <- round(stocking_val) 
   }
   
-  # Population stable générée par le stocking
+  # Calcul de la population stable (vecteur d'abondance par stade)
   pop_stocking <- solve(I - L_trans) %*% b
   
-  # Calcul des matures (Stades 13 à 33) + Population initiale (200)
-  # Pour coller à l'étude, on vérifie si la survie cumulée n'est pas trop sévère
-  res <- sum(pop_stocking[13:33]) + 200
+  # On arrondit la somme finale des individus matures (Stades 13 à 33)
+  # + les 200 individus initiaux
+  res <- round(sum(pop_stocking[13:33])) + 200
   
   return(res)
 }
-  
 efforts <- seq(0, 7, length.out = 100) # De 10^0 à 10^7
 grid_vals <- 10^efforts
 stades <- c("Larva", "Fry", "Age 1", "Age 10")
@@ -566,6 +670,56 @@ graph_null/graph_end/graph_meas
 ```
 
 ### Figure 3
+
+```{r}
+ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+  
+  geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
+              alpha = 0.25, show.legend = FALSE) +
+  
+  geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
+  
+  scale_color_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    breaks = c("Null", "Endangered", "Measured")
+  ) +
+  scale_fill_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    guide  = "none"
+  ) +
+  
+  scale_y_continuous(
+    limits = c(0, 1.01),
+    breaks = seq(0, 1, 0.2),
+    expand = c(0, 0),
+    labels = function(x) sprintf("%.1f", x)
+  ) +
+  scale_x_continuous(
+    limits = c(0, 1000),
+    breaks = seq(0, 1000, 200),
+    expand = c(0, 0)
+  ) +
+  
+  theme_classic() +
+  labs(
+    x = "Threshold value (Number of mature individuals)",
+    y = "Average probability of being below\nthreshold value in the next 100 years"
+  ) +
+  theme(
+    text              = element_text(family = "serif"),
+    panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
+    axis.line         = element_blank(),
+    legend.position   = c(0.80, 0.25),
+    legend.title      = element_blank(),
+    legend.text       = element_text(size = 11),
+    legend.key        = element_blank(),
+    legend.background = element_rect(fill = "white", color = NA),
+    axis.text         = element_text(color = "black", size = 11),
+    axis.title        = element_text(size = 12),
+    plot.margin       = margin(10, 20, 10, 10)
+  )
+
+```
 
 ### Figure 4
 
