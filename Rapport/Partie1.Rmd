@@ -5,7 +5,7 @@ date: "2026-04-07"
 output: html_document
 ---
 
-```{r}
+```{r, include=FALSE,echo=FALSE}
 library(scales)
 library(tidyverse)
 library(patchwork)
@@ -24,7 +24,7 @@ Quelle est la situation du Chevalier cuivré (*Moxostoma hubbsi*) en considéran
 
 ## Hypothèse
 
-...
+La situation du Chevalier cuivré est précaire, elle aurait donc une probabilité d'extinction élevée, une tendance démographique à la baisse et nécessiterait un ensemencement élevé pour obtenir le maintien de sa population.
 
 ## Données et/ou informations pertinentes
 
@@ -62,9 +62,8 @@ for(i in 1:length(survie_m)) {
   measured[i+1, i] <- survie_m[i]
 }
 
-max(Re(eigen(measured)$values)) # Donne la même valeur de lambda que l'étude
-
-
+cat("Lambda mesuré : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda dans l'étude : 0.957", "\n")
 # Affichage interactif de la matrice de Leslie
 datatable(round(measured, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
@@ -97,7 +96,11 @@ for(i in 1:length(survie_e)) {
   endangered[i+1, i] <- survie_e[i]
 }
 
-max(Re(eigen(endangered)$values)) # Même chose que dans l'étude
+cat("Lambda mesuré : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda dans l'étude : 0.984", "\n")
+# Affichage interactif de la matrice de Leslie
+datatable(round(endangered, 4), 
+          options = list(scrollX = TRUE, pageLength = 33))
 ```
 
 ```{r}
@@ -126,11 +129,14 @@ for(i in 1:length(survie_n)) {
   null_pred[i+1, i] <- survie_n[i]
 }
 
-# 4. Calcul du Lambda (Taux de croissance)
-lambda<-max(Re(eigen(null_pred)$values)) # Même chose que dans l'étude
+cat("Lambda mesuré : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda dans l'étude : 1", "\n")
+# Affichage interactif de la matrice de Leslie
+datatable(round(null_pred, 4), 
+          options = list(scrollX = TRUE, pageLength = 33))
 ```
 
-3 scénarios différents d'ensemencement ont été analysés : L'absence d'ensmencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins.
+3 scénarios différents d'ensemencement ont été analysés : L'absence d’ensemencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins).
 
 ```{r}
 stockage_nul      <- c(0, 0)
@@ -139,6 +145,56 @@ stockage_propose  <- c(500000, 15000)
 ```
 
 ## Méthode
+
+Un modèle de viabilité des populations avec stochasticité annuelle des taux de survie et de fécondité a été développé.
+
+Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur une période de $t = 100$ ans. La probabilité d'extinction est définie par la condition où l'abondance totale devient nulle :
+
+$$
+P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
+$$
+
+De plus, nous avons calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique :
+
+$$
+P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
+$$
+
+$$
+s_{age}(t) \sim \text{Beta} (\alpha, \beta) 
+$$
+
+$$
+\beta = 
+\begin{cases} 
+5.05 & \text{pour le groupe 1 (eggs)} \\
+20 & \text{pour le groupe 2 (larva)} \\
+75 & \text{pour le groupe 3 (fry)} \\
+0.75 & \text{pour tous les autres âges}
+\end{cases}
+$$
+
+$$
+\alpha = \frac{s_{age} \times \beta}{1 - s_{age}}
+$$
+
+Où :
+
+$s_{age}(t) =$ La survie de cette classe d'âge selon l'année
+
+$s_{age} =$ La survie théorique de cette classe d'âge
+
+La population initiale a été calculée à l'aide de :\
+
+$$
+n_{age+1,t+1} = n_{age,t} \times s_{age}
+$$
+
+Où :
+
+$n_{age} =$ Nombre d'individus de cette classe d'âge particulière
+
+$s_{age} =$ La survie théorique de cette classe d'âge
 
 ## Supposition
 
@@ -314,7 +370,63 @@ df_end  <- df_end  %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
 ```
 
+### Figure 4
+
+```{r}
+simulate_point <- function(stocking_val, stage_to_stock) {
+  L <- measured 
+  n_stades <- nrow(L)
+  
+  # On crée une matrice de transition SANS la reproduction (pour l'équilibre du stocking)
+  # Car on veut isoler l'effet du stocking sur l'abondance stable
+  L_trans <- L
+  L_trans[1, ] <- 0 
+  
+  I <- diag(n_stades)
+  b <- numeric(n_stades)
+  
+  # --- CORRECTION ICI ---
+  # On injecte les poissons directement au stade où ils commencent leur vie annuelle
+  if (stage_to_stock == "Larva") {
+    # Une larve ensemencée doit encore subir la mortalité Larve->Fry et Fry->Age 1
+    # Mais elle devient Age 1 au printemps suivant (t+1)
+    b[4] <- stocking_val * (L[3,2] * L[4,3]) 
+  } else if (stage_to_stock == "Fry") {
+    # Un Fry ensemencé en automne n'a que Fry->Age 1 à traverser (quelques mois)
+    # On utilise souvent une survie plus élevée (ex: sqrt(s)) ou on injecte plus près de l'Age 1
+    b[4] <- stocking_val * L[4,3] 
+  } else if (stage_to_stock == "Age 1") {
+    b[4] <- stocking_val
+  } else if (stage_to_stock == "Age 10") {
+    b[13] <- stocking_val 
+  }
+  
+  # Population stable générée par le stocking
+  pop_stocking <- solve(I - L_trans) %*% b
+  
+  # Calcul des matures (Stades 13 à 33) + Population initiale (200)
+  # Pour coller à l'étude, on vérifie si la survie cumulée n'est pas trop sévère
+  res <- sum(pop_stocking[13:33]) + 200
+  
+  return(res)
+}
+  
+efforts <- seq(0, 7, length.out = 100) # De 10^0 à 10^7
+grid_vals <- 10^efforts
+stades <- c("Larva", "Fry", "Age 1", "Age 10")
+
+df_plot <- data.frame(Stocking = grid_vals)
+for (stade in stades) {
+  df_plot[[stade]] <- sapply(grid_vals, simulate_point, stage_to_stock = stade)
+}
+
+df_long <- pivot_longer(df_plot, cols = all_of(stades),
+                        names_to = "Stocking_Stage", values_to = "Abundance_Mature")
+```
+
 ## Résultats
+
+### Figure 2
 
 ```{r,fig.width=5, fig.height=10}
 graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
@@ -451,6 +563,44 @@ graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill 
   )
 
 graph_null/graph_end/graph_meas
+```
+
+### Figure 3
+
+### Figure 4
+
+```{r,fig.width=6, fig.height=4}
+ggplot(df_long, aes(x = Stocking, y = Abundance_Mature, group = Stocking_Stage)) +
+  geom_line(aes(linetype = Stocking_Stage, color = Stocking_Stage), linewidth = 1.2) +
+  scale_x_log10(breaks = c(1, 10, 100, 1000, 10000, 100000, 1000000, 10000000),
+                  labels = scales::label_log()) +
+  scale_color_manual(values = c(
+      "Larva"  = "black",
+      "Fry"    = "black",
+      "Age 1"  = "black",
+      "Age 10" = "grey50"
+  )) +
+  scale_linetype_manual(values = c(
+      "Larva"  = "solid",
+      "Fry"    = "solid",
+      "Age 1"  = "solid",
+      "Age 10" = "dashed"
+  )) +
+  
+  coord_cartesian(ylim = c(0, 6000), xlim = c(1, 1e8)) +
+  labs(x = "Stocking",
+       y = "Abundance of mature individuals (N)") +
+  annotate("text", x = 3e6, y = 5200, label = "Larva\nstocking",   size = 3.5) +
+  annotate("text", x = 1e5, y = 5200, label = "Fry\nstocking",     size = 3.5) +
+  annotate("text", x = 1e3, y = 5200, label = "Age 1\nstocking",   size = 3.5) +
+  annotate("text", x = 2e1, y = 5200, label = "Age 10\nstocking",  size = 3.5) +
+  theme_classic() +
+  theme(
+    legend.position = "none",
+    axis.text  = element_text(size = 11),
+    axis.title = element_text(size = 13),
+    plot.margin = margin(t = 20, r = 10, b = 10, l = 10)
+  )
 ```
 
 ## Interprétations biologiques
