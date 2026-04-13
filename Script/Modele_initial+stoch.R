@@ -1,7 +1,8 @@
 ### 1. Préparation des paramètres stochastiques ###
 n_annees <- 100
 n_stades <- nrow(null_pred)
-
+n_larves <-stockage_present[1]
+n_fry <- stockage_present[2]
 mat_fec_stoch <- fecondite_stochastique(null_pred, n_annees) # Matrice 33 x 100
 mat_surv_stoch <- survie_stochastique(null_pred, n_annees) # Matrice 32 x 100
 
@@ -40,8 +41,20 @@ for (t in 1:n_annees) {
   M_t[3,2] <- 0
   M_t[4,3] <- 0
   
-  # F. Projection
-  simulation_stoch[, t+1] <- M_t %*% simulation_stoch[, t]
+  # F. Projection (votre code actuel)
+  n_t_plus_1 <- M_t %*% simulation_stoch[, t]
+  
+  # G. Ajout de l'ensemencement (Stockage)
+  # n_larves et n_fry sont vos valeurs de stockage (ex: 231185 et 14868)
+  # On leur applique la survie restante pour qu'ils rejoignent le Stade 4 (Age 1)
+  apport_stade4 <- (n_larves * mat_surv_stoch[2, t] * mat_surv_stoch[3, t]) + 
+    (n_fry * mat_surv_stoch[3, t])
+  
+  # On injecte ces "nouveaux" individus de l'année dans le stade 4
+  n_t_plus_1[4] <- n_t_plus_1[4] + apport_stade4
+  
+  # H. Sauvegarder
+  simulation_stoch[, t+1] <- n_t_plus_1
 }
 
 ### 4. Analyse des résultats ###
@@ -67,7 +80,7 @@ ggplot(df_plot, aes(x = Annee, y = Abondance)) +
   # Échelle logarithmique (base 10)
   scale_y_log10(breaks = c(1, 10, 100, 1000, 10000), 
                 # On force les limites entre 0.1 (notre "0") et 10000
-                limits = c(0.1, 10000),
+                limits = c(0.1, 100000),
                 labels = c("1", "10", "100", "1 000", "10 000")) +
   
   # Thème et esthétique
