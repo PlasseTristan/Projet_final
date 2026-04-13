@@ -1,15 +1,14 @@
-library(tidyverse)
-
-# ==========================================================
-# 1. SIMULATION
-# ==========================================================
+#___________________________________________________________________________
+##Simulation de base pour la figure
 simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) {
-  n_stades <- nrow(matrice)
-  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
+  n_stades <- nrow(matrice) #33 comme les matrices originelles
+  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1) #matrice pour stocker les résultats
   
+  #paramètre permettant l'ajout de stocks de base
   n_larves <- 0
   n_fry    <- 0
   
+  #Création des matrices stochastiques (survie et fécondité) pour chaque ittération
   for (i in 1:n_iterations) {
     mat_fec  <- fecondite_stochastique(matrice, n_annees)
     mat_surv <- survie_stochastique(matrice, n_annees)
@@ -19,6 +18,7 @@ simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) 
     
     historique[i, 1] <- sum(pop[13:33])
     
+    #Calcul de la population pour chaque années dans chaque ittération
     for (t in 1:n_annees) {
       M_t <- matrix(0, nrow = n_stades, ncol = n_stades)
       
@@ -31,9 +31,6 @@ simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) 
       
       pop <- M_t %*% pop
       
-      #pop[4] <- pop[4] + (n_larves * mat_surv[2, t] * mat_surv[3, t]) +
-        (n_fry   * mat_surv[3, t])
-      
       pop[4] <- pop[4] +(pop[1]*mat_surv[1,t]* mat_surv[2, t] * mat_surv[3, t])+ ((pop[2]+n_larves) * mat_surv[2, t] * mat_surv[3, t]) +
         ((pop[3]+n_fry)   * mat_surv[3, t])
       
@@ -42,10 +39,9 @@ simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) 
   }
   return(historique)
 }
+#___________________________________________________________________________
+# Calcul des statistiques pour les intervals de confiance à 70%
 
-# ==========================================================
-# 2. STATISTIQUES (quantiles directs sur 5000 simulations)
-# ==========================================================
 calculer_stats <- function(historique, nom_scenario) {
   seuils <- seq(0, 1000, by = 1)
   n_sims <- nrow(historique)
@@ -64,22 +60,22 @@ calculer_stats <- function(historique, nom_scenario) {
   )
 }
 
-# ==========================================================
-# 3. EXÉCUTION
-# ==========================================================
+
+#__________________________________________________________________________
+##exécuter le code pour les 3 scénarios (5000 itérations)
 hist_null <- simuler_trajectoires_adultes(null_pred,  5000)
 hist_end  <- simuler_trajectoires_adultes(endangered, 5000)
 hist_meas <- simuler_trajectoires_adultes(measured,   5000)
 
+#Stocker les résultats dans un data frame unique
 df_final <- bind_rows(
   calculer_stats(hist_null, "Null"),
   calculer_stats(hist_end,  "Endangered"),
   calculer_stats(hist_meas, "Measured")
 )
 
-# ==========================================================
-# 4. LISSAGE AVEC ANCRAGE À (0, 0)
-# ==========================================================
+#___________________________________________________________________________
+##lissage des résultats
 df_final$Scenario <- factor(df_final$Scenario, levels = c("Measured", "Endangered", "Null"))
 
 df_smoothed <- df_final %>%
@@ -96,20 +92,21 @@ df_smoothed <- df_final %>%
   ) %>%
   ungroup()
 
-# ==========================================================
-# 5. GRAPHIQUE
-# ==========================================================
-p <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+#___________________________________________________________________________
+## un graphique combinant les trois scénarios avec un interval de confiance de 70%%
+fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
   
   geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
               alpha = 0.25, show.legend = FALSE) +
   
   geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
   
+  #Ajouter les couleurs voulues
   scale_color_manual(
     values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
     breaks = c("Null", "Endangered", "Measured")
   ) +
+  #idem pour les intervalles
   scale_fill_manual(
     values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
     guide  = "none"
@@ -129,9 +126,11 @@ p <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
   
   theme_classic() +
   labs(
-    x = "Threshold value (Number of mature individuals)",
-    y = "Average probability of being below\nthreshold value in the next 100 years"
+    x = "Valeurs seuils (Nombre d'individus matures)",
+    y = "Probabilité médiane d'être sous un certain seuil d'ici les 100 prochaines années"
   ) +
+  
+  ##Les paramètres ici ont été proposé par l'ia pour ressembler le plus possible visuellement à la figure d'origine
   theme(
     text              = element_text(family = "serif"),
     panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
@@ -145,6 +144,7 @@ p <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
     axis.title        = element_text(size = 12),
     plot.margin       = margin(10, 20, 10, 10)
   )
-
-print(p)
-ggsave("figure3.png", plot = p, width = 6, height = 5, dpi = 300)
+#___________________________________________________________________________
+#Afficher la figure 3
+#print(fig3)
+#ggsave("figure3.png", plot = fig3, width = 6, height = 5, dpi = 300)
