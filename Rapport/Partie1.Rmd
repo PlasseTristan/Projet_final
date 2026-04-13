@@ -371,60 +371,50 @@ df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 ### Figure 3
 
 ```{r}
-library(tidyverse)
-
-# ==========================================================
-# 1. SIMULATION
-# ==========================================================
-fig_3 <- function(matrice, n_iterations, n_annees = 100) {
-  n_stades <- nrow(matrice)
-  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
+#___________________________________________________________________________
+##Simulation de base pour la figure
+simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) {
+  n_stades <- nrow(matrice) #33 comme les matrices originelles
+  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1) #matrice pour stocker les résultats
   
+  #paramètre permettant l'ajout de stocks de base
   n_larves <- 0
   n_fry    <- 0
   
+  #Création des matrices stochastiques (survie et fécondité) pour chaque ittération
   for (i in 1:n_iterations) {
     mat_fec  <- fecondite_stochastique(matrice, n_annees)
     mat_surv <- survie_stochastique(matrice, n_annees)
     
-    # On arrondit la structure initiale
-    pop <- round(calculer_structure_initiale(matrice, 1000))
+    pop <- calculer_structure_initiale(matrice, 1000)
     pop[1:3] <- 0
     
     historique[i, 1] <- sum(pop[13:33])
     
+    #Calcul de la population pour chaque années dans chaque ittération
     for (t in 1:n_annees) {
       M_t <- matrix(0, nrow = n_stades, ncol = n_stades)
       
+      # Bug fix : 32 valeurs dans 32 slots
       diag(M_t[-1, -n_stades]) <- mat_surv[1:(n_stades - 1), t]
       
       s_an1_t <- prod(mat_surv[1:3, t])
       M_t[4, 13:33] <- mat_fec[13:33, t] * s_an1_t
       M_t[2,1] <- 0; M_t[3,2] <- 0; M_t[4,3] <- 0
       
-      # Projection matricielle
       pop <- M_t %*% pop
       
-      # Ajout des apports externes / survies spécifiques
-      # On arrondit ici car ces calculs génèrent des décimales
-      pop[4] <- pop[4] + 
-                (pop[1] * mat_surv[1,t] * mat_surv[2,t] * mat_surv[3,t]) + 
-                ((pop[2] + n_larves) * mat_surv[2,t] * mat_surv[3,t]) + 
-                ((pop[3] + n_fry) * mat_surv[3,t])
-      
-      # CRUCIAL : On arrondit le vecteur population à chaque pas de temps
-      # On ne peut pas avoir un demi-poisson qui se reproduit au temps t+1
-      pop <- round(pop)
+      pop[4] <- pop[4] +(pop[1]*mat_surv[1,t]* mat_surv[2, t] * mat_surv[3, t])+ ((pop[2]+n_larves) * mat_surv[2, t] * mat_surv[3, t]) +
+        ((pop[3]+n_fry)   * mat_surv[3, t])
       
       historique[i, t + 1] <- sum(pop[13:33])
     }
   }
   return(historique)
 }
+#___________________________________________________________________________
+# Calcul des statistiques pour les intervals de confiance à 70%
 
-# ==========================================================
-# 2. STATISTIQUES (quantiles directs sur 5000 simulations)
-# ==========================================================
 calculer_stats <- function(historique, nom_scenario) {
   seuils <- seq(0, 1000, by = 1)
   n_sims <- nrow(historique)
@@ -443,22 +433,22 @@ calculer_stats <- function(historique, nom_scenario) {
   )
 }
 
-# ==========================================================
-# 3. EXÉCUTION
-# ==========================================================
-hist_null <- fig_3(null_pred,  5000)
-hist_end  <- fig_3(endangered, 5000)
-hist_meas <- fig_3(measured,   5000)
 
+#__________________________________________________________________________
+##exécuter le code pour les 3 scénarios (5000 itérations)
+hist_null <- simuler_trajectoires_adultes(null_pred,  5000)
+hist_end  <- simuler_trajectoires_adultes(endangered, 5000)
+hist_meas <- simuler_trajectoires_adultes(measured,   5000)
+
+#Stocker les résultats dans un data frame unique
 df_final <- bind_rows(
   calculer_stats(hist_null, "Null"),
   calculer_stats(hist_end,  "Endangered"),
   calculer_stats(hist_meas, "Measured")
 )
 
-# ==========================================================
-# 4. LISSAGE AVEC ANCRAGE À (0, 0)
-# ==========================================================
+#___________________________________________________________________________
+##lissage des résultats
 df_final$Scenario <- factor(df_final$Scenario, levels = c("Measured", "Endangered", "Null"))
 
 df_smoothed <- df_final %>%
@@ -475,57 +465,223 @@ df_smoothed <- df_final %>%
   ) %>%
   ungroup()
 
+#___________________________________________________________________________
+## un graphique combinant les trois scénarios avec un interval de confiance de 70%%
+fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+  
+  geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
+              alpha = 0.25, show.legend = FALSE) +
+  
+  geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
+  
+  #Ajouter les couleurs voulues
+  scale_color_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    breaks = c("Null", "Endangered", "Measured")
+  ) +
+  #idem pour les intervalles
+  scale_fill_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    guide  = "none"
+  ) +
+  
+  scale_y_continuous(
+    limits = c(0, 1.01),
+    breaks = seq(0, 1, 0.2),
+    expand = c(0, 0),
+    labels = function(x) sprintf("%.1f", x)
+  ) +
+  scale_x_continuous(
+    limits = c(0, 1000),
+    breaks = seq(0, 1000, 200),
+    expand = c(0, 0)
+  ) +
+  
+  theme_classic() +
+  labs(
+    x = "Valeurs seuils (Nombre d'individus matures)",
+    y = "Probabilité médiane d'être sous un certain seuil d'ici les 100 prochaines années"
+  ) +
+  
+  ##Les paramètres ici ont été proposé par l'ia pour ressembler le plus possible visuellement à la figure d'origine
+  theme(
+    text              = element_text(family = "serif"),
+    panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
+    axis.line         = element_blank(),
+    legend.position   = c(0.80, 0.25),
+    legend.title      = element_blank(),
+    legend.text       = element_text(size = 11),
+    legend.key        = element_blank(),
+    legend.background = element_rect(fill = "white", color = NA),
+    axis.text         = element_text(color = "black", size = 11),
+    axis.title        = element_text(size = 12),
+    plot.margin       = margin(10, 20, 10, 10)
+  )
+#___________________________________________________________________________
+#Afficher la figure 3
+#print(fig3)
+#ggsave("figure3.png", plot = fig3, width = 6, height = 5, dpi = 300)
 ```
 
 
 ### Figure 4
 
 ```{r}
-simulate_point <- function(stocking_val, stage_to_stock) {
-  L <- measured 
-  n_stades <- nrow(L)
+#_______________________________________________________________________________
+##paramètres de bases
+
+#Taux de survie de la pop measured
+s_rates <- c(
+  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
+  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
+  0.912, 0.912, 0.912, 0.913, 0.913, 0.913,0)
+
+#Nombre de larves et de fry stockées annuellement 
+n_larve <-  231185
+n_fry <-  14868
+
+#Calculer la pop initiale avec 2000 individus
+pop<- calculer_structure_initiale(measured, 1000)
+
+#_______________________________________________________________________________  
+##Fonction de base pour la fig 4
+  simulate_point <- function(stocking_val, stage_to_stock, n_annees = 100) {
+    
   
-  # Matrice de transition sans reproduction
-  L_trans <- L
-  L_trans[1, ] <- 0 
-  
-  I <- diag(n_stades)
-  b <- numeric(n_stades)
-  
-  # On arrondit le nombre de poissons qui survivent jusqu'au recrutement (stade 4 ou 13)
-  # car on ne peut pas recruter 0.5 poisson.
-  if (stage_to_stock == "Larva") {
-    # Survie Larve -> Fry -> Age 1
-    b[4] <- round(stocking_val * (L[3,2] * L[4,3])) 
-  } else if (stage_to_stock == "Fry") {
-    # Survie Fry -> Age 1
-    b[4] <- round(stocking_val * L[4,3]) 
-  } else if (stage_to_stock == "Age 1") {
-    b[4] <- round(stocking_val)
-  } else if (stage_to_stock == "Age 10") {
-    b[13] <- round(stocking_val) 
+    pop[1:3] <- 0  # Stades intra-annuels jamais présents au recensement
+    
+    # Survie combinée des stades intra-annuels 
+    s_larve <- s_rates[2] * s_rates[3] *s_rates[4]  # Larve → stade 4
+    s_fry   <- s_rates[3] * s_rates[4]               # Fry   → stade 4
+                            
+    
+    for (t in 1:n_annees) {
+      pop <- measured %*% pop
+      
+      # Stades intra-annuels remis à 0 après chaque projection
+      pop[1:3] <- 0
+      
+      # Ensemencement avec survie résiduelle jusqu'au stade 4
+      if (stage_to_stock == "Larva") {
+        pop[4] <- pop[4] + ((stocking_val+n_larve) * s_larve)
+        
+      } else if (stage_to_stock == "Fry") {
+        pop[4] <- pop[4] + ((stocking_val+n_fry) * s_fry)
+        
+      } else if (stage_to_stock == "Age 1") {
+        pop[4] <- pop[4] + stocking_val 
+        
+      } else if (stage_to_stock == "Age 10") {
+        if (t > 10) pop[13] <- pop[13] + stocking_val
+      }
+      
+      if (any(is.na(pop)) || sum(pop) > 1e18) return(NA)
+    }
+    
+    return(sum(pop[13:33], na.rm = TRUE))
   }
   
-  # Calcul de la population stable (vecteur d'abondance par stade)
-  pop_stocking <- solve(I - L_trans) %*% b
+#_______________________________________________________________________________
+## Grille de test
   
-  # On arrondit la somme finale des individus matures (Stades 13 à 33)
-  # + les 200 individus initiaux
-  res <- round(sum(pop_stocking[13:33])) + 200
+efforts   <- seq(0, 8, length.out = 2000)
+grid_vals <- c(0, 10^efforts)
+stades    <- c("Larva", "Fry", "Age 1", "Age 10")
   
-  return(res)
-}
-efforts <- seq(0, 7, length.out = 100) # De 10^0 à 10^7
-grid_vals <- 10^efforts
-stades <- c("Larva", "Fry", "Age 1", "Age 10")
-
+#_______________________________________________________________________________
+##Appliquer la fonction de base avec les valeurs de la grille pour chaque stade
+  
+#data frame pour stocker les valeurs
 df_plot <- data.frame(Stocking = grid_vals)
+  
+#Boucle pour les calculs 
 for (stade in stades) {
-  df_plot[[stade]] <- sapply(grid_vals, simulate_point, stage_to_stock = stade)
-}
+    df_plot[[stade]] <- sapply(grid_vals, simulate_point, stage_to_stock = stade)
+  }
+  
+#_______________________________________________________________________________
+##Mise en forme et trillage des données
+  
+df_long <- pivot_longer(df_plot,
+                          cols      = all_of(stades),
+                          names_to  = "Stocking_Stage",
+                          values_to = "Abundance_Mature") %>%
+  mutate(Stocking_Stage = factor(Stocking_Stage,
+                                   levels = c("Larva", "Fry", "Age 1", "Age 10")))
 
-df_long <- pivot_longer(df_plot, cols = all_of(stades),
-                        names_to = "Stocking_Stage", values_to = "Abundance_Mature")
+    #Étiquettes positionnées à x fixe pour chaque stade
+label_data <- data.frame(
+  Stocking_Stage = factor(c("Larva", "Fry", "Age 1", "Age 10"),
+                            levels = c("Larva", "Fry", "Age 1", "Age 10")),
+  Stocking       = c(1e8,   1e6,   1e4,   2e2),   # Position X de chaque étiquettes
+  Abundance_Mature = c(5400, 5400, 5400, 5400),    # Toutes au dessus des courbes
+  label          = c("Larva\nstocking", "Fry\nstocking",
+                       "Age 1\nstocking", "Age 10\nstocking")
+  )
+  
+#_______________________________________________________________________________
+## Filtrer les NA avant le graphique
+df_long_clean <- df_long %>%
+  filter(Stocking > 0, !is.na(Abundance_Mature)) %>%
+  group_by(Stocking_Stage) %>%
+  filter(Abundance_Mature <= 5000) %>%
+  ungroup()
+
+#Créer la figure
+fig4 <- ggplot(df_long_clean,
+            aes(x        = Stocking,
+                y        = Abundance_Mature,
+                group    = Stocking_Stage,
+                linetype = Stocking_Stage)) +
+    
+  geom_line(linewidth = 1, color = "black") +
+    
+  geom_text(data       = label_data,
+              aes(label  = label),
+              vjust      = 0.5,
+              hjust      = 0.5,
+              size       = 3.8,
+              fontface   = "plain",
+              color      = "black",
+              show.legend = FALSE) +
+    
+  scale_x_log10(
+      breaks = 10^(0:9),
+      labels = scales::label_log(),
+      limits = c(1, 1e9)
+    ) +
+    
+  scale_y_continuous(
+      limits = c(0, 6000),
+      breaks = seq(0, 5000, 1000),
+      expand = c(0, 0),
+    ) +
+    
+  scale_linetype_manual(values = c(
+      "Larva"  = "solid",
+      "Fry"    = "solid",
+      "Age 1"  = "solid",
+      "Age 10" = "dashed"
+    )) +
+    
+  theme_classic() +
+    labs(
+      x = "Stocking (N/yr)",
+      y = "Abundance of mature individuals (N)"
+    ) +
+  theme(
+      panel.border    = element_rect(colour = "black", fill = NA, linewidth = 1),
+      axis.line       = element_blank(),
+      legend.position = "none",
+      axis.text       = element_text(color = "black", size = 11),
+      axis.title      = element_text(size = 12),
+      plot.margin     = margin(40, 20, 10, 10)
+    )
+#_______________________________________________________________________________
+##Afficher la figure
+
+#print(fig4)
+#ggsave("figure4.png", plot = fig4, width = 6, height = 5, dpi = 300)
 ```
 
 ## Résultats
@@ -672,89 +828,15 @@ graph_null/graph_end/graph_meas
 ### Figure 3
 
 ```{r}
-ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
-  
-  geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
-              alpha = 0.25, show.legend = FALSE) +
-  
-  geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
-  
-  scale_color_manual(
-    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
-    breaks = c("Null", "Endangered", "Measured")
-  ) +
-  scale_fill_manual(
-    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
-    guide  = "none"
-  ) +
-  
-  scale_y_continuous(
-    limits = c(0, 1.01),
-    breaks = seq(0, 1, 0.2),
-    expand = c(0, 0),
-    labels = function(x) sprintf("%.1f", x)
-  ) +
-  scale_x_continuous(
-    limits = c(0, 1000),
-    breaks = seq(0, 1000, 200),
-    expand = c(0, 0)
-  ) +
-  
-  theme_classic() +
-  labs(
-    x = "Threshold value (Number of mature individuals)",
-    y = "Average probability of being below\nthreshold value in the next 100 years"
-  ) +
-  theme(
-    text              = element_text(family = "serif"),
-    panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
-    axis.line         = element_blank(),
-    legend.position   = c(0.80, 0.25),
-    legend.title      = element_blank(),
-    legend.text       = element_text(size = 11),
-    legend.key        = element_blank(),
-    legend.background = element_rect(fill = "white", color = NA),
-    axis.text         = element_text(color = "black", size = 11),
-    axis.title        = element_text(size = 12),
-    plot.margin       = margin(10, 20, 10, 10)
-  )
-
+#Afficher la figure 3 déja construite
+print(fig3)
 ```
 
 ### Figure 4
 
 ```{r,fig.width=6, fig.height=4}
-ggplot(df_long, aes(x = Stocking, y = Abundance_Mature, group = Stocking_Stage)) +
-  geom_line(aes(linetype = Stocking_Stage, color = Stocking_Stage), linewidth = 1.2) +
-  scale_x_log10(breaks = c(1, 10, 100, 1000, 10000, 100000, 1000000, 10000000),
-                  labels = scales::label_log()) +
-  scale_color_manual(values = c(
-      "Larva"  = "black",
-      "Fry"    = "black",
-      "Age 1"  = "black",
-      "Age 10" = "grey50"
-  )) +
-  scale_linetype_manual(values = c(
-      "Larva"  = "solid",
-      "Fry"    = "solid",
-      "Age 1"  = "solid",
-      "Age 10" = "dashed"
-  )) +
-  
-  coord_cartesian(ylim = c(0, 6000), xlim = c(1, 1e8)) +
-  labs(x = "Stocking",
-       y = "Abundance of mature individuals (N)") +
-  annotate("text", x = 3e6, y = 5200, label = "Larva\nstocking",   size = 3.5) +
-  annotate("text", x = 1e5, y = 5200, label = "Fry\nstocking",     size = 3.5) +
-  annotate("text", x = 1e3, y = 5200, label = "Age 1\nstocking",   size = 3.5) +
-  annotate("text", x = 2e1, y = 5200, label = "Age 10\nstocking",  size = 3.5) +
-  theme_classic() +
-  theme(
-    legend.position = "none",
-    axis.text  = element_text(size = 11),
-    axis.title = element_text(size = 13),
-    plot.margin = margin(t = 20, r = 10, b = 10, l = 10)
-  )
+#Afficher la figure 4 déja construite
+print(fig4)
 ```
 
 ## Interprétations biologiques
