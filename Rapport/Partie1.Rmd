@@ -193,6 +193,10 @@ $s_{age} =$ La survie théorique de cette classe d'âge
 
 ## Supposition
 
+
+
+
+
 ## Calcul
 
 Fonction qui détermine le nombre initial de poissons à chaque stade selon le nombre de poissons matures initial.
@@ -223,8 +227,7 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
 }
 ```
 
-Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques.
-Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
+Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques. Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
 
 ```{r}
 fecondite_stochastique <- function(matrice, n_annees){
@@ -271,7 +274,7 @@ survie_stochastique <- function(matrice, n_annees) {
 
 ### Figure 2
 
-```{r}
+```{r fct_fig_2}
 fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
   n_larves_supp <- stockage[1] # Nombre de larves ensemencées
   n_fry_supp <- stockage[2] # Nombre d'alevins ensemencés
@@ -336,9 +339,7 @@ fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_sce
 }
 ```
 
-
-
-```{r}
+```{r calcul_fig_2}
 # Calculs
 df_null <- bind_rows(
   fig_2_opti(null_pred, 5000, 100, 1000, stockage_nul, "No stocking"), 
@@ -469,143 +470,61 @@ df_smoothed <- df_fig3 %>%
 ### Figure 4
 
 ```{r}
-#Nombre de larves et de fry stockées annuellement 
-n_larve <-  stockage_present[1]
-n_fry <-  stockage_present[2]
-
-#Calculer la pop initiale avec 2000 individus
-pop<- calculer_structure_initiale(measured, 1000)
-
-##Fonction de base pour la fig 4
-  simulate_point <- function(stocking_val, stage_to_stock, n_annees = 100) {
-    
+fig_4 <- function(matrice_choisie, n_iterations = 100) {
   
-    pop[1:3] <- 0  # Stades intra-annuels jamais présents au recensement
-    
-    # Survie combinée des stades intra-annuels 
-    # Survie_m = vecteurs contenant les survies de tous les stades de la matrice measured
-    s_larve <- survie_m[2] * survie_m[3] *survie_m[4]  # Larve → stade 4
-    s_fry   <- survie_m[3] * survie_m[4]               # Fry   → stade 4
-                            
-    
-    for (t in 1:n_annees) {
-      pop <- measured %*% pop
-      
-      # Stades intra-annuels remis à 0 après chaque projection
-      pop[1:3] <- 0
-      
-      # Ensemencement avec survie résiduelle jusqu'au stade 4
-      if (stage_to_stock == "Larva") {
-        pop[4] <- pop[4] + ((stocking_val+n_larve) * s_larve)
-        
-      } else if (stage_to_stock == "Fry") {
-        pop[4] <- pop[4] + ((stocking_val+n_fry) * s_fry)
-        
-      } else if (stage_to_stock == "Age 1") {
-        pop[4] <- pop[4] + stocking_val 
-        
-      } else if (stage_to_stock == "Age 10") {
-        if (t > 10) pop[13] <- pop[13] + stocking_val
-      }
-      
-      if (any(is.na(pop)) || sum(pop) > 1e18) return(NA)
-    }
-    
-    return(sum(pop[13:33], na.rm = TRUE))
-  }
-  
-#_______________________________________________________________________________
-## Grille de test
-  
-efforts   <- seq(0, 8, length.out = 2000)
-grid_vals <- c(0, 10^efforts)
-stades    <- c("Larva", "Fry", "Age 1", "Age 10")
-  
-#_______________________________________________________________________________
-##Appliquer la fonction de base avec les valeurs de la grille pour chaque stade
-  
-#data frame pour stocker les valeurs
-df_plot <- data.frame(Stocking = grid_vals)
-  
-#Boucle pour les calculs 
-for (stade in stades) {
-    df_plot[[stade]] <- sapply(grid_vals, simulate_point, stage_to_stock = stade)
-  }
-  
-#_______________________________________________________________________________
-##Mise en forme et trillage des données
-  
-df_long <- pivot_longer(df_plot,
-                          cols      = all_of(stades),
-                          names_to  = "Stocking_Stage",
-                          values_to = "Abundance_Mature") %>%
-  mutate(Stocking_Stage = factor(Stocking_Stage,
-                                   levels = c("Larva", "Fry", "Age 1", "Age 10")))
-
-    #Étiquettes positionnées à x fixe pour chaque stade
-label_data <- data.frame(
-  Stocking_Stage = factor(c("Larva", "Fry", "Age 1", "Age 10"),
-                            levels = c("Larva", "Fry", "Age 1", "Age 10")),
-  Stocking       = c(1e8,   1e6,   1e4,   2e2),   # Position X de chaque étiquettes
-  Abundance_Mature = c(5400, 5400, 5400, 5400),    # Toutes au dessus des courbes
-  label          = c("Larva\nstocking", "Fry\nstocking",
-                       "Age 1\nstocking", "Age 10\nstocking")
-  )
-  
-#_______________________________________________________________________________
-## Filtrer les NA avant le graphique
-df_long_clean <- df_long %>%
-  filter(Stocking > 0, !is.na(Abundance_Mature)) %>%
-  group_by(Stocking_Stage) %>%
-  filter(Abundance_Mature <= 5000) %>%
-  ungroup()
-
-```
-
-```{r}
-generer_donnees_fig4 <- function(matrice_choisie, n_iterations = 100) {
-  
-  # 1. Paramètres fixes et survies extraites de la matrice
-  n_larve_base <- 231185
-  n_fry_base   <- 14868
+  # 1. Paramètres fixes (ensemencement actuel)
+  n_larve_base <- stockage_present[1]
+  n_fry_base   <- stockage_present[2]
   n_stades     <- nrow(matrice_choisie)
+  # 2. Extraction de la survie  
   s_stades     <- diag(matrice_choisie[-1, -n_stades])
   
   # Calcul des survies cumulées vers le stade 4 (Age 1)
-  s_larve_to_4 <- s_stades[2] * s_stades[3]
-  s_fry_to_4   <- s_stades[3]
+  s_larve_to_4 <- s_stades[2] * s_stades[3] # Survie Larve -> Fry -> Age 1
+  s_fry_to_4   <- s_stades[3] # Survie Fry -> Age 1
   
-  # 2. Définition de la sous-fonction de simulation
-  # Elle est définie à l'intérieur pour isoler le calcul
+  # 3. Sous-fonction pour calculer l'abondance finale pour un scénario précis
   simulate_point <- function(stocking_val, stage_to_stock) {
-    # On recalcule la structure initiale à chaque point pour la stabilité
+    
+    # Initialisation de la population avec une structure stable (1000 matures)
     pop <- calculer_structure_initiale(matrice_choisie, 1000)
     
+    # Projection sur 100 ans (cette figure utilise le modèle déterministe)
     for (t in 1:100) {
+      # Multiplication matricielle : pop(t+1) = M * pop(t)
       pop <- as.vector(matrice_choisie %*% pop)
-      pop[1:3] <- 0 # Recensement annuel
       
+      # On applique l'ensemencement actuel (larves et alevins) à tous les scénarios
+      pop[4] <- pop[4] + (n_larve_base * s_larve_to_4) + (n_fry_base * s_fry_to_4)
+      
+      # Application de l'effort d'ensemencement selon le stade cible
+      # On additionne l'effort testé au stockage de base déjà existant
       if (stage_to_stock == "Larva") {
-        pop[4] <- pop[4] + ((stocking_val + n_larve_base) * s_larve_to_4)
+        # Ajout au recrutement (stade 4) après application de la survie résiduelle
+        pop[4] <- pop[4] + (stocking_val  * s_larve_to_4)
       } else if (stage_to_stock == "Fry") {
-        pop[4] <- pop[4] + ((stocking_val + n_fry_base) * s_fry_to_4)
+        pop[4] <- pop[4] + (stocking_val  * s_fry_to_4)
       } else if (stage_to_stock == "Age 1") {
+        # Ajout direct au stade 4 (déjà recruté)
         pop[4] <- pop[4] + stocking_val
       } else if (stage_to_stock == "Age 10") {
+        # Délai de 10 ans lors du stockage de poissons matures 
         if (t > 10) pop[13] <- pop[13] + stocking_val
       }
       
-      if (any(is.na(pop)) || sum(pop) > 1e16) return(NA)
     }
+    # Somme des insdividus matures 
     return(sum(pop[13:33]))
   }
   
-  # 3. Création de la grille d'efforts
+  # 4. Création de la grille d'efforts
+  # Création d'une séquence logarithmique (10^0 à 10^9) pour couvrir tous les ordres de grandeur
   efforts   <- seq(0, 9, length.out = 1000)
-  grid_vals <- 10^efforts
+  grid_vals <- c(0,10^efforts)
   stades    <- c("Larva", "Fry", "Age 1", "Age 10")
   
-  # 4. Calcul et transformation des données (Tidyverse)
+  # 5. Calcul et transformation des données 
+  # expand.grid crée toutes les combinaisons possibles entre efforts et stades
   df_clean <- expand.grid(Stocking = grid_vals, Stocking_Stage = stades) %>%
     mutate(
       Stocking_Stage = factor(Stocking_Stage, levels = stades),
@@ -613,6 +532,7 @@ generer_donnees_fig4 <- function(matrice_choisie, n_iterations = 100) {
       Abundance_Mature = mapply(simulate_point, Stocking, as.character(Stocking_Stage))
     ) %>%
     # Filtrage final pour le graphique
+    # On retire les valeurs nulles (log scale), les erreurs et on limite à l'échelle du graphique (5000)
     filter(Stocking > 0, 
            !is.na(Abundance_Mature), 
            Abundance_Mature <= 5000)
@@ -620,7 +540,7 @@ generer_donnees_fig4 <- function(matrice_choisie, n_iterations = 100) {
   return(df_clean)
 }
 
-df_long_clean <- generer_donnees_fig4(measured)
+df_fig4 <- fig_4(measured)
 ```
 
 ## Résultats
@@ -646,8 +566,8 @@ graph_fig2 <- function(d1, d2, d3) {
       # 4. Configuration des axes et thèmes
       scale_y_log10(
         limits = c(1, 50000),
-        # Utilise l'expression mathématique 10^x
-        labels = scales::label_log(), 
+        # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
+        labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)), 
         # Force les coupures à chaque puissance de 10
         breaks = scales::breaks_log(),
         oob = scales::squish
@@ -751,37 +671,54 @@ print(graphique_fig3)
 
 ### Figure 4
 
+```{r}
+stades <- c("Larva", "Fry", "Age 1", "Age 10")
+# Positionnement des labels (étiquettes sur les courbes)
+label_data <- data.frame(
+  Stocking_Stage = factor(stades, levels = stades),
+  Stocking       = c(1e7, 5e5, 3e3, 3e2), 
+  Abundance_Mature = c(5400, 5400, 5400, 5400),
+  label          = c("Larva\nstocking", "Fry\nstocking", "Age 1\nstocking", "Age 10\nstocking")
+)
+```
+
 ```{r,fig.width=6, fig.height=4}
 #Créer la figure
-fig4 <- ggplot(df_long_clean,
+graphique_fig4 <- ggplot(df_fig4,
             aes(x        = Stocking,
                 y        = Abundance_Mature,
-                group    = Stocking_Stage,
+                group    = Stocking_Stage, # Identifie les groupes pour tracer les lignes
                 linetype = Stocking_Stage)) +
-    
+  
+  # Ajout des lignes de trajectoire
   geom_line(linewidth = 1, color = "black") +
-    
-  geom_text(data       = label_data,
-              aes(label  = label),
-              vjust      = 0.5,
-              hjust      = 0.5,
-              size       = 3.8,
-              fontface   = "plain",
-              color      = "black",
-              show.legend = FALSE) +
-    
+  
+  # Ajout d'étiquettes de texte
+  geom_text(data = label_data,
+            aes(label  = label),
+            size       = 3.8,
+            fontface   = "plain",
+            color      = "black",
+            show.legend = FALSE) +
+  
+  # Configuration de l'axe des X en échelle logarithmique
   scale_x_log10(
-      breaks = 10^(0:9),
-      labels = scales::label_log(),
-      limits = c(1, 1e9)
+      limits = c(1, 1e8), 
+      breaks = 10^(0:7),
+      # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
+      labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)),
+      # expand = c(0,0) force la ligne à toucher l'axe vertical
+      expand = c(0, 0) 
     ) +
-    
+  
+  # Configuration de l'axe des Y (Échelle linéaire)
   scale_y_continuous(
       limits = c(0, 6000),
       breaks = seq(0, 5000, 1000),
       expand = c(0, 0),
     ) +
-    
+  
+  # Attribution manuelle des types de lignes (pointillés pour l'âge 10)
   scale_linetype_manual(values = c(
       "Larva"  = "solid",
       "Fry"    = "solid",
@@ -804,7 +741,7 @@ fig4 <- ggplot(df_long_clean,
     )
 #ggsave("figure4.png", plot = fig4, width = 6, height = 5, dpi = 300)
 #Afficher la figure 4 déja construite
-print(fig4)
+print(graphique_fig4)
 ```
 
 ## Interprétations biologiques
