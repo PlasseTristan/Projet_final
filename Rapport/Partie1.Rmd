@@ -36,11 +36,10 @@ noms_stades <- c("Egg", "Larva", "Fry", paste0("Age", 1:30))
 # Nombre de stades
 n_stades <- length(noms_stades)
 
-# 2. Créer une matrice vide (remplie de 0)
+# Créer une matrice vide (remplie de 0)
 measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
                    dimnames = list(noms_stades, noms_stades))
-# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
-# Les indices correspondent aux colonnes où la reproduction commence
+# Remplir la première ligne (Fécondité)
 fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
                37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
                46025, 46914, 47767, 48568)
@@ -49,8 +48,7 @@ fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761,
 # Avant = pas à maturité sexuelle
 measured[1, 13:32] <- fecondite_m
 
-# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
-# On liste les probabilités de passage d'un stade au suivant
+# Remplir la sous-diagonale (Taux de survie)
 survie_m <- c(
   0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
   0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
@@ -63,19 +61,18 @@ for(i in 1:length(survie_m)) {
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 0.957", "\n")
+cat("Lambda dans l'étude : 0.957", "\n") # Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(measured, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
 ```{r}
-# 2. Créer une matrice vide (remplie de 0)
+# Créer une matrice vide (remplie de 0)
 endangered <- matrix(0, nrow = n_stades, ncol = n_stades, 
                      dimnames = list(noms_stades, noms_stades))
 
-# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
-# Les indices correspondent aux colonnes où la reproduction commence
+# Remplir la première ligne (Fécondité)
 fecondite_e <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699, 
                38034, 39442, 40865, 42009, 43022, 44098, 45230, 46268, 
                47231, 48144, 49019, 49841)
@@ -83,8 +80,7 @@ fecondite_e <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699,
 # On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33)
 endangered[1, 14:33] <- fecondite_e
 
-# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
-# On liste les probabilités de passage d'un stade au suivant
+# Remplir la sous-diagonale (Taux de survie)
 survie_e <- c(
   0.075, 0.023, 0.007, 0.625, 0.741, 0.798, 0.833, 0.857, 0.873, 0.885, 0.898, 0.910, 0.916, # Jusqu'à Age 10
   0.918, 0.921, 0.926, 0.927, 0.929, 0.932, 0.933, 0.933, 0.934, 0.935, 0.935, 0.935, 0.935, # Suite
@@ -97,18 +93,18 @@ for(i in 1:length(survie_e)) {
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 0.984", "\n")
+cat("Lambda dans l'étude : 0.984", "\n")# Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(endangered, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
 ```{r}
+# Créer une matrice vide (remplie de 0)
 null_pred <- matrix(0, nrow = n_stades, ncol = n_stades, 
                     dimnames = list(noms_stades, noms_stades))
 
-# 2. Remplissage de la Fécondité (Ligne 1)
-# Valeurs extraites de ton texte (Age 10 à Age 29)
+# Remplissage de la Fécondité (Ligne 1)
 fecondite_n <- c(
   18822, 21920, 25150, 28298, 30830, 33301, 35604, 37292, 38649, 40080, 
   41526, 42689, 43718, 44811, 45962, 47017, 47996, 48923, 49813, 50648
@@ -117,20 +113,19 @@ fecondite_n <- c(
 # On les place de la colonne 13 (Age 10) à la colonne 32 (Age 29)
 null_pred[1, 13:32] <- fecondite_n
 
-# 3. Remplissage de la Survie (Sous-diagonale)
-# Valeurs extraites de ton texte (32 transitions au total)
+# Remplissage de la Survie (Sous-diagonale)
 survie_n <- c(
   0.076, 0.024, 0.007, 0.635, 0.753, 0.811, 0.847, 0.871, 0.888, 0.899, 0.912, 0.924, 0.931, 
   0.933, 0.936, 0.941, 0.942, 0.944, 0.947, 0.949, 0.949, 0.949, 0.950, 0.951, 0.950, 0.950, 
   0.951, 0.951, 0.951, 0.952, 0.952, 0.952
 )
-
+# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
 for(i in 1:length(survie_n)) {
   null_pred[i+1, i] <- survie_n[i]
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 1", "\n")
+cat("Lambda dans l'étude : 1", "\n")# Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(null_pred, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
@@ -139,8 +134,8 @@ datatable(round(null_pred, 4),
 3 scénarios différents d'ensemencement ont été analysés : L'absence d’ensemencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins).
 
 ```{r}
-stockage_nul      <- c(0, 0)
-stockage_present  <- c(231185, 14868) # larves, alevins
+stockage_nul      <- c(0, 0)# larves, alevins
+stockage_present  <- c(231185, 14868) 
 stockage_propose  <- c(500000, 15000)
 ```
 
@@ -198,6 +193,10 @@ $s_{age} =$ La survie théorique de cette classe d'âge
 
 ## Supposition
 
+
+
+
+
 ## Calcul
 
 Fonction qui détermine le nombre initial de poissons à chaque stade selon le nombre de poissons matures initial.
@@ -224,50 +223,45 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
   # Normaliser pour avoir n_mature_cible matures (stades 13-33)
   facteur <- n_mature_cible / sum(pop[13:33])
   
-  return(round(pop * facteur))
+  return(round(pop * facteur)) #On arrondi pour être éviter des individus décimaux
 }
 ```
 
-Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques
+Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques. Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
 
 ```{r}
 fecondite_stochastique <- function(matrice, n_annees){
-  # 1. Identifier le nombre de stades (33 dans ton cas)
+  # 1. Identifier le nombre de stades (33)
   n_stades <- nrow(matrice)
   
   # 2. Extraire la ligne de fécondité théorique (la ligne 1)
   f_theo <- matrice[1, ]
   
   # 3. Générer les multiplicateurs stochastiques
-  # On crée une matrice de multiplicateurs centrés sur 1
-  # (1 + bruit normal)
+  # On crée une matrice de multiplicateurs centrés sur 1 (1 + bruit normal)
   multiplicateurs <- matrix(1 + rnorm(n_stades * n_annees, mean = 0, sd = 0.25), 
                             nrow = n_stades, 
                             ncol = n_annees)
   
   # 4. Appliquer ces multiplicateurs à nos fécondités théoriques
   taux_fec <- multiplicateurs * f_theo
-  
-  # 5. Sécurité : La fécondité ne peut pas être négative
-  taux_fec[taux_fec < 0] <- 0
-  
+
   return(taux_fec)
 } 
 
 
 survie_stochastique <- function(matrice, n_annees) {
-  #  Préparer beta
+    #  Préparer beta
   # (3 spécifiques + 29 répétitions de 0.75 = 32)
   b_params <- c(5.05, 20, 75, rep(0.75, 29))
   # Extraire la survie réelle (sous-diagonale)
-  # Pour tes matrices 33x33, p_mesure aura une longueur de 32
+  # Pour les matrices 33x33, p_mesure aura une longueur de 32
   p_mesure <- diag(matrice[-1, -ncol(matrice)])
   
   # Calcul de Alpha
   alpha_params <- (p_mesure * b_params) / (1 - p_mesure)
   
   # Génération de la matrice de tirages
-  # nrow = 32 (transitions), ncol = n_annees
   taux_survie <- matrix(rbeta(n = length(p_mesure) * n_annees, 
                               shape1 = alpha_params, 
                               shape2 = b_params), 
@@ -280,57 +274,57 @@ survie_stochastique <- function(matrice, n_annees) {
 
 ### Figure 2
 
-```{r}
-fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
-  n_larves_supp <- stockage[1]
-  n_fry_supp <- stockage[2]
+```{r fct_fig_2}
+fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
+  n_larves_supp <- stockage[1] # Nombre de larves ensemencées
+  n_fry_supp <- stockage[2] # Nombre d'alevins ensemencés
   n_stades <- nrow(matrice)
   
-  # Matrice pour stocker la somme des matures pour chaque année et chaque itération
+  # 1. Structure initiale (année 0)
+  pop_init <- calculer_structure_initiale(matrice, n_ini)
+  
+  # 2. Création de la matrice de résultats
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
   
+  # Indices utiles pour éviter de les recalculer
+  idx_matures <- 13:33 # Indices des stades matures
+  idx_adultes_source <- 4:(n_stades - 1) # Indices des stades à l'année t-1
+  idx_adultes_cible <- 5:n_stades # Indices des stades à l'année t
+  
   for (i in 1:n_iterations) {
-    # 1. Génération de la stochasticité pour CETTE itération
+    # Génération de la stochasticité pour l'itération 
     mat_fec_stoch <- fecondite_stochastique(matrice, n_annees)
     mat_surv_stoch <- survie_stochastique(matrice, n_annees)
     
-    # 2. INITIALISATION de sim_temp (C'est ici qu'elle doit être créée)
-    sim_temp <- matrix(0, nrow = n_stades, ncol = n_annees + 1)
+    # Vecteur qui évolue au fil du temps 
+    pop <- pop_init
+    resultats_matures[1, i] <- sum(pop[idx_matures])
     
-    # Structure initiale arrondie
-    pop_init <- calculer_structure_initiale(matrice, n_ini)
-    sim_temp[, 1] <- pop_init
-    
-    # Stocker le compte initial de matures (stades 13 à 33)
-    resultats_matures[1, i] <- sum(sim_temp[13:33, 1])
-    
+    # Boucle rotation des années
     for (t in 1:n_annees) {
-      # --- ÉTAPE A : Survie des adultes (Age 1 à Age 30) ---
-      for (s in 4:(n_stades - 1)) {
-        # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
-        sim_temp[s + 1, t + 1] <- round(sim_temp[s, t] * mat_surv_stoch[s, t])
-      }
+      pop_next <- numeric(n_stades)
       
-      # --- ÉTAPE B : Reproduction et stades intra-annuels ---
+      # --- ÉTAPE A : Survie des adultes ---
+      # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
+      pop_next[idx_adultes_cible] <- round(pop[idx_adultes_source] * mat_surv_stoch[idx_adultes_source, t])
+      
+      # --- ÉTAPE B : Reproduction et recrutement ---
       # 1. Ponte (Production d'œufs arrondie)
-      n_oeufs <- round(sum(sim_temp[13:33, t] * mat_fec_stoch[13:33, t]))
+      n_oeufs <- round(sum(pop[idx_matures] * mat_fec_stoch[idx_matures, t]))
       
       # 2. Traversée des stades 1-2-3 (Egg -> Larva -> Fry -> Age 1)
-      # On arrondit à chaque transition pour simuler des individus réels
-      n_larves <- round(n_oeufs * mat_surv_stoch[1, t])
-      n_fry    <- round(n_larves * mat_surv_stoch[2, t])
-      
-      # Ajout de l'ensemencement (stocking) aux stades appropriés
-      n_larves_tot <- n_larves + n_larves_supp
-      n_fry_tot    <- n_fry + n_fry_supp
+      n_larves <- round(n_oeufs * mat_surv_stoch[1, t]) + n_larves_supp
+      n_fry    <- round(n_larves * mat_surv_stoch[2, t]) + n_fry_supp
       
       # 3. Recrutement final au stade 4 (Age 1) au temps t+1
       # Survie des larves et des alevins (fry) jusqu'au stade Age 1
-      # Note : Ici on applique la survie restante pour atteindre le stade 4
-      sim_temp[4, t + 1] <- round(n_fry_tot * mat_surv_stoch[3, t])
+      # On applique la survie restante pour atteindre le stade 4
+      pop_next[4] <- round(n_fry * mat_surv_stoch[3, t])
       
-      # Stockage du résultat total des matures pour l'année t+1
-      resultats_matures[t+1, i] <- sum(sim_temp[13:33, t+1])
+      # Mise à jour et stockage
+      pop <- pop_next
+      # Mise à jour des résultats du nombre de mature
+      resultats_matures[t + 1, i] <- sum(pop[idx_matures])
     }
   }
   
@@ -343,24 +337,22 @@ fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario
     Scenario = nom_scenario
   ))
 }
+```
 
+```{r calcul_fig_2}
 # Calculs
-null_nul     <- fig_2(null_pred, 5000, 100, 1000, stockage_nul, "No stocking")
-null_present <- fig_2(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking")
-null_propose <- fig_2(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
-
-end_nul     <- fig_2(endangered, 5000, 100, 1000, stockage_nul, "No stocking")
-end_present <- fig_2(endangered, 5000, 100, 1000, stockage_present, "Actual stocking")
-end_propose <- fig_2(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
-
-meas_nul     <- fig_2(measured, 5000, 100, 1000, stockage_nul, "No stocking")
-meas_present <- fig_2(measured, 5000, 100, 1000, stockage_present, "Actual stocking")
-meas_propose <- fig_2(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
-
-# Fusion
-df_null <- bind_rows(null_nul, null_present, null_propose)
-df_end <- bind_rows(end_nul, end_present, end_propose)
-df_meas <- bind_rows(meas_nul, meas_present, meas_propose)
+df_null <- bind_rows(
+  fig_2_opti(null_pred, 5000, 100, 1000, stockage_nul, "No stocking"), 
+  fig_2_opti(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking"), 
+  fig_2_opti(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+df_end <- bind_rows(
+  fig_2_opti(endangered, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti(endangered, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+df_meas <- bind_rows(
+  fig_2_opti(measured, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti(measured, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
@@ -371,87 +363,96 @@ df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 ### Figure 3
 
 ```{r}
-#___________________________________________________________________________
-##Simulation de base pour la figure
-simuler_trajectoires_adultes <- function(matrice, n_iterations, n_annees = 100) {
-  n_stades <- nrow(matrice) #33 comme les matrices originelles
-  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1) #matrice pour stocker les résultats
+fig_3_opti <- function(matrice, n_iterations, n_annees = 100, nom_scenario) {
+  n_stades <- nrow(matrice) # 33 comme les matrices originelles
   
-  #paramètre permettant l'ajout de stocks de base
-  n_larves <- 0
-  n_fry    <- 0
+  # Paramètre permettant l'ajout de stocks de base
+  n_larves_supp <- 0
+  n_fry_supp    <- 0
   
-  #Création des matrices stochastiques (survie et fécondité) pour chaque ittération
+  # Structure initiale de la population
+  pop_init <- calculer_structure_initiale(matrice, 1000) # N0 = 1000 comme indiqué dans l'étude
+  
+  # Pré-allocation (matrice de résultats)
+  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
+  
+  # Indices utiles pour éviter de les recalculer
+  idx_matures <- 13:33 # Indices des stades matures
+  idx_adultes_source <- 4:(n_stades - 1) # Indices des stades à l'année t-1
+  idx_adultes_cible <- 5:n_stades # Indices des stades à l'année t
+  
   for (i in 1:n_iterations) {
-    mat_fec  <- fecondite_stochastique(matrice, n_annees)
-    mat_surv <- survie_stochastique(matrice, n_annees)
+    # Création des matrices stochastiques (survie et fécondité) pour chaque itération
+    mat_fec_stoch  <- fecondite_stochastique(matrice, n_annees)
+    mat_surv_stoch <- survie_stochastique(matrice, n_annees)
     
-    pop <- calculer_structure_initiale(matrice, 1000)
-    pop[1:3] <- 0
+    # Vecteur de population actuel
+    pop <- pop_init
     
-    historique[i, 1] <- sum(pop[13:33])
+    # Nombre de matures au temps 0
+    historique[i, 1] <- sum(pop[idx_matures])
     
-    #Calcul de la population pour chaque années dans chaque ittération
     for (t in 1:n_annees) {
-      M_t <- matrix(0, nrow = n_stades, ncol = n_stades)
+      pop_next <- numeric(n_stades)
       
-      # Bug fix : 32 valeurs dans 32 slots
-      diag(M_t[-1, -n_stades]) <- mat_surv[1:(n_stades - 1), t]
+      # --- ÉTAPE A : Survie des adultes ---
+      # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
+      pop_next[idx_adultes_cible] <- round(pop[idx_adultes_source] * mat_surv_stoch[idx_adultes_source, t])
       
-      s_an1_t <- prod(mat_surv[1:3, t])
-      M_t[4, 13:33] <- mat_fec[13:33, t] * s_an1_t
-      M_t[2,1] <- 0; M_t[3,2] <- 0; M_t[4,3] <- 0
+      # --- ÉTAPE B : Reproduction et recrutement ---
+      # 1. Ponte
+      n_oeufs <- round(sum(pop[idx_matures] * mat_fec_stoch[idx_matures, t]))
       
-      pop <- M_t %*% pop
+      # 2. Traversée des stades 1-2-3 (Egg -> Larva -> Fry)
+      n_larves <- round(n_oeufs * mat_surv_stoch[1, t]) + n_larves_supp
+      n_fry    <- round(n_larves * mat_surv_stoch[2, t]) + n_fry_supp
       
-      pop[4] <- pop[4] +(pop[1]*mat_surv[1,t]* mat_surv[2, t] * mat_surv[3, t])+ ((pop[2]+n_larves) * mat_surv[2, t] * mat_surv[3, t]) +
-        ((pop[3]+n_fry)   * mat_surv[3, t])
+      # 3. Recrutement final au stade 4 (Age 1)
+      pop_next[4] <- round(n_fry * mat_surv_stoch[3, t])
       
-      historique[i, t + 1] <- sum(pop[13:33])
+      # Mise à jour
+      pop <- pop_next
+      
+      # Stockage du nombre de matures pour cette année
+      historique[i, t + 1] <- sum(pop[idx_matures])
     }
   }
-  return(historique)
-}
-#___________________________________________________________________________
-# Calcul des statistiques pour les intervals de confiance à 70%
-
-calculer_stats <- function(historique, nom_scenario) {
+  # Défini les seuils de population à tester
   seuils <- seq(0, 1000, by = 1)
+  # Nombre de simulations effectuées
   n_sims <- nrow(historique)
   
+  # Pré-allocation d'une matrice pour stocker les fréquences
   temps_sous_seuil <- matrix(0, nrow = n_sims, ncol = length(seuils))
-  for (j in seq_along(seuils)) {
-    temps_sous_seuil[, j] <- rowMeans(historique < seuils[j])
-  }
   
-  data.frame(
+  # Calcul de la proportion du temps passé sous chaque seuil
+  temps_sous_seuil <- sapply(seuils, function(s) rowMeans(historique < s))
+  
+  # Synthèse statistique 
+  df_stats<-data.frame(
     Threshold = seuils,
-    Median    = apply(temps_sous_seuil, 2, median),
-    Inf_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.15),
+    Median    = apply(temps_sous_seuil, 2, median), # La médiane de la proportion du temps passé sous le seuil
+    Inf_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.15), # Intervalle de confiance à 70%
     Sup_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.85),
     Scenario  = factor(nom_scenario, levels = c("Null", "Endangered", "Measured"))
   )
+  return(df_stats)
 }
+```
 
-
-#__________________________________________________________________________
-##exécuter le code pour les 3 scénarios (5000 itérations)
-hist_null <- simuler_trajectoires_adultes(null_pred,  5000)
-hist_end  <- simuler_trajectoires_adultes(endangered, 5000)
-hist_meas <- simuler_trajectoires_adultes(measured,   5000)
-
-#Stocker les résultats dans un data frame unique
-df_final <- bind_rows(
-  calculer_stats(hist_null, "Null"),
-  calculer_stats(hist_end,  "Endangered"),
-  calculer_stats(hist_meas, "Measured")
+```{r}
+# Exécuter le code pour les 3 scénarios (5000 itérations)
+# Stocker les résultats dans un data frame unique
+df_fig3 <- bind_rows(
+  fig_3_opti(null_pred,  5000, 100, "Null"),
+  fig_3_opti(endangered, 5000, 100, "Endangered"),
+  fig_3_opti(measured,   5000, 100, "Measured")
 )
 
-#___________________________________________________________________________
-##lissage des résultats
-df_final$Scenario <- factor(df_final$Scenario, levels = c("Measured", "Endangered", "Null"))
+# Lissage des résultats
+df_fig3$Scenario <- factor(df_fig3$Scenario, levels = c("Measured", "Endangered", "Null"))
 
-df_smoothed <- df_final %>%
+df_smoothed <- df_fig3 %>%
   group_by(Scenario) %>%
   mutate(
     Median = predict(loess(Median ~ Threshold, span = 0.15)),
@@ -464,17 +465,159 @@ df_smoothed <- df_final %>%
     Sup_70 = pmax(Sup_70, 0)
   ) %>%
   ungroup()
+```
 
-#___________________________________________________________________________
-## un graphique combinant les trois scénarios avec un interval de confiance de 70%%
-fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+### Figure 4
+
+```{r}
+fig_4 <- function(matrice_choisie, n_iterations = 100) {
   
+  # 1. Paramètres fixes (ensemencement actuel)
+  n_larve_base <- stockage_present[1]
+  n_fry_base   <- stockage_present[2]
+  n_stades     <- nrow(matrice_choisie)
+  # 2. Extraction de la survie  
+  s_stades     <- diag(matrice_choisie[-1, -n_stades])
+  
+  # Calcul des survies cumulées vers le stade 4 (Age 1)
+  s_larve_to_4 <- s_stades[2] * s_stades[3] # Survie Larve -> Fry -> Age 1
+  s_fry_to_4   <- s_stades[3] # Survie Fry -> Age 1
+  
+  # 3. Sous-fonction pour calculer l'abondance finale pour un scénario précis
+  simulate_point <- function(stocking_val, stage_to_stock) {
+    
+    # Initialisation de la population avec une structure stable (1000 matures)
+    pop <- calculer_structure_initiale(matrice_choisie, 1000)
+    
+    # Projection sur 100 ans (cette figure utilise le modèle déterministe)
+    for (t in 1:100) {
+      # Multiplication matricielle : pop(t+1) = M * pop(t)
+      pop <- as.vector(matrice_choisie %*% pop)
+      
+      # On applique l'ensemencement actuel (larves et alevins) à tous les scénarios
+      pop[4] <- pop[4] + (n_larve_base * s_larve_to_4) + (n_fry_base * s_fry_to_4)
+      
+      # Application de l'effort d'ensemencement selon le stade cible
+      # On additionne l'effort testé au stockage de base déjà existant
+      if (stage_to_stock == "Larva") {
+        # Ajout au recrutement (stade 4) après application de la survie résiduelle
+        pop[4] <- pop[4] + (stocking_val  * s_larve_to_4)
+      } else if (stage_to_stock == "Fry") {
+        pop[4] <- pop[4] + (stocking_val  * s_fry_to_4)
+      } else if (stage_to_stock == "Age 1") {
+        # Ajout direct au stade 4 (déjà recruté)
+        pop[4] <- pop[4] + stocking_val
+      } else if (stage_to_stock == "Age 10") {
+        # Délai de 10 ans lors du stockage de poissons matures 
+        if (t > 10) pop[13] <- pop[13] + stocking_val
+      }
+      
+    }
+    # Somme des insdividus matures 
+    return(sum(pop[13:33]))
+  }
+  
+  # 4. Création de la grille d'efforts
+  # Création d'une séquence logarithmique (10^0 à 10^9) pour couvrir tous les ordres de grandeur
+  efforts   <- seq(0, 9, length.out = 1000)
+  grid_vals <- c(0,10^efforts)
+  stades    <- c("Larva", "Fry", "Age 1", "Age 10")
+  
+  # 5. Calcul et transformation des données 
+  # expand.grid crée toutes les combinaisons possibles entre efforts et stades
+  df_clean <- expand.grid(Stocking = grid_vals, Stocking_Stage = stades) %>%
+    mutate(
+      Stocking_Stage = factor(Stocking_Stage, levels = stades),
+      # Application de la simulation à chaque ligne
+      Abundance_Mature = mapply(simulate_point, Stocking, as.character(Stocking_Stage))
+    ) %>%
+    # Filtrage final pour le graphique
+    # On retire les valeurs nulles (log scale), les erreurs et on limite à l'échelle du graphique (5000)
+    filter(Stocking > 0, 
+           !is.na(Abundance_Mature), 
+           Abundance_Mature <= 5000)
+  
+  return(df_clean)
+}
+
+df_fig4 <- fig_4(measured)
+```
+
+## Résultats
+
+### Figure 2
+
+```{r,fig.width=5, fig.height=10}
+graph_fig2 <- function(d1, d2, d3) {
+  
+  # On crée une fonction interne pour éviter de répéter 3 fois le même style
+  style_fig2 <- function(data, label, show_x = FALSE, show_legend = FALSE) {
+    plot <- ggplot(data, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
+      
+      # 1. Intervalle de confiance (Ruban)
+      geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
+      
+      # 2. Lignes médianes
+      geom_line(linewidth = 1) +
+      
+      # 3. Annotation (a),(b) ou (c) en haut à gauche
+      annotate("text", x = 0, y = 40000, label = label, size = 6, hjust = 0) +
+      
+      # 4. Configuration des axes et thèmes
+      scale_y_log10(
+        limits = c(1, 50000),
+        # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
+        labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)), 
+        # Force les coupures à chaque puissance de 10
+        breaks = scales::breaks_log(),
+        oob = scales::squish
+      ) +
+      scale_x_continuous(expand = c(0, 0)) +
+      scale_color_manual(values = c("No stocking" = "#b00014", 
+                                   "Actual stocking" = "#29abe2", 
+                                   "Theoretical stocking" = "#43a047")) +
+      scale_fill_manual(values = c("No stocking" = "#b00014", 
+                                  "Actual stocking" = "#29abe2", 
+                                  "Theoretical stocking" = "#43a047")) +
+      theme_minimal() +
+      labs(x = if(show_x) "Time (yr)" else NULL, y = "Abundance", color = NULL, fill = NULL) + # Condition d’afficher le titre de l'axe des x seulement pour le graphique c)
+      theme(
+        axis.title = element_text(size = 14),
+        axis.text.y = element_text(size = 12, color = "black"),
+        axis.text.x = if(show_x) element_text(size = 12, color = "black") else element_blank(),# Condition d’afficher le titre de l'axe des x seulement pour le graphique c)
+        axis.line = element_line(linewidth = 0.8),
+        legend.position = if(show_legend) c(0.25, 0.25) else "none", # Condition d’afficher la légende seulement pour le graphique a)
+        legend.background = element_blank()
+      )
+    return(plot)
+  }
+
+  # Construction des trois panneaux
+  graph_a <- style_fig2(d1, "(a)", show_legend = TRUE)
+  graph_b <- style_fig2(d2, "(b)")
+  graph_c <- style_fig2(d3, "(c)", show_x = TRUE)
+
+  # Assemblage avec patchwork
+  return(graph_a / graph_b / graph_c)
+}
+
+# Pour l'afficher :
+graphique_fig2 <- graph_fig2(df_null, df_end, df_meas)
+print(graphique_fig2)
+```
+
+### Figure 3
+
+```{r,fig.width=6, fig.height=5}
+graphique_fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+  
+  # 1. Ajout de l'intervalle de confiance (Ruban d'incertitude à 70%)
   geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
               alpha = 0.25, show.legend = FALSE) +
-  
+  # 2. Ajout de la ligne médiane pour chaque scénario
   geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
   
-  #Ajouter les couleurs voulues
+  # 3. Ajout des couleurs voulues
   scale_color_manual(
     values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
     breaks = c("Null", "Endangered", "Measured")
@@ -485,12 +628,15 @@ fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
     guide  = "none"
   ) +
   
+  # 5. Configuration de l'axe Y (Probabilités de 0 à 1)
   scale_y_continuous(
     limits = c(0, 1.01),
     breaks = seq(0, 1, 0.2),
-    expand = c(0, 0),
-    labels = function(x) sprintf("%.1f", x)
+    expand = c(0, 0), # Supprime l'espace vide entre l'axe et les données
+    labels = function(x) sprintf("%.1f", x) # Force l'affichage d'une décimale (ex: 1.0 au lieu de 1)
   ) +
+  
+  # 6. Configuration de l'axe X (Seuils d'individus)
   scale_x_continuous(
     limits = c(0, 1000),
     breaks = seq(0, 1000, 200),
@@ -500,163 +646,79 @@ fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
   theme_classic() +
   labs(
     x = "Valeurs seuils (Nombre d'individus matures)",
-    y = "Probabilité médiane d'être sous un certain seuil d'ici les 100 prochaines années"
+    y = "Probabilité médiane d'être sous un certain\nseuil d'ici les 100 prochaines années"
   ) +
   
-  ##Les paramètres ici ont été proposé par l'ia pour ressembler le plus possible visuellement à la figure d'origine
+  # Ajustement de paramètres graphiques
   theme(
-    text              = element_text(family = "serif"),
+    # Ajout d'un cadre noir tout autour du graphique 
     panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
     axis.line         = element_blank(),
-    legend.position   = c(0.80, 0.25),
+    legend.position   = c(0.85, 0.1),
     legend.title      = element_blank(),
     legend.text       = element_text(size = 11),
     legend.key        = element_blank(),
-    legend.background = element_rect(fill = "white", color = NA),
+    legend.background = element_blank(),
     axis.text         = element_text(color = "black", size = 11),
     axis.title        = element_text(size = 12),
     plot.margin       = margin(10, 20, 10, 10)
   )
-#___________________________________________________________________________
-#Afficher la figure 3
-#print(fig3)
+
+# Afficher la figure 3
+print(graphique_fig3)
 #ggsave("figure3.png", plot = fig3, width = 6, height = 5, dpi = 300)
 ```
-
 
 ### Figure 4
 
 ```{r}
-#_______________________________________________________________________________
-##paramètres de bases
-
-#Taux de survie de la pop measured
-s_rates <- c(
-  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
-  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
-  0.912, 0.912, 0.912, 0.913, 0.913, 0.913,0)
-
-#Nombre de larves et de fry stockées annuellement 
-n_larve <-  231185
-n_fry <-  14868
-
-#Calculer la pop initiale avec 2000 individus
-pop<- calculer_structure_initiale(measured, 1000)
-
-#_______________________________________________________________________________  
-##Fonction de base pour la fig 4
-  simulate_point <- function(stocking_val, stage_to_stock, n_annees = 100) {
-    
-  
-    pop[1:3] <- 0  # Stades intra-annuels jamais présents au recensement
-    
-    # Survie combinée des stades intra-annuels 
-    s_larve <- s_rates[2] * s_rates[3] *s_rates[4]  # Larve → stade 4
-    s_fry   <- s_rates[3] * s_rates[4]               # Fry   → stade 4
-                            
-    
-    for (t in 1:n_annees) {
-      pop <- measured %*% pop
-      
-      # Stades intra-annuels remis à 0 après chaque projection
-      pop[1:3] <- 0
-      
-      # Ensemencement avec survie résiduelle jusqu'au stade 4
-      if (stage_to_stock == "Larva") {
-        pop[4] <- pop[4] + ((stocking_val+n_larve) * s_larve)
-        
-      } else if (stage_to_stock == "Fry") {
-        pop[4] <- pop[4] + ((stocking_val+n_fry) * s_fry)
-        
-      } else if (stage_to_stock == "Age 1") {
-        pop[4] <- pop[4] + stocking_val 
-        
-      } else if (stage_to_stock == "Age 10") {
-        if (t > 10) pop[13] <- pop[13] + stocking_val
-      }
-      
-      if (any(is.na(pop)) || sum(pop) > 1e18) return(NA)
-    }
-    
-    return(sum(pop[13:33], na.rm = TRUE))
-  }
-  
-#_______________________________________________________________________________
-## Grille de test
-  
-efforts   <- seq(0, 8, length.out = 2000)
-grid_vals <- c(0, 10^efforts)
-stades    <- c("Larva", "Fry", "Age 1", "Age 10")
-  
-#_______________________________________________________________________________
-##Appliquer la fonction de base avec les valeurs de la grille pour chaque stade
-  
-#data frame pour stocker les valeurs
-df_plot <- data.frame(Stocking = grid_vals)
-  
-#Boucle pour les calculs 
-for (stade in stades) {
-    df_plot[[stade]] <- sapply(grid_vals, simulate_point, stage_to_stock = stade)
-  }
-  
-#_______________________________________________________________________________
-##Mise en forme et trillage des données
-  
-df_long <- pivot_longer(df_plot,
-                          cols      = all_of(stades),
-                          names_to  = "Stocking_Stage",
-                          values_to = "Abundance_Mature") %>%
-  mutate(Stocking_Stage = factor(Stocking_Stage,
-                                   levels = c("Larva", "Fry", "Age 1", "Age 10")))
-
-    #Étiquettes positionnées à x fixe pour chaque stade
+stades <- c("Larva", "Fry", "Age 1", "Age 10")
+# Positionnement des labels (étiquettes sur les courbes)
 label_data <- data.frame(
-  Stocking_Stage = factor(c("Larva", "Fry", "Age 1", "Age 10"),
-                            levels = c("Larva", "Fry", "Age 1", "Age 10")),
-  Stocking       = c(1e8,   1e6,   1e4,   2e2),   # Position X de chaque étiquettes
-  Abundance_Mature = c(5400, 5400, 5400, 5400),    # Toutes au dessus des courbes
-  label          = c("Larva\nstocking", "Fry\nstocking",
-                       "Age 1\nstocking", "Age 10\nstocking")
-  )
-  
-#_______________________________________________________________________________
-## Filtrer les NA avant le graphique
-df_long_clean <- df_long %>%
-  filter(Stocking > 0, !is.na(Abundance_Mature)) %>%
-  group_by(Stocking_Stage) %>%
-  filter(Abundance_Mature <= 5000) %>%
-  ungroup()
+  Stocking_Stage = factor(stades, levels = stades),
+  Stocking       = c(1e7, 5e5, 3e3, 3e2), 
+  Abundance_Mature = c(5400, 5400, 5400, 5400),
+  label          = c("Larva\nstocking", "Fry\nstocking", "Age 1\nstocking", "Age 10\nstocking")
+)
+```
 
+```{r,fig.width=6, fig.height=4}
 #Créer la figure
-fig4 <- ggplot(df_long_clean,
+graphique_fig4 <- ggplot(df_fig4,
             aes(x        = Stocking,
                 y        = Abundance_Mature,
-                group    = Stocking_Stage,
+                group    = Stocking_Stage, # Identifie les groupes pour tracer les lignes
                 linetype = Stocking_Stage)) +
-    
+  
+  # Ajout des lignes de trajectoire
   geom_line(linewidth = 1, color = "black") +
-    
-  geom_text(data       = label_data,
-              aes(label  = label),
-              vjust      = 0.5,
-              hjust      = 0.5,
-              size       = 3.8,
-              fontface   = "plain",
-              color      = "black",
-              show.legend = FALSE) +
-    
+  
+  # Ajout d'étiquettes de texte
+  geom_text(data = label_data,
+            aes(label  = label),
+            size       = 3.8,
+            fontface   = "plain",
+            color      = "black",
+            show.legend = FALSE) +
+  
+  # Configuration de l'axe des X en échelle logarithmique
   scale_x_log10(
-      breaks = 10^(0:9),
-      labels = scales::label_log(),
-      limits = c(1, 1e9)
+      limits = c(1, 1e8), 
+      breaks = 10^(0:7),
+      # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
+      labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)),
+      # expand = c(0,0) force la ligne à toucher l'axe vertical
+      expand = c(0, 0) 
     ) +
-    
+  
+  # Configuration de l'axe des Y (Échelle linéaire)
   scale_y_continuous(
       limits = c(0, 6000),
       breaks = seq(0, 5000, 1000),
       expand = c(0, 0),
     ) +
-    
+  
+  # Attribution manuelle des types de lignes (pointillés pour l'âge 10)
   scale_linetype_manual(values = c(
       "Larva"  = "solid",
       "Fry"    = "solid",
@@ -677,166 +739,9 @@ fig4 <- ggplot(df_long_clean,
       axis.title      = element_text(size = 12),
       plot.margin     = margin(40, 20, 10, 10)
     )
-#_______________________________________________________________________________
-##Afficher la figure
-
-#print(fig4)
 #ggsave("figure4.png", plot = fig4, width = 6, height = 5, dpi = 300)
-```
-
-## Résultats
-
-### Figure 2
-
-```{r,fig.width=5, fig.height=10}
-graph_null<-ggplot(df_null, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
-  # 1. Intervalle de confiance (Ruban)
-  geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
-  
-  # 2. Lignes médianes 
-  geom_line(linewidth = 1) +
-  
-  # Annotation "(a)" en haut à gauche
-  annotate("text", x = 0, y = 40000, label = "(a)", size = 6, hjust = 0) +
-  
-  # Configuration des axes et thèmes
-  scale_y_log10(
-    limits = c(1, 50000),
-    # Utilise l'expression mathématique 10^x
-    labels = label_log(), 
-    # Force les coupures à chaque puissance de 10
-    breaks = trans_breaks("log10", function(x) 10^x),
-    oob = scales::squish
-  ) +
-  scale_x_continuous(expand = c(0, 0)) +
-  
-  # Couleurs 
-  scale_color_manual(values = c("No stocking" = "#b00014", 
-                                "Actual stocking" = "#29abe2", 
-                                "Theoretical stocking" = "#43a047")) +
-  scale_fill_manual(values = c("No stocking" = "#b00014", 
-                               "Actual stocking" = "#29abe2", 
-                               "Theoretical stocking" = "#43a047")) +
-  
-  theme_minimal() +
-  labs(
-    x = NULL,
-    y = "Abundance",
-    color = NULL,
-    fill = NULL
-    
-  ) +
-  theme(
-    legend.position = c(0.1, 0.2), # Légende à l'intérieur (x, y)
-    legend.background = element_blank(),
-    axis.title = element_text(size = 14),
-    axis.text.y = element_text(size = 12, color = "black"),
-    axis.text.x = element_blank(),
-    axis.line = element_line(linewidth = 0.8)
-  )
-graph_end<-ggplot(df_end, aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
-  # 1. Intervalle de confiance (Ruban)
-  geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
-  
-  # 2. Lignes médianes 
-  geom_line(linewidth = 1) +
-  
-  # Annotation "(b)" en haut à gauche
-  annotate("text", x = 0, y = 40000, label = "(b)", size = 6, hjust = 0) +
-  
-  # Configuration des axes et thèmes
-  scale_y_log10(
-    limits = c(1, 50000),
-    # Utilise l'expression mathématique 10^x
-    labels = label_log(), 
-    # Force les coupures à chaque puissance de 10
-    breaks = trans_breaks("log10", function(x) 10^x),
-    oob = scales::squish
-  ) +
-  scale_x_continuous(expand = c(0, 0)) +
-  
-  # Couleurs 
-  scale_color_manual(values = c("No stocking" = "#b00014", 
-                                "Actual stocking" = "#29abe2", 
-                                "Theoretical stocking" = "#43a047")) +
-  scale_fill_manual(values = c("No stocking" = "#b00014", 
-                               "Actual stocking" = "#29abe2", 
-                               "Theoretical stocking" = "#43a047")) +
-  
-  theme_minimal() +
-  labs(
-    x = NULL,
-    y = "Abundance",
-    color = NULL,
-    fill = NULL
-    
-  ) +
-  theme(
-    legend.position = "none", # Pas de légende
-    axis.title = element_text(size = 14),
-    axis.text.y = element_text(size = 12, color = "black"),
-    axis.text.x = element_blank(),
-    axis.line = element_line(linewidth = 0.8)
-  )
-graph_meas<-ggplot(df_meas , aes(x = Annee, y = Mediane, color = Scenario, fill = Scenario)) +
-  # 1. Intervalle de confiance (Ruban)
-  geom_ribbon(aes(ymin = Inf_95, ymax = Sup_95), alpha = 0.2, color = NA) +
-  
-  # 2. Lignes médianes 
-  geom_line(linewidth = 1) +
-  
-  # Annotation "(c)" en haut à gauche
-  annotate("text", x = 0, y = 40000, label = "(c)", size = 6, hjust = 0) +
-  
-  # Configuration des axes et thèmes
-  scale_y_log10(
-    limits = c(1, 50000),
-    # Utilise l'expression mathématique 10^x
-    labels = label_log(), 
-    # Force les coupures à chaque puissance de 10
-    breaks = trans_breaks("log10", function(x) 10^x),
-    oob = scales::squish
-  ) +
-  scale_x_continuous(expand = c(0, 0)) +
-  
-  # Couleurs 
-  scale_color_manual(values = c("No stocking" = "#b00014", 
-                                "Actual stocking" = "#29abe2", 
-                                "Theoretical stocking" = "#43a047")) +
-  scale_fill_manual(values = c("No stocking" = "#b00014", 
-                               "Actual stocking" = "#29abe2", 
-                               "Theoretical stocking" = "#43a047")) +
-  
-  theme_minimal() +
-  labs(
-    x = "Time(yr)",
-    y = "Abundance",
-    color = NULL,
-    fill = NULL
-    
-  ) +
-  theme(
-    legend.position = "none",
-    axis.title = element_text(size = 14),
-    axis.text = element_text(size = 12, color = "black"),
-    axis.line = element_line(linewidth = 0.8)
-  )
-
-graph_null/graph_end/graph_meas
-```
-
-### Figure 3
-
-```{r}
-#Afficher la figure 3 déja construite
-print(fig3)
-```
-
-### Figure 4
-
-```{r,fig.width=6, fig.height=4}
 #Afficher la figure 4 déja construite
-print(fig4)
+print(graphique_fig4)
 ```
 
 ## Interprétations biologiques
