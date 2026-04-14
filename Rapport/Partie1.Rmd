@@ -36,11 +36,10 @@ noms_stades <- c("Egg", "Larva", "Fry", paste0("Age", 1:30))
 # Nombre de stades
 n_stades <- length(noms_stades)
 
-# 2. Créer une matrice vide (remplie de 0)
+# Créer une matrice vide (remplie de 0)
 measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
                    dimnames = list(noms_stades, noms_stades))
-# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
-# Les indices correspondent aux colonnes où la reproduction commence
+# Remplir la première ligne (Fécondité)
 fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
                37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
                46025, 46914, 47767, 48568)
@@ -49,8 +48,7 @@ fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761,
 # Avant = pas à maturité sexuelle
 measured[1, 13:32] <- fecondite_m
 
-# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
-# On liste les probabilités de passage d'un stade au suivant
+# Remplir la sous-diagonale (Taux de survie)
 survie_m <- c(
   0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
   0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
@@ -63,19 +61,18 @@ for(i in 1:length(survie_m)) {
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 0.957", "\n")
+cat("Lambda dans l'étude : 0.957", "\n") # Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(measured, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
 ```{r}
-# 2. Créer une matrice vide (remplie de 0)
+# Créer une matrice vide (remplie de 0)
 endangered <- matrix(0, nrow = n_stades, ncol = n_stades, 
                      dimnames = list(noms_stades, noms_stades))
 
-# 3. Remplir la PREMIÈRE LIGNE (Fécondité)
-# Les indices correspondent aux colonnes où la reproduction commence
+# Remplir la première ligne (Fécondité)
 fecondite_e <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699, 
                38034, 39442, 40865, 42009, 43022, 44098, 45230, 46268, 
                47231, 48144, 49019, 49841)
@@ -83,8 +80,7 @@ fecondite_e <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699,
 # On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33)
 endangered[1, 14:33] <- fecondite_e
 
-# 4. Remplir la SOUS-DIAGONALE (Taux de survie)
-# On liste les probabilités de passage d'un stade au suivant
+# Remplir la sous-diagonale (Taux de survie)
 survie_e <- c(
   0.075, 0.023, 0.007, 0.625, 0.741, 0.798, 0.833, 0.857, 0.873, 0.885, 0.898, 0.910, 0.916, # Jusqu'à Age 10
   0.918, 0.921, 0.926, 0.927, 0.929, 0.932, 0.933, 0.933, 0.934, 0.935, 0.935, 0.935, 0.935, # Suite
@@ -97,18 +93,18 @@ for(i in 1:length(survie_e)) {
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 0.984", "\n")
+cat("Lambda dans l'étude : 0.984", "\n")# Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(endangered, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
 ```{r}
+# Créer une matrice vide (remplie de 0)
 null_pred <- matrix(0, nrow = n_stades, ncol = n_stades, 
                     dimnames = list(noms_stades, noms_stades))
 
-# 2. Remplissage de la Fécondité (Ligne 1)
-# Valeurs extraites de ton texte (Age 10 à Age 29)
+# Remplissage de la Fécondité (Ligne 1)
 fecondite_n <- c(
   18822, 21920, 25150, 28298, 30830, 33301, 35604, 37292, 38649, 40080, 
   41526, 42689, 43718, 44811, 45962, 47017, 47996, 48923, 49813, 50648
@@ -117,20 +113,19 @@ fecondite_n <- c(
 # On les place de la colonne 13 (Age 10) à la colonne 32 (Age 29)
 null_pred[1, 13:32] <- fecondite_n
 
-# 3. Remplissage de la Survie (Sous-diagonale)
-# Valeurs extraites de ton texte (32 transitions au total)
+# Remplissage de la Survie (Sous-diagonale)
 survie_n <- c(
   0.076, 0.024, 0.007, 0.635, 0.753, 0.811, 0.847, 0.871, 0.888, 0.899, 0.912, 0.924, 0.931, 
   0.933, 0.936, 0.941, 0.942, 0.944, 0.947, 0.949, 0.949, 0.949, 0.950, 0.951, 0.950, 0.950, 
   0.951, 0.951, 0.951, 0.952, 0.952, 0.952
 )
-
+# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
 for(i in 1:length(survie_n)) {
   null_pred[i+1, i] <- survie_n[i]
 }
 
 cat("Lambda mesuré : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 1", "\n")
+cat("Lambda dans l'étude : 1", "\n")# Affichage du lambda obtenu dans l'étude
 # Affichage interactif de la matrice de Leslie
 datatable(round(null_pred, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
@@ -139,8 +134,8 @@ datatable(round(null_pred, 4),
 3 scénarios différents d'ensemencement ont été analysés : L'absence d’ensemencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins).
 
 ```{r}
-stockage_nul      <- c(0, 0)
-stockage_present  <- c(231185, 14868) # larves, alevins
+stockage_nul      <- c(0, 0)# larves, alevins
+stockage_present  <- c(231185, 14868) 
 stockage_propose  <- c(500000, 15000)
 ```
 
@@ -224,50 +219,46 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
   # Normaliser pour avoir n_mature_cible matures (stades 13-33)
   facteur <- n_mature_cible / sum(pop[13:33])
   
-  return(round(pop * facteur))
+  return(round(pop * facteur)) #On arrondi pour être éviter des individus décimaux
 }
 ```
 
-Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques
+Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques.
+Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
 
 ```{r}
 fecondite_stochastique <- function(matrice, n_annees){
-  # 1. Identifier le nombre de stades (33 dans ton cas)
+  # 1. Identifier le nombre de stades (33)
   n_stades <- nrow(matrice)
   
   # 2. Extraire la ligne de fécondité théorique (la ligne 1)
   f_theo <- matrice[1, ]
   
   # 3. Générer les multiplicateurs stochastiques
-  # On crée une matrice de multiplicateurs centrés sur 1
-  # (1 + bruit normal)
+  # On crée une matrice de multiplicateurs centrés sur 1 (1 + bruit normal)
   multiplicateurs <- matrix(1 + rnorm(n_stades * n_annees, mean = 0, sd = 0.25), 
                             nrow = n_stades, 
                             ncol = n_annees)
   
   # 4. Appliquer ces multiplicateurs à nos fécondités théoriques
   taux_fec <- multiplicateurs * f_theo
-  
-  # 5. Sécurité : La fécondité ne peut pas être négative
-  taux_fec[taux_fec < 0] <- 0
-  
+
   return(taux_fec)
 } 
 
 
 survie_stochastique <- function(matrice, n_annees) {
-  #  Préparer beta
+    #  Préparer beta
   # (3 spécifiques + 29 répétitions de 0.75 = 32)
   b_params <- c(5.05, 20, 75, rep(0.75, 29))
   # Extraire la survie réelle (sous-diagonale)
-  # Pour tes matrices 33x33, p_mesure aura une longueur de 32
+  # Pour les matrices 33x33, p_mesure aura une longueur de 32
   p_mesure <- diag(matrice[-1, -ncol(matrice)])
   
   # Calcul de Alpha
   alpha_params <- (p_mesure * b_params) / (1 - p_mesure)
   
   # Génération de la matrice de tirages
-  # nrow = 32 (transitions), ncol = n_annees
   taux_survie <- matrix(rbeta(n = length(p_mesure) * n_annees, 
                               shape1 = alpha_params, 
                               shape2 = b_params), 
@@ -281,56 +272,56 @@ survie_stochastique <- function(matrice, n_annees) {
 ### Figure 2
 
 ```{r}
-fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
-  n_larves_supp <- stockage[1]
-  n_fry_supp <- stockage[2]
+fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
+  n_larves_supp <- stockage[1] # Nombre de larves ensemencées
+  n_fry_supp <- stockage[2] # Nombre d'alevins ensemencés
   n_stades <- nrow(matrice)
   
-  # Matrice pour stocker la somme des matures pour chaque année et chaque itération
+  # 1. Structure initiale (année 0)
+  pop_init <- calculer_structure_initiale(matrice, n_ini)
+  
+  # 2. Création de la matrice de résultats
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
   
+  # Indices utiles pour éviter de les recalculer
+  idx_matures <- 13:33 # Indices des stades matures
+  idx_adultes_source <- 4:(n_stades - 1) # Indices des stades à l'année t-1
+  idx_adultes_cible <- 5:n_stades # Indices des stades à l'année t
+  
   for (i in 1:n_iterations) {
-    # 1. Génération de la stochasticité pour CETTE itération
+    # Génération de la stochasticité pour l'itération 
     mat_fec_stoch <- fecondite_stochastique(matrice, n_annees)
     mat_surv_stoch <- survie_stochastique(matrice, n_annees)
     
-    # 2. INITIALISATION de sim_temp (C'est ici qu'elle doit être créée)
-    sim_temp <- matrix(0, nrow = n_stades, ncol = n_annees + 1)
+    # Vecteur qui évolue au fil du temps 
+    pop <- pop_init
+    resultats_matures[1, i] <- sum(pop[idx_matures])
     
-    # Structure initiale arrondie
-    pop_init <- calculer_structure_initiale(matrice, n_ini)
-    sim_temp[, 1] <- pop_init
-    
-    # Stocker le compte initial de matures (stades 13 à 33)
-    resultats_matures[1, i] <- sum(sim_temp[13:33, 1])
-    
+    # Boucle rotation des années
     for (t in 1:n_annees) {
-      # --- ÉTAPE A : Survie des adultes (Age 1 à Age 30) ---
-      for (s in 4:(n_stades - 1)) {
-        # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
-        sim_temp[s + 1, t + 1] <- round(sim_temp[s, t] * mat_surv_stoch[s, t])
-      }
+      pop_next <- numeric(n_stades)
       
-      # --- ÉTAPE B : Reproduction et stades intra-annuels ---
+      # --- ÉTAPE A : Survie des adultes ---
+      # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
+      pop_next[idx_adultes_cible] <- round(pop[idx_adultes_source] * mat_surv_stoch[idx_adultes_source, t])
+      
+      # --- ÉTAPE B : Reproduction et recrutement ---
       # 1. Ponte (Production d'œufs arrondie)
-      n_oeufs <- round(sum(sim_temp[13:33, t] * mat_fec_stoch[13:33, t]))
+      n_oeufs <- round(sum(pop[idx_matures] * mat_fec_stoch[idx_matures, t]))
       
       # 2. Traversée des stades 1-2-3 (Egg -> Larva -> Fry -> Age 1)
-      # On arrondit à chaque transition pour simuler des individus réels
-      n_larves <- round(n_oeufs * mat_surv_stoch[1, t])
-      n_fry    <- round(n_larves * mat_surv_stoch[2, t])
-      
-      # Ajout de l'ensemencement (stocking) aux stades appropriés
-      n_larves_tot <- n_larves + n_larves_supp
-      n_fry_tot    <- n_fry + n_fry_supp
+      n_larves <- round(n_oeufs * mat_surv_stoch[1, t]) + n_larves_supp
+      n_fry    <- round(n_larves * mat_surv_stoch[2, t]) + n_fry_supp
       
       # 3. Recrutement final au stade 4 (Age 1) au temps t+1
       # Survie des larves et des alevins (fry) jusqu'au stade Age 1
-      # Note : Ici on applique la survie restante pour atteindre le stade 4
-      sim_temp[4, t + 1] <- round(n_fry_tot * mat_surv_stoch[3, t])
+      # On applique la survie restante pour atteindre le stade 4
+      pop_next[4] <- round(n_fry * mat_surv_stoch[3, t])
       
-      # Stockage du résultat total des matures pour l'année t+1
-      resultats_matures[t+1, i] <- sum(sim_temp[13:33, t+1])
+      # Mise à jour et stockage
+      pop <- pop_next
+      # Mise à jour des résultats du nombre de mature
+      resultats_matures[t + 1, i] <- sum(pop[idx_matures])
     }
   }
   
@@ -343,19 +334,24 @@ fig_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario
     Scenario = nom_scenario
   ))
 }
+```
+
+
+
+```{r}
 
 # Calculs
-null_nul     <- fig_2(null_pred, 5000, 100, 1000, stockage_nul, "No stocking")
-null_present <- fig_2(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking")
-null_propose <- fig_2(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
+null_nul     <- fig_2_opti(null_pred, 5000, 100, 1000, stockage_nul, "No stocking")
+null_present <- fig_2_opti(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking")
+null_propose <- fig_2_opti(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-end_nul     <- fig_2(endangered, 5000, 100, 1000, stockage_nul, "No stocking")
-end_present <- fig_2(endangered, 5000, 100, 1000, stockage_present, "Actual stocking")
-end_propose <- fig_2(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
+end_nul     <- fig_2_opti(endangered, 5000, 100, 1000, stockage_nul, "No stocking")
+end_present <- fig_2_opti(endangered, 5000, 100, 1000, stockage_present, "Actual stocking")
+end_propose <- fig_2_opti(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
-meas_nul     <- fig_2(measured, 5000, 100, 1000, stockage_nul, "No stocking")
-meas_present <- fig_2(measured, 5000, 100, 1000, stockage_present, "Actual stocking")
-meas_propose <- fig_2(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
+meas_nul     <- fig_2_opti(measured, 5000, 100, 1000, stockage_nul, "No stocking")
+meas_present <- fig_2_opti(measured, 5000, 100, 1000, stockage_present, "Actual stocking")
+meas_propose <- fig_2_opti(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking")
 
 # Fusion
 df_null <- bind_rows(null_nul, null_present, null_propose)
@@ -522,7 +518,6 @@ fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 #print(fig3)
 #ggsave("figure3.png", plot = fig3, width = 6, height = 5, dpi = 300)
 ```
-
 
 ### Figure 4
 
