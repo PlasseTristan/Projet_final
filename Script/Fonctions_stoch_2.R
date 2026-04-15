@@ -1,6 +1,3 @@
-n_annees <- 1000
-matrice <- null_pred3
-
 fecondite_stochastique_2 <- function(matrice, n_annees){
   # 1. Identifier le nombre de stades (33)
   n_stades <- nrow(matrice)
