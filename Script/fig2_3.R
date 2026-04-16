@@ -58,18 +58,18 @@ fig_2_opti_3 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_s
   ))
 }
 
-#df_null <- bind_rows(
-  #fig_2_opti_3(null_pred3, 5000, 100, 1000, stockage_nul, "No stocking"), 
-  #fig_2_opti_3(null_pred3, 5000, 100, 1000, stockage_present, "Actual stocking"), 
-  #fig_2_opti_3(null_pred3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
-#df_end <- bind_rows(
-  #fig_2_opti_3(endangered3, 5000, 100, 1000, stockage_nul, "No stocking"),
-  #fig_2_opti_3(endangered3, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  #fig_2_opti_3(endangered3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+df_null <- bind_rows(
+  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_nul, "No stocking"), 
+  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_present, "Actual stocking"), 
+  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+df_end <- bind_rows(
+  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 df_meas <- bind_rows(
-  fig_2_opti_3(measured4, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti_3(measured4, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti_3(measured4, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
