@@ -25,8 +25,3 @@ calculer_structure_initiale_2 <- function(matrice, n_mature_cible) {
   # On retourne les valeurs arrondies (on ne peut pas avoir 0.5 poisson)
   return(round(pop_initiale))
 }
-
-
-# UTILISATION :
-#pop_init <- calculer_structure_initiale_2(measured3, 1000)
-#print(pop_init)
