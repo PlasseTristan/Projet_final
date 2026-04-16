@@ -199,6 +199,7 @@ $s_{age} =$ La survie théorique de cette classe d'âge
 
 ## Calcul
 
+### Structure initiale
 Fonction qui détermine le nombre initial de poissons à chaque stade selon le nombre de poissons matures initial.
 
 ```{r}
@@ -227,7 +228,8 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
 }
 ```
 
-Fonctions servant à créer une matrice de X années avec les valeurs de survie et fecondité stochastiques. Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
+### Stochasticité
+Fonctions servant à créer une matrice de X années avec les valeurs de survie et fécondité stochastiques. Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
 
 ```{r}
 fecondite_stochastique <- function(matrice, n_annees){
