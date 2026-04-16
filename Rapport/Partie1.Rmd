@@ -751,7 +751,7 @@ print(graphique_fig4)
 # Partie 2
 
 Tentative de créer des matrices simplifiées
-
+test
 
 ```{r}
 # Creation du nom de chaque stade
