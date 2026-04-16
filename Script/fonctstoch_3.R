@@ -1,3 +1,5 @@
+n_annees <- 1000
+
 fecondite_stochastique_3 <- function(matrice, n_annees){
   # 1. Identifier le nombre de stades (33)
   n_stades <- nrow(matrice)
@@ -19,7 +21,8 @@ fecondite_stochastique_3 <- function(matrice, n_annees){
 
 fec <- fecondite_stochastique_3(measured4,n_annees)
 fec
-measured3
+
+
 survie_stochastique_3 <- function(matrice, n_annees) {
   # 1. Extraire la survie réelle (sous-diagonale)
   # Pour une matrice 4x4, p_mesure a une longueur de 3
@@ -29,7 +32,7 @@ survie_stochastique_3 <- function(matrice, n_annees) {
   # 2. Préparer beta (Adaptation de ta logique 5.05, 20, 75)
   # On définit un beta pour chaque transition de survie
   # S1->S2: 5.05 | S2->S3: 20 | S3->S4: 75
-  b_params <- c(20, 100)
+  b_params <- c(5.05, 0.75)
   
   # Sécurité pour éviter Alpha = Inf si p_mesure vaut 1
   p_mesure <- pmin(p_mesure, 0.9999)
@@ -56,7 +59,7 @@ stase_stochastique_3 <- function(matrice, n_annees) {
   n_stades <- length(p_mesure)
   
   # On remonte b_params pour plus de stabilité (ex: 80)
-  b_params <- c(1, 80, 80) 
+  b_params <- c(1, 0.75, 0.75) 
   
   p_mesure_safe <- pmax(pmin(p_mesure, 0.9999), 0)
   
