@@ -1031,7 +1031,7 @@ stase_stochastique_3 <- function(matrice, n_annees) {
 }
 ```
 
-#### Figure 4
+#### Figure 4s
 ```{r}
 fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
   
