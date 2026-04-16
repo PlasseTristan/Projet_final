@@ -60,7 +60,7 @@ fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
   return(df_clean)
 }
 
-df_fig4_3 <- fig_4_3(measured4)
+df_fig4_3 <- fig_4_3(measured_3)
 df_fig4_3
 
 #_______________________________________________________________________
@@ -68,7 +68,7 @@ stades <- c("Larva", "Fry", "Age 1", "Age 10")
 # Positionnement des labels (étiquettes sur les courbes)
 label_data <- data.frame(
   Stocking_Stage = factor(stades, levels = stades),
-  Stocking       = c(1e7, 5e5, 3e3, 3e1), 
+  Stocking       = c(1e7, 5e5, 3e3, 3e2), 
   Abundance_Mature = c(5400, 5400, 5400, 5400),
   label          = c("Larva\nstocking", "Fry\nstocking", "Age 1\nstocking", "Age 10\nstocking")
 )
