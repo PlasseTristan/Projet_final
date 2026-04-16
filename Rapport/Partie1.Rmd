@@ -342,17 +342,17 @@ fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_sce
 ```{r calcul_fig_2}
 # Calculs
 df_null <- bind_rows(
-  fig_2_opti(null_pred, 5000, 100, 1000, stockage_nul, "No stocking"), 
-  fig_2_opti(null_pred, 5000, 100, 1000, stockage_present, "Actual stocking"), 
-  fig_2_opti(null_pred, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti(null_pred, 5000, 100, 2000, stockage_nul, "No stocking"), 
+  fig_2_opti(null_pred, 5000, 100, 2000, stockage_present, "Actual stocking"), 
+  fig_2_opti(null_pred, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 df_end <- bind_rows(
-  fig_2_opti(endangered, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti(endangered, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti(endangered, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti(endangered, 5000, 100, 2000, stockage_nul, "No stocking"),
+  fig_2_opti(endangered, 5000, 100, 2000, stockage_present, "Actual stocking"),
+  fig_2_opti(endangered, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 df_meas <- bind_rows(
-  fig_2_opti(measured, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti(measured, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti(measured, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti(measured, 5000, 100, 2000, stockage_nul, "No stocking"),
+  fig_2_opti(measured, 5000, 100, 2000, stockage_present, "Actual stocking"),
+  fig_2_opti(measured, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
@@ -587,7 +587,8 @@ graph_fig2 <- function(d1, d2, d3) {
         axis.text.x = if(show_x) element_text(size = 12, color = "black") else element_blank(),# Condition d’afficher le titre de l'axe des x seulement pour le graphique c)
         axis.line = element_line(linewidth = 0.8),
         legend.position = if(show_legend) c(0.25, 0.25) else "none", # Condition d’afficher la légende seulement pour le graphique a)
-        legend.background = element_blank()
+        legend.background = element_blank(),
+        panel.grid = element_blank()
       )
     return(plot)
   }
@@ -604,6 +605,7 @@ graph_fig2 <- function(d1, d2, d3) {
 # Pour l'afficher :
 graphique_fig2 <- graph_fig2(df_null, df_end, df_meas)
 print(graphique_fig2)
+ggsave("fig2.png",graphique_fig2, width = 5.5, height = 10)
 ```
 
 ### Figure 3
