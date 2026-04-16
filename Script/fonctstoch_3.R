@@ -29,7 +29,7 @@ survie_stochastique_3 <- function(matrice, n_annees) {
   # 2. Préparer beta (Adaptation de ta logique 5.05, 20, 75)
   # On définit un beta pour chaque transition de survie
   # S1->S2: 5.05 | S2->S3: 20 | S3->S4: 75
-  b_params <- c(100000, 80)
+  b_params <- c(20, 100)
   
   # Sécurité pour éviter Alpha = Inf si p_mesure vaut 1
   p_mesure <- pmin(p_mesure, 0.9999)
@@ -52,37 +52,27 @@ surv <- survie_stochastique_3(measured4,n_annees)
 surv
 
 stase_stochastique_3 <- function(matrice, n_annees) {
-  # 1. Extraire la diagonale principale (Probabilités de rester)
   p_mesure <- diag(matrice)
   n_stades <- length(p_mesure)
   
-  # 2. Préparer beta pour chaque stade
-  # Stade 1 : beta n'a pas d'importance car p = 0, mais on met 1 par sécurité.
-  # Stade 2 & 3 : On utilise 80 pour une grande stabilité (comme ton code précédent).
-  # Stade 4 : On peut mettre 80 aussi.
-  b_params <- c(1, 10, 10)
+  # On remonte b_params pour plus de stabilité (ex: 80)
+  b_params <- c(1, 80, 80) 
   
-  # 3. Sécurité et gestion du "Zéro" pour le Stade 1
-  # On s'assure que si la stase est 0 dans ta matrice, elle reste 0.
   p_mesure_safe <- pmax(pmin(p_mesure, 0.9999), 0)
   
-  # 4. Calcul de Alpha
-  # Pour le stade 1, si p=0, alpha sera 0.
-  alpha_params <- (p_mesure_safe * b_params) / (1 - p_mesure_safe)
-  # Correction pour éviter NaN si alpha = 0
-  alpha_params[is.nan(alpha_params)] <- 0
+  # Calcul de alpha (évite division par zéro)
+  alpha_params <- (p_mesure_safe * b_params) / pmax(1 - p_mesure_safe, 1e-6)
   
-  # 5. Génération de la matrice de tirages
+  # Génération
   taux_stase <- matrix(0, nrow = n_stades, ncol = n_annees)
   
-  for(i in 1:n_stades) {
-    if(p_mesure_safe[i] > 0) {
-      taux_stase[i, ] <- rbeta(n = n_annees, 
-                               shape1 = alpha_params[i], 
-                               shape2 = b_params[i])
-    } else {
-      taux_stase[i, ] <- 0  # Force le zéro pour le stade 1
-    }
+  # On ne boucle que sur les stades où p > 0
+  indices_actifs <- which(p_mesure_safe > 0)
+  
+  for(i in indices_actifs) {
+    taux_stase[i, ] <- rbeta(n = n_annees, 
+                             shape1 = alpha_params[i], 
+                             shape2 = b_params[i])
   }
   
   return(taux_stase)
@@ -98,7 +88,7 @@ liste_final <- list()
 
 for (t in 1:n_annees) {
   # 1. Créer une matrice vide 4x4
-  M_t <- matrix(0, nrow = 4, ncol = 4)
+  M_t <- matrix(0, nrow = 3, ncol = 3)
   
   # 2. Insérer la FÉCONDITÉ (Ligne 1)
   # Ici, seul le stade 3 est reproducteur d'après tes données
@@ -111,14 +101,14 @@ for (t in 1:n_annees) {
   # 4. Insérer la SURVIE de passage (Sous-diagonale)
   M_t[2, 1] <- surv[1, t] # Stade 1 -> 2
   M_t[3, 2] <- surv[2, t] # Stade 2 -> 3
-  M_t[4, 3] <- surv[3, t] # Stade 3 -> 4
+ 
   
   # 5. SÉCURITÉ : Vérification des colonnes
   # La somme de la survie (stase + passage) ne doit pas dépasser 1
-  for (j in 1:4) {
-    survie_totale <- sum(M_t[2:4, j]) # On ignore la ligne 1 (fécondité)
+  for (j in 1:3) {
+    survie_totale <- sum(M_t[2:3, j]) # On ignore la ligne 1 (fécondité)
     if (survie_totale > 1) {
-      M_t[2:4, j] <- M_t[2:4, j] / (survie_totale + 0.0001)
+      M_t[2:3, j] <- M_t[2:3, j] / (survie_totale + 0.0001)
     }
   }
   
