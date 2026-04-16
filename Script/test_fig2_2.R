@@ -21,36 +21,30 @@ fig_2_opti_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_s
     for (t in 1:n_annees) {
       M_t <- matrix(0, nrow = n_stades, ncol = n_stades)
       
-      # --- CONSTRUCTION DE LA MATRICE M_t ---
-      # Fécondité (Ligne 1) : Les adultes (3 et 4) produisent des larves
+      # Survival/Transition rates
+      s1 <- mat_surv[1, t] # 1 -> 2
+      s2 <- mat_surv[2, t] # 2 -> 3
+      s3 <- mat_surv[3, t] # 3 -> 4
+      
       M_t[1, 3] <- mat_fec[3, t]
       M_t[1, 4] <- mat_fec[4, t]
-      
-      # Stase (Diagonale)
       diag(M_t) <- mat_stas[, t]
       
-      # Passage (Sous-diagonale)
-      M_t[2, 1] <- mat_surv[1, t] # Larve -> Juvénile
-      M_t[3, 2] <- mat_surv[2, t] # Juvénile -> Adulte 1
-      M_t[4, 3] <- mat_surv[3, t] # Adulte 1 -> Adulte 2
+      M_t[2, 1] <- s1
+      M_t[3, 2] <- s2
+      M_t[4, 3] <- s3
       
-      # --- PROJECTION ET ENSEMENCEMENT ---
-      # Projection naturelle
       pop_next <- round(M_t %*% pop)
       
-      # Ajout du stockage (Ensemencement)
-      # Les larves et fry ajoutés au temps t deviennent des juvéniles (stade 2) au temps t+1
-      # On utilise la survie du stade 1 (mat_surv[1,t])
-      survie_age0 <- mat_surv[2, t]
+      # Use s1 (Stage 1 -> 2) for added larvae/fry
+      surv_boosted_fry <- pmin(s1 * 1.5, 1.0) 
       
-      # Recrutement supplémentaire au stade 2
-      pop_next[2] <- pop_next[2] + round(n_larves_supp * survie_age0) + 
-        round(n_fry_supp * (survie_age0 * 1.5))
+      pop_next[2] <- pop_next[2] + 
+        round(n_larves_supp * s1) + 
+        round(n_fry_supp * surv_boosted_fry)
       
       pop <- as.vector(pop_next)
-      pop <- pmax(pop, 0) # Sécurité extinction
-      
-      # Stockage des adultes matures (3 + 4)
+      pop <- pmax(pop, 0)
       resultats_matures[t + 1, i] <- sum(pop[3:4])
     }
   }
@@ -66,17 +60,17 @@ fig_2_opti_2 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_s
 }
 
 df_null <- bind_rows(
-  fig_2_opti(null_pred3, 5000, 100, 1000, stockage_nul, "No stocking"), 
-  fig_2_opti(null_pred3, 5000, 100, 1000, stockage_present, "Actual stocking"), 
-  fig_2_opti(null_pred3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_2(null_pred3, 5000, 100, 1000, stockage_nul, "No stocking"), 
+  fig_2_opti_2(null_pred3, 5000, 100, 1000, stockage_present, "Actual stocking"), 
+  fig_2_opti_2(null_pred3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 df_end <- bind_rows(
-  fig_2_opti(endangered3, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti(endangered3, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti(endangered3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_2(endangered3, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti_2(endangered3, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti_2(endangered3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 df_meas <- bind_rows(
-  fig_2_opti(measured3, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti(measured3, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti(measured3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_2(measured3, 5000, 100, 1000, stockage_nul, "No stocking"),
+  fig_2_opti_2(measured3, 5000, 100, 1000, stockage_present, "Actual stocking"),
+  fig_2_opti_2(measured3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))

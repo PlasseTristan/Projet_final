@@ -749,3 +749,141 @@ print(graphique_fig4)
 ## Interprétations biologiques
 
 # Partie 2
+
+Tentative de créer des matrices simplifiées
+
+
+```{r}
+# Creation du nom de chaque stade
+noms_stades <- c("Egg", "Larva", "Fry", paste0("Age", 1:30))
+# Nombre de stades
+n_stades <- length(noms_stades)
+
+# Créer une matrice vide (remplie de 0)
+measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
+                   dimnames = list(noms_stades, noms_stades))
+# Remplir la première ligne (Fécondité)
+fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
+               37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
+               46025, 46914, 47767, 48568)
+
+# On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33) 
+# Avant = pas à maturité sexuelle
+measured[1, 13:32] <- fecondite_m
+
+# Remplir la sous-diagonale (Taux de survie)
+survie_m <- c(
+  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
+  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
+  0.912, 0.912, 0.912, 0.913, 0.913, 0.913 # Fin
+)
+
+# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
+for(i in 1:length(survie_m)) {
+  measured[i+1, i] <- survie_m[i]
+}
+
+cat("Lambda mesuré : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda dans l'étude : 0.957", "\n") # Affichage du lambda obtenu dans l'étude
+# Affichage interactif de la matrice de Leslie
+datatable(round(measured, 4), 
+          options = list(scrollX = TRUE, pageLength = 33))
+```
+
+Matrice de partition (P)
+
+```{r}
+# Nombre de stades originaux
+n_orig <- 33
+# Nombre de super-stades souhaités
+n_super <- 3
+
+# Initialisation d'une matrice de 0
+P <- matrix(0, nrow = n_super, ncol = n_orig)
+
+# Définition des groupes
+# Ligne 1 : Juvéniles (stades 1 à 3)
+P[1, 1:3] <- 1
+
+# Ligne 2 : Préadultes (stades 4 à 12)
+P[2, 4:12] <- 1
+
+# Ligne 3 : Adultes (stades 13 à 33)
+P[3, 13:33] <- 1
+
+# Optionnel : Nommer les lignes pour plus de clarté
+rownames(P) <- c("Juvéniles", "Préadultes", "Adultes")
+```
+
+Matrice de Pondération (K)
+```{r}
+# 1. Obtenir le vecteur stable w de votre matrice 'a'
+ev <- eigen(measured)
+w  <- Re(ev$vectors[,1])
+w  <- w / sum(w)
+
+# 2. Calculer la matrice de pondération K
+# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
+W <- diag(w)
+# K est la matrice qui redistribue w dans les super-stades
+K <- W %*% t(P) %*% solve(P %*% W %*% t(P))
+```
+Matrice agrégée
+```{r}
+# 3. Calculer la matrice agrégée B (2x2)
+# Formule : B = P %*% a %*% K
+measured_3 <- P %*% measured %*% K
+
+colnames(measured_3) <- rownames(measured_3) <- c("Juvéniles", "Pré-adultes", "Adultes")
+print(measured_3)
+
+cat("Lambda initial : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda agrégé : ", max(Re(eigen(measured_3)$values)), "\n") # Calcul du lambda de la matrice
+```
+```{r}
+# 1. Obtenir le vecteur stable w de votre matrice 'a'
+ev <- eigen(endangered)
+w  <- Re(ev$vectors[,1])
+w  <- w / sum(w)
+
+# 2. Calculer la matrice de pondération K
+# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
+W <- diag(w)
+# K est la matrice qui redistribue w dans les super-stades
+K <- W %*% t(P) %*% solve(P %*% W %*% t(P))
+
+# 3. Calculer la matrice agrégée B (2x2)
+# Formule : B = P %*% a %*% K
+endangered_3 <- P %*% endangered %*% K
+
+colnames(endangered_3) <- rownames(endangered_3) <- c("Juvéniles", "Pré-adultes", "Adultes")
+print(endangered_3)
+
+cat("Lambda initial : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda agrégé : ", max(Re(eigen(endangered_3)$values)), "\n") # Calcul du lambda de la matrice
+```
+
+
+```{r}
+# 1. Obtenir le vecteur stable w de votre matrice 'a'
+ev <- eigen(null_pred)
+w  <- Re(ev$vectors[,1])
+w  <- w / sum(w)
+
+# 2. Calculer la matrice de pondération K
+# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
+W <- diag(w)
+# K est la matrice qui redistribue w dans les super-stades
+K <- W %*% t(P) %*% solve(P %*% W %*% t(P))
+
+# 3. Calculer la matrice agrégée B (2x2)
+# Formule : B = P %*% a %*% K
+null_pred_3 <- P %*% null_pred %*% K
+
+colnames(null_pred_3) <- rownames(null_pred_3) <- c("Juvéniles", "Pré-adultes", "Adultes")
+print(null_pred_3)
+
+cat("Lambda initial : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
+cat("Lambda agrégé : ", max(Re(eigen(null_pred_3)$values)), "\n") # Calcul du lambda de la matrice
+```
+

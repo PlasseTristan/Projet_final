@@ -17,7 +17,7 @@ fecondite_stochastique_2 <- function(matrice, n_annees){
   return(taux_fec)
 } 
 
-fec <- fecondite_stochastique_2(matrice,n_annees)
+
 
 survie_stochastique_2 <- function(matrice, n_annees) {
   # 1. Extraire la survie réelle (sous-diagonale)
@@ -47,7 +47,7 @@ survie_stochastique_2 <- function(matrice, n_annees) {
   return(taux_survie)
 }
 
-surv <- survie_stochastique_2(matrice,n_annees)
+#surv <- survie_stochastique_2(matrice,n_annees)
 
 
 stase_stochastique_2 <- function(matrice, n_annees) {
@@ -87,7 +87,7 @@ stase_stochastique_2 <- function(matrice, n_annees) {
   return(taux_stase)
 }
 
-stas <- stase_stochastique_2(matrice,n_annees)
+#stas <- stase_stochastique_2(matrice,n_annees)
 
 
 
