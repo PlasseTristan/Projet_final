@@ -17,8 +17,14 @@ fecondite_stochastique_2 <- function(matrice, n_annees){
   return(taux_fec)
 } 
 
+<<<<<<< HEAD
 
 
+=======
+fec <- fecondite_stochastique_2(null_pred3,n_annees)
+fec
+measured3
+>>>>>>> d8026986cfe04e09bea3a1647e2bb003a023a9bf
 survie_stochastique_2 <- function(matrice, n_annees) {
   # 1. Extraire la survie réelle (sous-diagonale)
   # Pour une matrice 4x4, p_mesure a une longueur de 3
@@ -28,7 +34,7 @@ survie_stochastique_2 <- function(matrice, n_annees) {
   # 2. Préparer beta (Adaptation de ta logique 5.05, 20, 75)
   # On définit un beta pour chaque transition de survie
   # S1->S2: 5.05 | S2->S3: 20 | S3->S4: 75
-  b_params <- c(100000, 80, 80)
+  b_params <- c(99999, 20, 40)
   
   # Sécurité pour éviter Alpha = Inf si p_mesure vaut 1
   p_mesure <- pmin(p_mesure, 0.9999)
@@ -47,8 +53,13 @@ survie_stochastique_2 <- function(matrice, n_annees) {
   return(taux_survie)
 }
 
+<<<<<<< HEAD
 #surv <- survie_stochastique_2(matrice,n_annees)
 
+=======
+surv <- survie_stochastique_2(null_pred3,n_annees)
+surv
+>>>>>>> d8026986cfe04e09bea3a1647e2bb003a023a9bf
 
 stase_stochastique_2 <- function(matrice, n_annees) {
   # 1. Extraire la diagonale principale (Probabilités de rester)
@@ -59,7 +70,7 @@ stase_stochastique_2 <- function(matrice, n_annees) {
   # Stade 1 : beta n'a pas d'importance car p = 0, mais on met 1 par sécurité.
   # Stade 2 & 3 : On utilise 80 pour une grande stabilité (comme ton code précédent).
   # Stade 4 : On peut mettre 80 aussi.
-  b_params <- c(1, 10, 10, 1)
+  b_params <- c(1, 0.75, 0.75, 1)
   
   # 3. Sécurité et gestion du "Zéro" pour le Stade 1
   # On s'assure que si la stase est 0 dans ta matrice, elle reste 0.
@@ -87,8 +98,13 @@ stase_stochastique_2 <- function(matrice, n_annees) {
   return(taux_stase)
 }
 
+<<<<<<< HEAD
 #stas <- stase_stochastique_2(matrice,n_annees)
 
+=======
+stas <- stase_stochastique_2(null_pred3,n_annees)
+stas
+>>>>>>> d8026986cfe04e09bea3a1647e2bb003a023a9bf
 
 
 

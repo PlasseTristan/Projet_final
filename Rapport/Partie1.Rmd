@@ -750,57 +750,34 @@ print(graphique_fig4)
 
 # Partie 2
 
-Tentative de créer des matrices simplifiées
-test
+###Calcul
 
+####Tentative de créer des matrices simplifiées
+
+#####Matrice de partition (P)
 
 ```{r}
-# Creation du nom de chaque stade
-noms_stades <- c("Egg", "Larva", "Fry", paste0("Age", 1:30))
-# Nombre de stades
-n_stades <- length(noms_stades)
+n_orig_corr <- 31
+n_super <- 3
+P_corr <- matrix(0, nrow = n_super, ncol = n_orig_corr)
 
-# Créer une matrice vide (remplie de 0)
-measured <- matrix(0, nrow = n_stades, ncol = n_stades, 
-                   dimnames = list(noms_stades, noms_stades))
-# Remplir la première ligne (Fécondité)
-fecondite_m <- c(18096, 21035, 24114, 27133, 29563, 31934, 34142, 35761, 
-               37062, 38435, 39821, 40936, 41923, 42972, 44075, 45086, 
-               46025, 46914, 47767, 48568)
+P_corr[1, 1] <- 1          # Juvéniles (An 0 condensé)
+P_corr[2, 2:10] <- 1       # Préadultes
+P_corr[3, 11:31] <- 1      # Adultes
 
-# On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33) 
-# Avant = pas à maturité sexuelle
-measured[1, 13:32] <- fecondite_m
-
-# Remplir la sous-diagonale (Taux de survie)
-survie_m <- c(
-  0.073, 0.023, 0.006, 0.609, 0.723, 0.778, 0.812, 0.836, 0.851, 0.863, 0.875, 0.887, 0.893, # Jusqu'à Age 10
-  0.895, 0.898, 0.902, 0.903, 0.905, 0.908, 0.910, 0.910, 0.910, 0.911, 0.912, 0.911, 0.911, # Jusqu'à Age 22
-  0.912, 0.912, 0.912, 0.913, 0.913, 0.913 # Fin
-)
-
-# On injecte ces valeurs dans la sous-diagonale (ligne i+1, colonne i)
-for(i in 1:length(survie_m)) {
-  measured[i+1, i] <- survie_m[i]
-}
-
-cat("Lambda mesuré : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda dans l'étude : 0.957", "\n") # Affichage du lambda obtenu dans l'étude
-# Affichage interactif de la matrice de Leslie
-datatable(round(measured, 4), 
-          options = list(scrollX = TRUE, pageLength = 33))
+rownames(P_corr) <- c("Juvéniles", "Préadultes", "Adultes")
 ```
 
+#####Measured
+
 ```{r}
-# Nouveau vecteur de survie condensé
-# Le premier élément est le produit des 3 premiers stades intra-annuels
 survie_annuelle_corrigee <- c(
-  (0.073 * 0.023 * 0.006), # Survie cumulée de l'an 1 (Egg -> Age 1)
+  (survie_m[1] * survie_m[2] * survie_m[3]), # Survie cumulée de l'an 1 (Egg -> Age 1)
   survie_m[4:length(survie_m)] # Le reste des survies (Age 1 -> Age 30)
 )
 
-# Nouvelle structure : "Year 0" (regroupe Egg/Larva/Fry) puis "Age 1" à "Age 30"
-noms_stades_corr <- c("Juv_An0", paste0("Age", 1:30))
+# On renomme de Age0 à Age30
+noms_stades_corr <- paste0("Age", 0:30)
 n_stades_corr <- length(noms_stades_corr)
 
 measured_corr <- matrix(0, nrow = n_stades_corr, ncol = n_stades_corr, 
@@ -813,21 +790,6 @@ measured_corr[1, 11:30] <- fecondite_m
 for(i in 1:length(survie_annuelle_corrigee)) {
   measured_corr[i+1, i] <- survie_annuelle_corrigee[i]
 }
-```
-
-
-Matrice de partition (P)
-
-```{r}
-n_orig_corr <- 31
-n_super <- 3
-P_corr <- matrix(0, nrow = n_super, ncol = n_orig_corr)
-
-P_corr[1, 1] <- 1          # Juvéniles (An 0 condensé)
-P_corr[2, 2:10] <- 1       # Préadultes
-P_corr[3, 11:31] <- 1      # Adultes
-
-rownames(P_corr) <- c("Juvéniles", "Préadultes", "Adultes")
 ```
 
 Matrice de Pondération (K)
@@ -843,6 +805,7 @@ W <- diag(w)
 # K est la matrice qui redistribue w dans les super-stades
 K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
 ```
+
 Matrice agrégée
 ```{r}
 # 3. Calculer la matrice agrégée B (2x2)
@@ -879,6 +842,7 @@ for(i in 1:length(survie_annuelle_corrigee)) {
 }
 ```
 
+##### Endangered
 ```{r}
 # 1. Obtenir le vecteur stable w de votre matrice 'a'
 ev <- eigen(endangered_corr)
@@ -925,7 +889,7 @@ for(i in 1:length(survie_annuelle_corrigee)) {
 }
 ```
 
-
+##### Null_pred
 ```{r}
 # 1. Obtenir le vecteur stable w de votre matrice 'a'
 ev <- eigen(null_pred_corr)
@@ -948,10 +912,41 @@ print(null_pred_3)
 cat("Lambda initial : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
 cat("Lambda agrégé : ", max(Re(eigen(null_pred_3)$values)), "\n") # Calcul du lambda de la matrice
 ```
-Fécondités stochastiques
+#### Structure initiale
+```{r}
+calculer_structure_initiale_3 <- function(matrice, n_mature_cible) {
+  # 1. Calculer les valeurs et vecteurs propres
+  # Le vecteur propre associé à la plus grande valeur propre (lambda) 
+  # représente la structure stable de la population.
+  ev <- eigen(matrice)
+  
+  # 2. Extraire le vecteur propre dominant (on prend la partie réelle)
+  # C'est la répartition proportionnelle "naturelle" des stades
+  ssd <- Re(ev$vectors[, 1])
+  
+  # 3. S'assurer que les valeurs sont positives
+  ssd <- abs(ssd)
+  
+  # 4. Identifier les stades matures (3 et 4 dans ta matrice)
+  # On calcule combien d'adultes il y a "relativement" dans ce vecteur
+  n_adultes_relatif <- ssd[3]
+  
+  # 5. Calculer le facteur de mise à l'échelle
+  # On veut transformer ces proportions pour que Adultes = 1000
+  facteur <- n_mature_cible / n_adultes_relatif
+  
+  # 6. Appliquer le facteur à tous les stades
+  pop_initiale <- ssd * facteur
+  
+  # On retourne les valeurs arrondies (on ne peut pas avoir 0.5 poisson)
+  return(round(pop_initiale))
+}
+```
+
+#### Fécondités stochastiques
 
 ```{r}
-fecondite_stochastique <- function(matrice, n_annees){
+fecondite_stochastique_3 <- function(matrice, n_annees){
   # 1. Identifier le nombre de stades (33)
   n_stades <- nrow(matrice)
   
@@ -966,8 +961,71 @@ fecondite_stochastique <- function(matrice, n_annees){
   
   # 4. Appliquer ces multiplicateurs à nos fécondités théoriques
   taux_fec <- multiplicateurs * f_theo
-
+  
   return(taux_fec)
 } 
+```
+
+#### Survies stochastiques
+
+```{r}
+survie_stochastique_3 <- function(matrice, n_annees) {
+  # 1. Extraire la survie réelle (sous-diagonale)
+  # Pour une matrice 4x4, p_mesure a une longueur de 3
+  p_mesure <- diag(matrice[-1, -ncol(matrice)])
+  n_taux <- length(p_mesure)
+  
+  # 2. Préparer beta (Adaptation de ta logique 5.05, 20, 75)
+  # On définit un beta pour chaque transition de survie
+  # S1->S2: 5.05 | S2->S3: 20 | S3->S4: 75
+  b_params <- c(5.05, 0.75)
+  
+  # Sécurité pour éviter Alpha = Inf si p_mesure vaut 1
+  p_mesure <- pmin(p_mesure, 0.9999)
+  
+  # 3. Calcul de Alpha (Formule de la moyenne de la loi Beta)
+  alpha_params <- (p_mesure * b_params) / (1 - p_mesure)
+  
+  # 4. Génération de la matrice de tirages
+  # On génère n_annees pour chacun des 3 taux de survie
+  taux_survie <- matrix(rbeta(n = n_taux * n_annees, 
+                              shape1 = alpha_params, 
+                              shape2 = b_params), 
+                        nrow = n_taux, 
+                        ncol = n_annees)
+  
+  return(taux_survie)
+}
+```
+
+#### Stases stochastiques
+
+```{r}
+stase_stochastique_3 <- function(matrice, n_annees) {
+  p_mesure <- diag(matrice)
+  n_stades <- length(p_mesure)
+  
+  # On remonte b_params pour plus de stabilité (ex: 80)
+  b_params <- c(1, 0.75, 0.75) 
+  
+  p_mesure_safe <- pmax(pmin(p_mesure, 0.9999), 0)
+  
+  # Calcul de alpha (évite division par zéro)
+  alpha_params <- (p_mesure_safe * b_params) / pmax(1 - p_mesure_safe, 1e-6)
+  
+  # Génération
+  taux_stase <- matrix(0, nrow = n_stades, ncol = n_annees)
+  
+  # On ne boucle que sur les stades où p > 0
+  indices_actifs <- which(p_mesure_safe > 0)
+  
+  for(i in indices_actifs) {
+    taux_stase[i, ] <- rbeta(n = n_annees, 
+                             shape1 = alpha_params[i], 
+                             shape2 = b_params[i])
+  }
+  
+  return(taux_stase)
+}
 ```
 
