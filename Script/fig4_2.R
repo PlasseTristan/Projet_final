@@ -134,4 +134,3 @@ graphique_fig4_2 <- ggplot(df_fig4_2,
 #ggsave("figure4.png", plot = fig4, width = 6, height = 5, dpi = 300)
 #Afficher la figure 4 déja construite
 print(graphique_fig4_2)
-

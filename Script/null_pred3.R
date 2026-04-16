@@ -96,3 +96,4 @@ cat("\nLambda matrice originale (null_pred) :", round(Re(eigen(null_pred)$values
 cat("\nLambda matrice M8                   :", round(Re(eigen(M8)$values[1]), 6))
 
 null_pred3 <- M8
+null_pred3

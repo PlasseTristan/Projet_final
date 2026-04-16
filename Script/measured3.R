@@ -96,3 +96,4 @@ cat("\nLambda matrice originale (endangered) :", round(Re(eigen(measured)$values
 cat("\nLambda matrice M10                   :", round(Re(eigen(M10)$values[1]), 6))
 
 measured3 <- M10
+measured3
