@@ -1023,11 +1023,7 @@ stase_stochastique_3 <- function(matrice, n_annees) {
 ```
 #### Figure 2
 ```{r,fig.width=6,fig.height=12}
-fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
-  
-  # 1. Définition des taux de survie pour l'ensemencement (valeurs de votre étude)
-  survie_larve_vers_fry <- 0.023
-  survie_fry_vers_age1  <- 0.006
+fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage, nom_scenario,survie_larve_vers_fry,survie_fry_vers_age1) {
   
   # Calcul du recrutement effectif annuel issu du stockage
   # Ces poissons "apparaissent" directement comme des Age 1 (début du stade Pré-adulte)
@@ -1081,17 +1077,17 @@ fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage,
 
 # Calculs
 df_null <- bind_rows(
-  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage = stockage_nul, "No stocking"), 
-  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage_present, "Actual stocking"), 
-  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage_nul, "No stocking", 0.024, 0.007), 
+  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage_present, "Actual stocking", 0.024, 0.007), 
+  fig_2_opti_3x3(null_pred_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking", 0.024, 0.007))
 df_end <- bind_rows(
-  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_nul, "No stocking"),
-  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_present, "Actual stocking"),
-  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_nul, "No stocking",0.023, 0.007),
+  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_present, "Actual stocking",0.023, 0.007),
+  fig_2_opti_3x3(endangered_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking",0.023, 0.007))
 df_meas <- bind_rows(
-  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_nul, "No stocking"),
-  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_present, "Actual stocking"),
-  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_nul, "No stocking",0.023, 0.006),
+  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_present, "Actual stocking",0.023, 0.006),
+  fig_2_opti_3x3(measured_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking",0.023, 0.006))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
@@ -1310,6 +1306,139 @@ fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 print(fig3_3)
 #ggsave("images/figure3_3.png", plot = fig3_3, width = 6, height = 5, dpi = 300)
 ```
+```{r}
+simuler_trajectoires_adultes_3_opti <- function(matrice, n_iterations, n_annees = 100, stockage, survie_larve_vers_fry, survie_fry_vers_age1) {
+  n_stades <- 3
+  historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
+  
+  # --- Logique Ensemencement ---
+  # Survie larve -> age 1: 0.023 * 0.006 | Survie alevin -> age 1: 0.006
+  apport_recrutement <- round((stockage[1] * survie_larve_vers_fry * survie_fry_vers_age1 
+                               + stockage[2] * survie_larve_vers_fry))
+  
+  for (i in 1:n_iterations) {
+    # Génération des taux stochastiques pour les 100 ans
+    mat_fec  <- fecondite_stochastique_3(matrice, n_annees)
+    mat_surv <- survie_stochastique_3(matrice, n_annees)
+    mat_stas <- stase_stochastique_3(matrice, n_annees)
+    
+    # Population initiale (Stabilité à 1000 individus au total)
+    pop <- calculer_structure_initiale_3(matrice, 1000)
+    historique[i, 1] <- pop[3]
+    
+    for (t in 1:n_annees) {
+      M_t <- matrix(0, nrow = 3, ncol = 3)
+      
+      # 1. Transitions (Survie + Diagonale de Stase)
+      M_t[2,1] <- mat_surv[1, t] # Juv -> Pré-adulte
+      M_t[3,2] <- mat_surv[2, t] # Pré-adulte -> Adulte
+      
+      M_t[1,1] <- mat_stas[1, t] # Stase Juv (IMPORTANT : ne pas oublier)
+      M_t[2,2] <- mat_stas[2, t] # Stase Pré-adulte
+      M_t[3,3] <- mat_stas[3, t] # Stase Adulte
+      
+      # 2. Fécondité (Adulte -> Juvénile)
+      # On prend la ligne 1 de mat_fec qui correspond au taux des adultes (colonne 3)
+      M_t[1,3] <- mat_fec[3, t] 
+      
+      # 3. Projection
+      pop_next <- M_t %*% pop
+      
+      # 4. AJOUT DE L'ENSEMENCEMENT (au stade 2 : ceux qui ont survécu à l'an 1)
+      pop_next[2] <- pop_next[2] + apport_recrutement
+      
+      pop <- pmax(pop_next, 0) # On garde les décimales pour plus de fluidité
+      historique[i, t + 1] <- pop[3] # On stocke les Adultes
+    }
+  }
+  return(historique)
+}
+hist_null <- simuler_trajectoires_adultes_3_opti(null_pred_3,  5000, 100, stockage_present, 0.024, 0.007)
+hist_end  <- simuler_trajectoires_adultes_3_opti(endangered_3, 5000, 100, stockage_present, 0.023, 0.007)
+hist_meas <- simuler_trajectoires_adultes_3_opti(measured_3,   5000, 100, stockage_present, 0.023, 0.006)
+
+#Stocker les résultats dans un data frame unique
+df_final <- bind_rows(
+  calculer_stats(hist_null, "Null"),
+  calculer_stats(hist_end,  "Endangered"),
+  calculer_stats(hist_meas, "Measured")
+)
+
+#___________________________________________________________________________
+##lissage des résultats
+df_final$Scenario <- factor(df_final$Scenario, levels = c("Measured", "Endangered", "Null"))
+
+df_smoothed <- df_final %>%
+  group_by(Scenario) %>%
+  mutate(
+    Median = predict(loess(Median ~ Threshold, span = 0.15)),
+    Inf_70 = predict(loess(Inf_70 ~ Threshold, span = 0.15)),
+    Sup_70 = predict(loess(Sup_70 ~ Threshold, span = 0.15)),
+    
+    # Empêche les valeurs négatives dues au lissage
+    Median = pmax(Median, 0),
+    Inf_70 = pmax(Inf_70, 0),
+    Sup_70 = pmax(Sup_70, 0)
+  ) %>%
+  ungroup()
+
+#___________________________________________________________________________
+## un graphique combinant les trois scénarios avec un interval de confiance de 70%%
+fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
+  
+  geom_ribbon(aes(ymin = Inf_70, ymax = Sup_70, fill = Scenario),
+              alpha = 0.25, show.legend = FALSE) +
+  
+  geom_line(aes(y = Median, color = Scenario), linewidth = 1.1) +
+  
+  #Ajouter les couleurs voulues
+  scale_color_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    breaks = c("Null", "Endangered", "Measured")
+  ) +
+  #idem pour les intervalles
+  scale_fill_manual(
+    values = c("Null" = "black", "Endangered" = "red", "Measured" = "blue"),
+    guide  = "none"
+  ) +
+  
+  scale_y_continuous(
+    limits = c(0, 1.01),
+    breaks = seq(0, 1, 0.2),
+    expand = c(0, 0),
+    labels = function(x) sprintf("%.1f", x)
+  ) +
+  scale_x_continuous(
+    limits = c(0, 1000),
+    breaks = seq(0, 1000, 200),
+    expand = c(0, 0)
+  ) +
+  
+  theme_classic() +
+  labs(
+    x = "Valeurs seuils (Nombre d'individus matures)",
+    y = "Probabilité médiane d'être sous un certain\nseuil d'ici les 100 prochaines années"
+  ) +
+  
+  ##Les paramètres ici ont été proposé par l'ia pour ressembler le plus possible visuellement à la figure d'origine
+  theme(
+    text              = element_text(family = "serif"),
+    panel.border      = element_rect(colour = "black", fill = NA, linewidth = 1),
+    axis.line         = element_blank(),
+    legend.position   = c(0.80, 0.25),
+    legend.title      = element_blank(),
+    legend.text       = element_text(size = 11),
+    legend.key        = element_blank(),
+    legend.background = element_rect(fill = "white", color = NA),
+    axis.text         = element_text(color = "black", size = 11),
+    axis.title        = element_text(size = 12),
+    plot.margin       = margin(10, 20, 10, 10)
+  )
+#___________________________________________________________________________
+#Afficher la figure 3
+print(fig3_3)
+```
+
 #### Figure 4
 ```{r}
 fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
