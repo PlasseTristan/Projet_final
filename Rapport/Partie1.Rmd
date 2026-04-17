@@ -916,32 +916,23 @@ cat("Lambda agrégé : ", max(Re(eigen(null_pred_3)$values)), "\n") # Calcul du 
 ```
 #### Structure initiale
 ```{r}
-calculer_structure_initiale_3 <- function(matrice, n_mature_cible) {
-  # 1. Calculer les valeurs et vecteurs propres
-  # Le vecteur propre associé à la plus grande valeur propre (lambda) 
-  # représente la structure stable de la population.
-  ev <- eigen(matrice)
+#Structure initiale
+calculer_structure_initiale_3 <- function(matrice_3x3, nb_adultes_cible) {
+  # 1. Calculer les vecteurs propres
+  ev <- eigen(matrice_3x3)
   
-  # 2. Extraire le vecteur propre dominant (on prend la partie réelle)
-  # C'est la répartition proportionnelle "naturelle" des stades
-  ssd <- Re(ev$vectors[, 1])
+  # 2. Extraire le vecteur associé à la plus grande valeur propre (SSD)
+  # On prend la partie réelle et on s'assure que tout est positif
+  w <- abs(Re(ev$vectors[, 1]))
   
-  # 3. S'assurer que les valeurs sont positives
-  ssd <- abs(ssd)
+  # 3. Calculer le facteur d'échelle pour que le stade 3 (Adultes) soit égal à nb_cible
+  # Rapport : cible / valeur actuelle du stade 3 dans le vecteur propre
+  facteur <- nb_adultes_cible / w[3]
   
-  # 4. Identifier les stades matures (3 et 4 dans ta matrice)
-  # On calcule combien d'adultes il y a "relativement" dans ce vecteur
-  n_adultes_relatif <- ssd[3]
+  # 4. Appliquer le facteur et arrondir
+  pop_initiale <- round(w * facteur)
   
-  # 5. Calculer le facteur de mise à l'échelle
-  # On veut transformer ces proportions pour que Adultes = 1000
-  facteur <- n_mature_cible / n_adultes_relatif
-  
-  # 6. Appliquer le facteur à tous les stades
-  pop_initiale <- ssd * facteur
-  
-  # On retourne les valeurs arrondies (on ne peut pas avoir 0.5 poisson)
-  return(round(pop_initiale))
+  return(pop_initiale)
 }
 ```
 
@@ -1031,7 +1022,7 @@ stase_stochastique_3 <- function(matrice, n_annees) {
 }
 ```
 #### Figure 2
-```{r}
+```{r,fig.width=6,fig.height=12}
 fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
   
   # 1. Définition des taux de survie pour l'ensemencement (valeurs de votre étude)
@@ -1045,7 +1036,7 @@ fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage,
   apport_total_recrutement <- recrutement_larves + recrutement_fry
   
   # 2. Initialisation
-  pop_init <- struct(matrice_3x3, n_ini)
+  pop_init <- calculer_structure_initiale_3(matrice_3x3, n_ini)
   resultats_matures <- matrix(0, nrow = n_annees + 1, ncol = n_iterations)
   
   for (i in 1:n_iterations) {
@@ -1164,9 +1155,9 @@ graph_fig2 <- function(d1, d2, d3) {
 }
 
 # Pour l'afficher :
-graphique_fig2 <- graph_fig2(df_null, df_end, df_meas)
-print(graphique_fig2)
-
+graphique_fig2_3 <- graph_fig2(df_null, df_end, df_meas)
+print(graphique_fig2_3)
+#ggsave("images/fig_2_3.png",graphique_fig2_3)
 ```
 
 #### Figure 3
@@ -1297,7 +1288,7 @@ fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
   theme_classic() +
   labs(
     x = "Valeurs seuils (Nombre d'individus matures)",
-    y = "Probabilité médiane d'être sous un certain seuil d'ici les 100 prochaines années"
+    y = "Probabilité médiane d'être sous un certain\nseuil d'ici les 100 prochaines années"
   ) +
   
   ##Les paramètres ici ont été proposé par l'ia pour ressembler le plus possible visuellement à la figure d'origine
@@ -1317,9 +1308,9 @@ fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 #___________________________________________________________________________
 #Afficher la figure 3
 print(fig3_3)
-#ggsave("figure3.png", plot = fig3, width = 6, height = 5, dpi = 300)
+#ggsave("images/figure3_3.png", plot = fig3_3, width = 6, height = 5, dpi = 300)
 ```
-#### Figure 4s
+#### Figure 4
 ```{r}
 fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
   
@@ -1451,7 +1442,7 @@ graphique_fig4_3 <- ggplot(df_fig4_3,
     axis.title      = element_text(size = 12),
     plot.margin     = margin(40, 20, 10, 10)
   )
-#ggsave("figure4.png", plot = fig4, width = 6, height = 5, dpi = 300)
+#ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 5, dpi = 300)
 #Afficher la figure 4 déja construite
 print(graphique_fig4_3)
 ```
