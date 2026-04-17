@@ -78,7 +78,7 @@ fecondite_e <- c(18523, 21571, 24749, 27847, 30339, 32771, 35037, 36699,
                47231, 48144, 49019, 49841)
 
 # On place ces valeurs de Age 11 à Age 30 (colonnes 14 à 33)
-endangered[1, 14:33] <- fecondite_e
+endangered[1, 13:32] <- fecondite_e
 
 # Remplir la sous-diagonale (Taux de survie)
 survie_e <- c(
@@ -365,38 +365,41 @@ df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 ### Figure 3
 
 ```{r}
+
 fig_3_opti <- function(matrice, n_iterations, n_annees = 100, nom_scenario) {
+
   n_stades <- nrow(matrice) # 33 comme les matrices originelles
-  
+
   # Paramètre permettant l'ajout de stocks de base
   n_larves_supp <- 0
   n_fry_supp    <- 0
-  
+
   # Structure initiale de la population
   pop_init <- calculer_structure_initiale(matrice, 1000) # N0 = 1000 comme indiqué dans l'étude
   
   # Pré-allocation (matrice de résultats)
   historique <- matrix(0, nrow = n_iterations, ncol = n_annees + 1)
-  
+
   # Indices utiles pour éviter de les recalculer
   idx_matures <- 13:33 # Indices des stades matures
   idx_adultes_source <- 4:(n_stades - 1) # Indices des stades à l'année t-1
   idx_adultes_cible <- 5:n_stades # Indices des stades à l'année t
-  
+
   for (i in 1:n_iterations) {
+
     # Création des matrices stochastiques (survie et fécondité) pour chaque itération
     mat_fec_stoch  <- fecondite_stochastique(matrice, n_annees)
     mat_surv_stoch <- survie_stochastique(matrice, n_annees)
     
     # Vecteur de population actuel
     pop <- pop_init
-    
+
     # Nombre de matures au temps 0
     historique[i, 1] <- sum(pop[idx_matures])
-    
+  
     for (t in 1:n_annees) {
       pop_next <- numeric(n_stades)
-      
+    
       # --- ÉTAPE A : Survie des adultes ---
       # On multiplie et on arrondit immédiatement pour rester avec des individus entiers
       pop_next[idx_adultes_cible] <- round(pop[idx_adultes_source] * mat_surv_stoch[idx_adultes_source, t])
@@ -404,32 +407,34 @@ fig_3_opti <- function(matrice, n_iterations, n_annees = 100, nom_scenario) {
       # --- ÉTAPE B : Reproduction et recrutement ---
       # 1. Ponte
       n_oeufs <- round(sum(pop[idx_matures] * mat_fec_stoch[idx_matures, t]))
-      
+
       # 2. Traversée des stades 1-2-3 (Egg -> Larva -> Fry)
       n_larves <- round(n_oeufs * mat_surv_stoch[1, t]) + n_larves_supp
       n_fry    <- round(n_larves * mat_surv_stoch[2, t]) + n_fry_supp
-      
+
       # 3. Recrutement final au stade 4 (Age 1)
       pop_next[4] <- round(n_fry * mat_surv_stoch[3, t])
-      
+
       # Mise à jour
       pop <- pop_next
-      
+
       # Stockage du nombre de matures pour cette année
       historique[i, t + 1] <- sum(pop[idx_matures])
     }
   }
+
   # Défini les seuils de population à tester
   seuils <- seq(0, 1000, by = 1)
+
   # Nombre de simulations effectuées
   n_sims <- nrow(historique)
-  
+
   # Pré-allocation d'une matrice pour stocker les fréquences
   temps_sous_seuil <- matrix(0, nrow = n_sims, ncol = length(seuils))
   
   # Calcul de la proportion du temps passé sous chaque seuil
-  temps_sous_seuil <- sapply(seuils, function(s) rowMeans(historique < s))
-  
+  temps_sous_seuil <- sapply(seuils, function(s) rowMeans(historique [,2:102]< s))
+
   # Synthèse statistique 
   df_stats<-data.frame(
     Threshold = seuils,
@@ -438,6 +443,7 @@ fig_3_opti <- function(matrice, n_iterations, n_annees = 100, nom_scenario) {
     Sup_70    = apply(temps_sous_seuil, 2, quantile, probs = 0.85),
     Scenario  = factor(nom_scenario, levels = c("Null", "Endangered", "Measured"))
   )
+
   return(df_stats)
 }
 ```
@@ -1441,86 +1447,98 @@ print(fig3_3)
 
 #### Figure 4
 ```{r}
-fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
+fig_4_3x3 <- function(matrice_3x3, stockage_base, s_larve_fry, s_fry_age1, n_iterations = 100) {
   
-  # 1. Paramètres fixes (ensemencement actuel)
-  n_larve_base <- stockage_present[1]
-  n_fry_base   <- stockage_present[2]
-  n_stades     <- nrow(matrice_choisie)
+  # 1. Paramètres de survie pour l'ensemencement
+  # On calcule combien d'individus atteignent le Stade 2 (Age 1)
+  s_larve_to_age1 <- s_larve_fry * s_fry_age1
+  s_fry_to_age1   <- s_fry_age1
   
-  # Calcul des survies cumulées vers le stade 4 (Age 1)
-  s_larve_to_2 <- measured[3,2]*measured[4,3] # Survie Larve -> Fry -> Age 1
-  s_fry_to_2   <- measured[4,3] # Survie Fry -> Age 1
-  
-  simulate_point <- function(stocking_val, stage_to_stock) {
-    # Initialisation (SSD pour 1000 adultes)
-    pop <- calculer_structure_initiale_3(matrice_choisie, 1000)
+  # 2. Sous-fonction de simulation déterministe
+  simulate_point_3x3 <- function(stocking_val, stage_to_stock) {
     
+    # Initialisation de la population (structure stable pour 1000 adultes)
+    # On utilise votre fonction spécifique pour le 3x3
+    pop <- calculer_structure_initiale_3(matrice_3x3, 1000)
     
-    for (t in 1:100) {
-      # 1. Projection naturelle
-      pop <- as.vector(matrice_choisie %*% pop)
+    for (t in 1:n_iterations) {
+      # Projection matricielle : pop(t+1) = M * pop(t)
+      pop <- as.vector(matrice_3x3 %*% pop)
       
-      # 3. Ajout de l'EFFORT testé
+      # A. Application de l'ensemencement de BASE (actuel)
+      # On ajoute les larves et alevins convertis en Age 1 au Stade 2
+      apport_base <- (stockage_base[1] * s_larve_to_age1) + (stockage_base[2] * s_fry_to_age1)
+      pop[2] <- pop[2] + apport_base
+      
+      # B. Application de l'effort d'ensemencement SUPPLÉMENTAIRE (Scénarios)
       if (stage_to_stock == "Larva") {
-        # Les larves deviennent des Age 1 (Stade 2) après avoir survécu à l'Age 0
-        pop[2] <- pop[2] + (stocking_val * s_larve_to_2)
+        pop[2] <- pop[2] + (stocking_val * s_larve_to_age1)
       } else if (stage_to_stock == "Fry") {
-        # Les Fry sont plus vieux, on estime leur survie 1.5x meilleure que les larves
-        pop[2] <- pop[2] + (stocking_val * (s_fry_to_2))
+        pop[2] <- pop[2] + (stocking_val * s_fry_to_age1)
       } else if (stage_to_stock == "Age 1") {
-        # Injection directe au stade Juvénile (Stade 2)
+        # Ajout direct au Stade 2
         pop[2] <- pop[2] + stocking_val
       } else if (stage_to_stock == "Age 10") {
-        # Injection directe au stade Adulte (Stade 3 ou 4)
-        # On utilise l'indice 3 pour les adultes entrant en maturité
+        # Dans un modèle 3x3, l'Age 10 est simplement un "Adulte" (Stade 3)
         pop[3] <- pop[3] + stocking_val
       }
       
+      # Sécurité pour éviter les nombres négatifs
+      pop <- pmax(pop, 0)
     }
+    
+    # Retourne l'abondance du stade 3 (Adultes)
     return(pop[3])
   }
-  # 4. Création de la grille d'efforts
-  # Création d'une séquence logarithmique (10^0 à 10^9) pour couvrir tous les ordres de grandeur
-  efforts   <- seq(0, 9, length.out = 3000)
-  grid_vals <- c(0,10^efforts)
-  stades    <- c("Larva", "Fry", "Age 1", "Age 10")
   
-  # 5. Calcul et transformation des données 
-  # expand.grid crée toutes les combinaisons possibles entre efforts et stades
+  # 3. Création de la grille d'efforts (Log scale)
+  efforts  <- seq(0, 9, length.out = 500) # 500 points pour la fluidité
+  grid_vals <- c(0, 10^efforts)
+  stades   <- c("Larva", "Fry", "Age 1", "Age 10")
+  
+  # 4. Calcul des données
   df_clean <- expand.grid(Stocking = grid_vals, Stocking_Stage = stades) %>%
     mutate(
       Stocking_Stage = factor(Stocking_Stage, levels = stades),
-      # Application de la simulation à chaque ligne
-      Abundance_Mature = mapply(simulate_point, Stocking, as.character(Stocking_Stage))
+      Abundance_Mature = mapply(simulate_point_3x3, Stocking, as.character(Stocking_Stage))
     ) %>%
-    # Filtrage final pour le graphique
-    # On retire les valeurs nulles (log scale), les erreurs et on limite à l'échelle du graphique (5000)
     filter(Stocking > 0, 
            !is.na(Abundance_Mature), 
-           Abundance_Mature <= 5000)
+           Abundance_Mature <= 5000) # Limite identique à votre fig 4 originale
   
   return(df_clean)
 }
 
-df_fig4_3 <- fig_4_3(measured_3)
+# Exemple pour la matrice "measured"
+# Note : j'utilise les survies larves/alevins que vous avez utilisé dans la fig 2_3
+df_fig4_3x3 <- fig_4_3x3(
+  matrice_3x3 = measured_3, 
+  stockage_base = stockage_present, 
+  s_larve_fry = 0.023, 
+  s_fry_age1 = 0.006
+)
+```
 
-#_______________________________________________________________________
+
+```{r}
 stades <- c("Larva", "Fry", "Age 1", "Age 10")
+
 # Positionnement des labels (étiquettes sur les courbes)
+
 label_data <- data.frame(
   Stocking_Stage = factor(stades, levels = stades),
   Stocking       = c(1e7, 5e5, 3e3, 3e2), 
   Abundance_Mature = c(5400, 5400, 5400, 5400),
-  label          = c("Larva\nstocking", "Fry\nstocking", "Age 1\nstocking", "Age 10\nstocking")
-)
-#__________________________________________________________________________
+  label          = c("Larva\nstocking", "Fry\nstocking", "Age 1\nstocking", "Age 10\nstocking"))
+```
+
+```{r,fig.width=6, fig.height=4}
 #Créer la figure
-graphique_fig4_3 <- ggplot(df_fig4_3,
-                           aes(x        = Stocking,
-                               y        = Abundance_Mature,
-                               group    = Stocking_Stage, # Identifie les groupes pour tracer les lignes
-                               linetype = Stocking_Stage)) +
+graphique_fig4_3 <- ggplot(df_fig4_3x3,
+            aes(x        = Stocking,
+                y        = Abundance_Mature,
+                group    = Stocking_Stage, # Identifie les groupes pour tracer les lignes
+                linetype = Stocking_Stage)) +
   
   # Ajout des lignes de trajectoire
   geom_line(linewidth = 1, color = "black") +
@@ -1535,44 +1553,43 @@ graphique_fig4_3 <- ggplot(df_fig4_3,
   
   # Configuration de l'axe des X en échelle logarithmique
   scale_x_log10(
-    limits = c(1, 1e8), 
-    breaks = 10^(0:7),
-    # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
-    labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)),
-    # expand = c(0,0) force la ligne à toucher l'axe vertical
-    expand = c(0, 0) 
-  ) +
+      limits = c(1, 1e8), 
+      breaks = 10^(0:7),
+      # Cette fonction affiche "1" pour 10^0, puis 10^1, 10^2...
+      labels = function(x) ifelse(x == 1, "1", scales::label_log()(x)),
+      # expand = c(0,0) force la ligne à toucher l'axe vertical
+      expand = c(0, 0) 
+    ) +
   
   # Configuration de l'axe des Y (Échelle linéaire)
   scale_y_continuous(
-    limits = c(0, 6000),
-    breaks = seq(0, 5000, 1000),
-    expand = c(0, 0),
-  ) +
+      limits = c(0, 6000),
+      breaks = seq(0, 5000, 1000),
+      expand = c(0, 0),
+    ) +
   
   # Attribution manuelle des types de lignes (pointillés pour l'âge 10)
   scale_linetype_manual(values = c(
-    "Larva"  = "solid",
-    "Fry"    = "solid",
-    "Age 1"  = "solid",
-    "Age 10" = "dashed"
-  )) +
-  
+      "Larva"  = "solid",
+      "Fry"    = "solid",
+      "Age 1"  = "solid",
+      "Age 10" = "dashed"
+    )) +
+    
   theme_classic() +
-  labs(
-    x = "Stocking (N/yr)",
-    y = "Abundance of mature individuals (N)"
-  ) +
+    labs(
+      x = "Stocking (N/yr)",
+      y = "Abundance of mature individuals (N)"
+    ) +
   theme(
-    panel.border    = element_rect(colour = "black", fill = NA, linewidth = 1),
-    axis.line       = element_blank(),
-    legend.position = "none",
-    axis.text       = element_text(color = "black", size = 11),
-    axis.title      = element_text(size = 12),
-    plot.margin     = margin(40, 20, 10, 10)
-  )
-#ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 5, dpi = 300)
+      panel.border    = element_rect(colour = "black", fill = NA, linewidth = 1),
+      axis.line       = element_blank(),
+      legend.position = "none",
+      axis.text       = element_text(color = "black", size = 11),
+      axis.title      = element_text(size = 12),
+      plot.margin     = margin(40, 20, 10, 10)
+    )
+ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 4.5, dpi = 300)
 #Afficher la figure 4 déja construite
 print(graphique_fig4_3)
 ```
-
