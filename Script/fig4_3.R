@@ -16,8 +16,9 @@ fig_4_3 <- function(matrice_choisie, n_iterations = 100) {
     
     for (t in 1:100) {
       # 1. Projection naturelle
-      pop <- as.vector(matrice_choisie %*% pop)
       
+        pop <- matrice_choisie %*% pop
+        
       # 3. Ajout de l'EFFORT testé
       if (stage_to_stock == "Larva") {
         # Les larves deviennent des Age 1 (Stade 2) après avoir survécu à l'Age 0

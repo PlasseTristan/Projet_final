@@ -60,14 +60,14 @@ calculer_stats <- function(historique, nom_scenario) {
 
 #__________________________________________________________________________
 ##exécuter le code pour les 3 scénarios (5000 itérations)
-hist_null <- simuler_trajectoires_adultes_2(null_pred_3,  5000)
-hist_end  <- simuler_trajectoires_adultes_2(endangered_3, 5000)
-hist_meas <- simuler_trajectoires_adultes_3(measured_3,   1000)
+hist_null <- simuler_trajectoires_adultes_3(null_pred_3,  5000)
+hist_end  <- simuler_trajectoires_adultes_3(endangered_3, 5000)
+hist_meas <- simuler_trajectoires_adultes_3(measured_3,   5000)
 
 #Stocker les résultats dans un data frame unique
 df_final <- bind_rows(
-  #calculer_stats(hist_null, "Null"),
-  #calculer_stats(hist_end,  "Endangered"),
+  calculer_stats(hist_null, "Null"),
+  calculer_stats(hist_end,  "Endangered"),
   calculer_stats(hist_meas, "Measured")
 )
 

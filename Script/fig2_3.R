@@ -36,7 +36,8 @@ fig_2_opti_3 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_s
       pop_next <- round(M_t %*% pop)
       
       # Use s1 (Stage 1 -> 2) for added larvae/fry
-      surv_boosted_fry <- s1 
+      surv_boosted_fry <- (s1/measured[2,1])*measured[3,2]
+      sur_boosted_larves <- (s1/measured[3,2])
       
       pop_next[2] <- pop_next[2] + 
         round(n_larves_supp * s1) + 
@@ -59,17 +60,17 @@ fig_2_opti_3 <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_s
 }
 
 df_null <- bind_rows(
-  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_nul, "No stocking"), 
-  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_present, "Actual stocking"), 
-  fig_2_opti_3(null_pred_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3(null_pred_3, 5000, 100, 2000, stockage_nul, "No stocking"), 
+  fig_2_opti_3(null_pred_3, 5000, 100, 2000, stockage_present, "Actual stocking"), 
+  fig_2_opti_3(null_pred_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 df_end <- bind_rows(
-  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti_3(endangered_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3(endangered_3, 5000, 100, 2000, stockage_nul, "No stocking"),
+  fig_2_opti_3(endangered_3, 5000, 100, 2000, stockage_present, "Actual stocking"),
+  fig_2_opti_3(endangered_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 df_meas <- bind_rows(
-  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_nul, "No stocking"),
-  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_present, "Actual stocking"),
-  fig_2_opti_3(measured_3, 5000, 100, 1000, stockage_propose, "Theoretical stocking"))
+  fig_2_opti_3(measured_3, 5000, 100, 2000, stockage_nul, "No stocking"),
+  fig_2_opti_3(measured_3, 5000, 100, 2000, stockage_present, "Actual stocking"),
+  fig_2_opti_3(measured_3, 5000, 100, 2000, stockage_propose, "Theoretical stocking"))
 
 # Remplace les 0 par 0.1 pour permettre le calcul du log10 sans déformer le graphique
 df_null <- df_null %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0.1, 0.0001, .x)))
@@ -132,3 +133,6 @@ graph_fig2_3 <- function(d1, d2, d3) {
 
 graphique_fig2_3 <- graph_fig2_3(df_null, df_end, df_meas)
 print(graphique_fig2_3)
+
+
+
