@@ -18,7 +18,7 @@ corresponding_author:
     text: "Yohan.Wegener@USherbrooke.ca"   
 
 abstract: |
-  Ce travail se voit être une suite logique aux recherches effectuées sur l'état de la population de Chevalier cuivré (*Moxostoma hubbsi*), espèce endémique du Québec et considérée menacée. Des estimations stochastiques basées sur des matrices de leslie à 33 stades distincts ont été éffectuées par ... dans ... étude. Nous avons bâtit un modèle de matrice de levkovitch à 3 stades pour estimer s'il est possible d'arriver à des résultats aussi comcluants avec une méthode simplifiée. Notre méthode s'est avérée concuante et les résultats obtenus indiquent les mêmes tendances que ceux obtenus précédement par ...
+  Ce travail se voit être une suite logique aux recherches effectuées sur l'état de la population de Chevalier cuivré (*Moxostoma hubbsi*), espèce endémique du Québec et considérée menacée. Des estimations stochastiques basées sur des matrices de leslie à 33 stades distincts ont été éffectuées par Bannester & al.. Nous avons bâtit un modèle de matrice de levkovitch à 3 stades pour estimer s'il est possible d'arriver à des résultats aussi concluants avec une méthode simplifiée. Notre méthode s'est avérée concuante et les résultats obtenus indiquent les mêmes tendances que ceux obtenus précédement par Bannester & al.. L'on peut donc estimer qu'une matrice de levkovich est suffisante pour effectuer une PVA et qu'une matrice de leslie n'est pas une nécéssité.
 
 keywords:
   - Chevalier Cuivré
@@ -47,12 +47,7 @@ Le Chevalier cuivré est une espèce de poisson d'eau douce endémique au Québe
 Méthodologie {.unnumbered}
 ========================================
 
-Please note that whilst this template provides a preview of the typeset
-manuscript for submission, to help in this preparation, it will not
-necessarily be the final publication layout. For more detailed
-information please see the [PNAS Information for
-Authors](http://www.pnas.org/site/authors/format.xhtml).
-
+Les données de bases ont directement été tirées de l'article de XXX. Elles se présentes sous la forme d'une matrices de leslie à 33 satdes ou la sous-diagonales représente les survies de chaque stade et où la fécondité est représentée par la première rangée (Fig 1). Nous avons choisi de simplifier cette matrice en matrice de levkovich à 3 stades. Les trois stades intra-annuels de la matrice de leslie originale, représentés par les termes "eggs", "larvae" et "fry", forment notre premier stade nommé "Juvéniles". Les stades 1 à 13 corespondants aux individus adultes non reproducteurs ont été agréggés pour former notre deuxième stade nommé "Jeunes adultes". Puis, les stades 14 à 33, correspondants aux individus adultes reproducteurs ont été agréggés dans un troisième stade nommé "Adultes". La fécondité des individus reproducteurs a été estimée en faisant la moyenne des fécondités des stades 13 à 14. MÉTHODOLOGIE STASES ET SURVIE, MÉTHODOLOGIE STOCHSTICITÉ.
 
 Résultats {#author-affiliations .unnumbered}
 -------------------
