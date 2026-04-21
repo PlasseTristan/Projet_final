@@ -4,7 +4,7 @@ title: Essai de modélisation de la situation du Chavalier Cuivré (*Moxostoma h
 # Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
 author:
   - name: Tristan Plasse
-    affiliation: a,1,2
+    affiliation: a
   - name: Yohan Wegener
     affiliation: a
 address:
@@ -13,10 +13,7 @@ address:
     
 
 abstract: |
-  Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
-
-acknowledgements: |
-  Please include your acknowledgments here, set in a single paragraph. Please do not include any acknowledgments in the Supporting Information, or anywhere else in the manuscript.
+  Ce travail se voit être une suite logique aux recherches effectuées sur l'état de la population de Chevalier cuivré (*Moxostoma hubbsi*), espèce endémique du Québec et considérée menacée. Des estimations stochastiques basées sur des matrices de leslie à 33 stades distincts ont été éffectuées par ... dans ... étude. Nous avons bâtit un modèle de matrice de levkovitch à 3 stades pour estimer s'il est possible d'arriver à des résultats aussi comcluants avec une méthode simplifiée. Notre méthode s'est avérée concuante et les résultats obtenus indiquent les mêmes tendances que ceux obtenus précédement par ...
 
 keywords:
   - Chevalier Cuivré
