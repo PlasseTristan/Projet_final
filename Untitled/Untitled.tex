@@ -13,7 +13,44 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 
+% Pandoc citation processing
+%From Pandoc 3.1.8
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
+\usepackage{graphicx}
+\setkeys{Gin}{height=0.75\textheight,keepaspectratio}
 
 \templatetype{pnasresearcharticle}  % Choose template
 
@@ -49,13 +86,13 @@ Ce travail se voit être une suite logique aux recherches effectuées sur
 l'état de la population de Chevalier cuivré (\emph{Moxostoma hubbsi}),
 espèce endémique du Québec et considérée menacée. Des estimations
 stochastiques basées sur des matrices de leslie à 33 stades distincts
-ont été éffectuées par Bannester \& al.~(2025). Nous avons bâtit un
-modèle de matrice de levkovitch à 3 stades pour estimer s'il est
-possible d'arriver à des résultats aussi concluants avec une méthode
+ont été éffectuées par Bannester-Marchand et al. (2025). Nous avons
+bâtit un modèle de matrice de levkovitch à 3 stades pour estimer s'il
+est possible d'arriver à des résultats aussi concluants avec une méthode
 simplifiée. Notre méthode s'est avérée concuante et les résultats
 obtenus indiquent les mêmes tendances que ceux obtenus précédement par
-Bannester \& al.(2025). L'on peut donc estimer qu'une matrice de
-levkovich est suffisante pour modéliser une PVA et qu'une matrice de
+Bannester-Marchand et al. (2025). L'on peut donc estimer qu'une matrice
+de levkovich est suffisante pour modéliser une PVA et qu'une matrice de
 leslie n'est pas une nécéssité.
 \end{abstract}
 
@@ -89,50 +126,150 @@ viable. Plus de 14 000 larves et 230 000 alevins sont ainsi enscemencés
 dans la rivière Richelieu chaque année pour palier à un taux de
 recrutement très faible. Une des principale difficultées concernant la
 conservation de cette espèce est le grand manque de connaissances
-biologiques sur son histoire de vie. Une étude de XXX a été réalisée
-pour estimer la viabilité de la population à long terme de l'espèce
-selon 3 scénarios distincs qui prennent en compte la situation actuelle
-de l'espèce (source). Cette étude a utilisé un modèle de matrice de
-leslie à 33 stades pour effectuer une PVA et pour estimer l'effet de
-l'enscemencement à long terme sur la population. Notre objectif pour ce
-travail est de répéter leurs analyses tout en construisant un modèle
-plus simple de matrice de levkovich à 3 stades seulement.
+biologiques sur son histoire de vie. Une étude a été réalisée pour
+estimer la viabilité de la population à long terme de l'espèce selon 3
+scénarios distincs qui prennent en compte la situation actuelle de
+l'espèce (Bannester-Marchand et al. 2025). Cette étude a utilisé un
+modèle de matrice de leslie à 33 stades pour effectuer une PVA et pour
+estimer l'effet de l'enscemencement à long terme sur la population.
+Notre objectif pour ce travail est de répéter leurs analyses tout en
+construisant un modèle plus simple de matrice de levkovich à 3 stades
+seulement.
 
 \section*{Méthodologie}\label{muxe9thodologie}
 \addcontentsline{toc}{section}{Méthodologie}
 
 Les données de bases ont directement été tirées de l'article de
-Bannester \& al.(2025). Elles se présentes sous la forme d'une matrices
-de leslie à 33 satdes où la sous-diagonales représente les survies de
-chaque stade et où la fécondité est représentée par la première rangée
-(Fig 1). Nous avons choisi de simplifier cette matrice en matrice de
-levkovich à 3 stades. Les trois stades intra-annuels de la matrice de
-leslie originale, représentés par les termes ``eggs'', ``larvae'' et
-``fry'', forment notre premier stade nommé ``Juvéniles''. Les stades 1 à
-13, corespondants aux individus adultes non reproducteurs, ont été
-agréggés pour former notre deuxième stade nommé ``Jeunes adultes''.
-Puis, les stades 14 à 33, correspondants aux individus adultes
-reproducteurs, ont été agréggés dans un troisième stade nommé
-``Adultes''. La fécondité des individus reproducteurs a été estimée en
-faisant la moyenne des fécondités des stades 13 à 14.Comme dans l'étude
-de Bannester \& al.(2025), la fécondité du stade reproducteur comporte
-une portion de variabilité ajoutée dûe à la stochasticité. Cette
-variabilité à été ajouté en assumant que la fécondité annuelle des
-individus variait selon une loi normale ayant une moyenne de 0 et un
-écart-type de 0,25. Ainsi, la fécondité des individus varie entre aucun
-oeuf par année jusqu'au double de la moyenne annuelle. Contrairement à
-l'étude de Bannester \& al.(2025),où chaque classe d'âge subissait une
-variabilité différente annuellement, tous les individus subissent la
-même variabilité au niveau de la fécondité annuelle. Pour la variabilité
-concernant les taux de survie, la méthode utilisée est celle de
-Bannester \& al.(2025), où l'on assume que ces taux suivent une
-distribution beta.
+Bannester-Marchand et al. (2025). Elles se présentes sous la forme d'une
+matrices de leslie à 33 satdes où la sous-diagonales représente les
+survies de chaque stade et où la fécondité est représentée par la
+première rangée (Fig 1).
 
-MÉTHODOLOGIE STASES ET SURVIE, MÉTHODOLOGIE STOCHASTICITÉ survie \&
-stase.
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.9\textheight]{Untitled_files/Untitled_files/population_table.png}
+\caption{Résultats de notre analyse. Est représenté : Abondance médiane
+de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les
+scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique.
+Les enveloppes colorées représentent les intervalles de confiance à 95\%
+; les lignes pleines les abondances médianes d'individus matures.}
+\end{figure}
+
+Nous avons choisi de simplifier cette matrice en matrice de levkovich à
+3 stades. Les trois stades intra-annuels de la matrice de leslie
+originale, représentés par les termes ``eggs'', ``larvae'' et ``fry'',
+forment notre premier stade nommé ``Juvéniles''. Les stades 1 à 13,
+corespondants aux individus adultes non reproducteurs, ont été agréggés
+pour former notre deuxième stade nommé ``Jeunes adultes''. Puis, les
+stades 14 à 33, correspondants aux individus adultes reproducteurs, ont
+été agréggés dans un troisième stade nommé ``Adultes''.
+
+La méthodologie utilisé est tirée de Hinrichsen, Yokomizo, and
+Salguero-Gómez (2026). Dans un premier temps, la dynamique est formulée
+sous forme matricielle :
+
+\[
+x(t+1) = Ax(t)
+\]
+
+où \(x(t)\) représente la distribution des individus par classe d'âge au
+temps t, et A la matrice de Leslie contenant les taux de survie et de
+fécondité.
+
+Une procédure d'agrégation est ensuite appliquée afin de réduire le
+nombre de classes. Cette étape repose sur une matrice de partition S,
+permettant de projeter la structure initiale vers une structure agrégée
+:
+
+\[
+y(t) = Sx(t)
+\] où \(y(t)\) correspond à la population regroupée en classes plus
+larges.
+
+La matrice agrégée B est construite de manière à approximer la dynamique
+du système initial sur une échelle temporelle adaptée :
+
+\[
+B = SA^KT
+\]
+
+où \(k\) représente le nombre de pas de temps agrégés et \(T\) une
+matrice de transformation dépendant notamment de la distribution stable
+du système.
+
+Cette construction vise à préserver des propriétés essentielles,
+notamment le taux de croissance asymptotique \(\lambda\) (valeur propre
+dominante de A) ainsi que les élasticités, qui mesurent la sensibilité
+de \(\lambda\) aux paramètres de la matrice.
+
+Comme dans l'étude de Bannester-Marchand et al. (2025), la fécondité du
+stade reproducteur comporte une portion de variabilité ajoutée dûe à la
+stochasticité. Cette variabilité à été ajouté en assumant que la
+fécondité annuelle des individus variait selon une loi normale ayant une
+moyenne de 0 et un écart-type de 0,25. Ainsi, la fécondité des individus
+varie entre aucun oeuf par année jusqu'au double de la moyenne annuelle.
+Contrairement à l'étude de Bannester-Marchand et al. (2025),où chaque
+classe d'âge subissait une variabilité différente annuellement, tous les
+individus subissent la même variabilité au niveau de la fécondité
+annuelle.
+
+Pour la variabilité concernant les taux de survie, la méthode utilisée
+est celle de Bannester-Marchand et al. (2025), où l'on assume que ces
+taux suivent une distribution beta. La forme du paramètre \(\alpha\) est
+défini comme suit: \[
+\frac{s_{stade} \times \beta}{1 - s_{stade}}
+\] où \(s_{age}\) est la survie totale du stade, en ne prenant pas en
+compte les individus qui reste dans ce dernier et \(\beta\) corespond
+aux valeurs de beta définies. Ces valeurs sont les mêmes que dans
+l'étude originale de Bannester-Marchand et al. (2025). Donc, une valeur
+de 5,05 pour le stade Juvéniles et de 0,75 pour le satde Jeunes adultes.
+
+Pour la variabilité au niveau des probabilités qu'un individu reste dans
+le même stade, la même logique que celle pour la survie a été utilisée.
+Cependant, les valeurs de \(\beta\) ont été modifées pour éviter que la
+somme de la survie annuelle et de la proportion qui reste dans le stade
+soit supérieure à 1. En effet, il serait biologiquement impossible que
+plus d'individus survivent à l'année qu'il y ait d'individus. Les
+valeurs de \(/beta\) utilisé pour ces taux sont 10, assurant ainsi une
+variabilité plus modérée.
+
+MÉTHODOLOGIE STOCHASTICITÉ survie \& stase.
 
 \subsection*{Résultats}\label{author-affiliations}
 \addcontentsline{toc}{subsection}{Résultats}
+
+BLABLABLA
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/fig_2_3.png}
+\caption{Résultats de notre analyse. Est représenté : Abondance médiane
+de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les
+scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique.
+Les enveloppes colorées représentent les intervalles de confiance à 95\%
+; les lignes pleines les abondances médianes d'individus matures.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure3_3.png}
+\caption{Résultats de notre analyse. Est représenté : Les probabilités
+que les chevaliers cuivrés tombent sous un seuil de population dans les
+prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de
+population. Lignes : médiane de 5000 itérations; enveloppes colorées :
+70\% ICs}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure4_3.png}
+\caption{Résultats de notre analyse. Est représenté : L'effet
+d'augmenter l'ensemencement de larves, alevins, individus d'âges 1, et
+individus matures (âge 10) sur l'abondance de chevaliers matures sur 100
+ans dans notre scénario mesuré. Lors de l'application aux scénarios
+nulles et menacés, les résultats étaient indistinguables de ceux
+présentés.}
+\end{figure}
 
 Include department, institution, and complete address, with the
 ZIP/postal code, for each author. Use lower case letters to match
@@ -150,6 +287,22 @@ PNAS'' option in the top bar of the editor window.
 \showmatmethods
 \showacknow
 \pnasbreak
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-bannester-marchand_population_2025}
+Bannester-Marchand, N, N Vachon, Ne Mandrak, and Fg Blanchet. 2025.
+{``Population Viability Analysis of the Endangered Copper Redhorse
+{Moxostoma} Hubbsi.''} \emph{Endangered Species Research} 57 (May):
+21--31. \url{https://doi.org/10.3354/esr01395}.
+
+\bibitem[\citeproctext]{ref-hinrichsen_theory_2026}
+Hinrichsen, Richard A., Hiroyuki Yokomizo, and Roberto Salguero-Gómez.
+2026. {``From Theory to Application: {Elasticity}-Consistent Aggregation
+of {Leslie} Matrix Population Models for Comparative Demography.''}
+\url{https://doi.org/10.64898/2026.02.04.703802}.
+
+\end{CSLReferences}
 
 
 
