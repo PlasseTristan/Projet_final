@@ -84,7 +84,7 @@ Pour la variabilité concernant les taux de survie, la méthode utilisée est ce
 $$
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 $$
-où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
+où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le stade Jeunes adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
 
@@ -103,7 +103,7 @@ $$
 
 Résultats {.unnumbered}
 -------------------
-BLABLABLA
+Nos matrices à 3 stades nous on permis de reproduire des analyses similaires aux analyses préalablement effectuées par @bannester-marchand_population_2025. Une analyse de viabilité de la population a été effectuée pour les 3 scénarios, "mesurée", "menacé", et "null". Pour chaque scénario, un niveau d'escemencement différent à été ajouté au modèle pour représenter la réalité actuelle et les recomendations théoriques de XXX. 
 
 
 ![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
