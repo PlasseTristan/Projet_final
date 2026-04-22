@@ -84,9 +84,20 @@ $$
 $$
 où $s_{age}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
 
-Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $/beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
+Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
 
-MÉTHODOLOGIE STOCHASTICITÉ survie & stase.
+Un modèle de viabilité des populations avec stochasticité annuelle des taux de survie et de fécondité a été développé selon la même méthode que celle proposée par @bannester-marchand_population_2025.
+
+Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur une période de $t = 100$ ans. La probabilité d'extinction est définie par la condition où l'abondance totale devient nulle :
+
+$$
+P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
+$$
+De plus, nous avons calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique :
+
+$$
+P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
+$$
 
 Résultats {#author-affiliations .unnumbered}
 -------------------
