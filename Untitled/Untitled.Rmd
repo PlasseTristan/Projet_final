@@ -47,15 +47,10 @@ Actuellement, des ensemencements sont effectués chaque année afin de maintenir
 Méthodologie {.unnumbered}
 ========================================
 
-<<<<<<< HEAD
+
 ### Données {.unnumbered}
 
 \indent Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios «nul» et «menacée») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
-=======
-  Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios « nul » et « menacée ») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
-  
-![Données utilisées pour la matrice mesurée. Est représenté : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=80% }
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 
 ![Données utilisées pour la matrice mesurée. Sont représentés : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=90% }
 
@@ -77,11 +72,7 @@ $$
 \noindent où $y(t)$ correspond à la population agrégée. La matrice agrégée $\hat{B}$ ($m \times m$) est construite par :
 
 $$
-<<<<<<< HEAD
 \hat{B} = PA^kQ
-=======
-B = S A^K T
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 $$
 
 \noindent où $k$ représente le nombre de pas de temps passé dans le stade agrégé et $Q$ est une matrice de poids d'agrégation déterminée par :
@@ -99,22 +90,19 @@ Pour la variabilité concernant les taux de survie, la méthode utilisée est ce
 $$
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 $$
-<<<<<<< HEAD
 \noindent où $s_{age}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ correspond aux valeurs de beta définies. Les valeurs sélectionnés sont les valeurs tirées de @bannester-marchand_population_2025 ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade Juvéniles et de 0,75 pour le stade adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifiées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $/beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
-=======
+
 où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 
 Un modèle de viabilité des populations avec stochasticité annuelle des taux de survie et de fécondité a été développé selon la même méthode que celle proposée par @bannester-marchand_population_2025.
 
-<<<<<<< HEAD
-Résultats {#author-affiliations .unnumbered}
+
+Résultats {.unnumbered}
 ========================
-=======
 Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur une période de $t = 100$ ans. La probabilité d'extinction est définie par la condition où l'abondance totale devient nulle :
 
 $$
@@ -126,12 +114,6 @@ $$
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
 $$
 
-Résultats {.unnumbered}
--------------------
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
-BLABLABLA
-
-
 ![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
 
 ![Résultats de notre analyse. Est représenté : Les probabilités que les chevaliers cuivrés tombent sous un seuil de population dans les prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de population. Lignes : médiane de 5000 itérations; enveloppes colorées : 70% ICs](Untitled_files/figure3_3.png "Title"){ width=50% height=50% }
@@ -139,15 +121,9 @@ BLABLABLA
 ![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](Untitled_files/figure4_3.png "Title"){ width=50% height=50% }
 
 
-BLABLA
 
-<<<<<<< HEAD
 Discussion {#submitting-manuscripts .unnumbered}
 ========================
-=======
-Discussion {.unnumbered}
-----------------------
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 
 BLABLA
 
