@@ -3,6 +3,8 @@ title: Analyse de viabilité de population de la situation du Chavalier Cuivré 
 
 ## Style de citation
 csl: universite-de-montreal-apa.csl
+acknowledgments: |
+significance: |
 
 header-includes:
   - \usepackage{graphicx}
@@ -46,8 +48,8 @@ Méthodologie {.unnumbered}
 ========================================
 
   Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios « nul » et « menacée ») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
-
-![Données utilisées pour la matrice mesurée. Est représenté : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=90% }
+  
+![Données utilisées pour la matrice mesurée. Est représenté : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=80% }
 
   Afin de simplifier cette matrice en matrice de Lefkovitch à 3 stades, les trois stades intra-annuels de la matrice de Leslie originale, représentés par les termes «eggs», «larvae» et «fry», ont été combinés en un premier stade nommé "Juvéniles". Les stades 1 à 13, correspondant aux individus adultes non reproducteurs, ont été agrégés pour former le deuxième stade nommé "Pré-adultes". Puis, les stades 14 à 33, correspondants aux individus adultes reproducteurs, ont été agrégés dans un troisième stade nommé "Adultes". 
 
@@ -69,7 +71,7 @@ où $y(t)$ correspond à la population regroupée en classes plus larges.
 La matrice agrégée B est construite de manière à approximer la dynamique du système initial sur une échelle temporelle adaptée :
 
 $$
-B = SA^KT
+B = S A^K T
 $$
 
 où $k$ représente le nombre de pas de temps agrégés et $T$ une matrice de transformation dépendant notamment de la distribution stable du système.
@@ -82,7 +84,7 @@ Pour la variabilité concernant les taux de survie, la méthode utilisée est ce
 $$
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 $$
-où $s_{age}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
+où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
 
@@ -111,19 +113,12 @@ BLABLABLA
 ![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](Untitled_files/figure4_3.png "Title"){ width=50% height=50% }
 
 
-Include department, institution, and complete address, with the
-ZIP/postal code, for each author. Use lower case letters to match
-authors with institutions, as shown in the example. Authors with an
-ORCID ID may supply this information at submission.
+BLABLA
 
 Discussion {#submitting-manuscripts .unnumbered}
 ----------------------
 
-All authors must submit their articles at
-[PNAScentral](http://www.pnascentral.org/cgi-bin/main.plex). If you are
-using Overleaf to write your article, you can use the "Submit to PNAS"
-option in the top bar of the editor window.
-
+BLABLA
 
 
 \pnasbreak

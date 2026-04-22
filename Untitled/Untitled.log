@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.4.21)  22 APR 2026 13:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.4.21)  22 APR 2026 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1148,53 +1148,51 @@ Overfull \hbox (6.75267pt too wide) in paragraph at lines 291--297
  [][] 
  []
 
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 312.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 6.64998pt on input line 312.
-[2{c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./Untitled_files/Untitled_files/population_table.png>]
-Underfull \hbox (badness 1043) in paragraph at lines 318--322
+
+Underfull \hbox (badness 1043) in paragraph at lines 312--316
 []\T1/lmr/m/n/9 (+20) Bannester-Marchand, N., Va-chon, N., Man-drak, N. et
  []
 
 
-Underfull \hbox (badness 1783) in paragraph at lines 324--329
+Underfull \hbox (badness 1783) in paragraph at lines 318--323
 []\T1/lmr/m/n/9 (+20) COSEPAC. (2014). Éval-u-a-tion et Rap-port de sit-u-a-
  []
 
 
-Underfull \hbox (badness 1460) in paragraph at lines 324--329
+Underfull \hbox (badness 1460) in paragraph at lines 318--323
 \T1/lmr/m/n/9 (+20) tion du COSEPAC sur le cheva-lier cuivré (\T1/lmr/m/it/9 (+20) Mox-os-
  []
 
 
-Underfull \hbox (badness 1092) in paragraph at lines 324--329
+Underfull \hbox (badness 1092) in paragraph at lines 318--323
 \T1/lmr/m/it/9 (+20) toma hubbsi\T1/lmr/m/n/9 (+20) ) au Canada. \T1/lmr/m/it/9 (+20) Comité sur la sit-u-a-tion
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 324--329
+Underfull \hbox (badness 1152) in paragraph at lines 318--323
 \T1/lmr/m/it/9 (+20) des es-pèces en péril au Canada\T1/lmr/m/n/9 (+20) , xiii + 81. [][][]$\T1/phv/m/n/9 (+20) https :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 324--329
+Underfull \hbox (badness 10000) in paragraph at lines 318--323
 \T1/phv/m/n/9 (+20) / / wildlife-[]species . canada . ca / species-[]risk-[]registry / virtual _
  []
 
-[3 <./Untitled_files/Untitled_files/fig_2_3.png> <./Untitled_files/Untitled_files/figure3_3.png> <./Untitled_files/Untitled_files/figure4_3.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 365--369
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 323.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 6.64998pt on input line 323.
+[2{c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./Untitled_files/Untitled_files/population_table.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 359--363
 \T1/phv/m/n/9 (+20) 356970163 _ Reproduction _ arti^^\cielle _ ensemencements _ et _
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 365--369
+Underfull \hbox (badness 10000) in paragraph at lines 359--363
 \T1/phv/m/n/9 (+20) suivi _ de _ la _ population _ du _ chevalier _ cuivre _ Moxostoma _
  []
 
-[4
-
-] 
+[3 <./Untitled_files/Untitled_files/fig_2_3.png> <./Untitled_files/Untitled_files/figure3_3.png> <./Untitled_files/Untitled_files/figure4_3.png>] 
 enddocument/afterlastpage: lastpage setting LastPage.
 (./Untitled.aux)
  ***********
@@ -1205,18 +1203,18 @@ Package rerunfilecheck Info: File `Untitled.out' has not changed.
 (rerunfilecheck)             Checksum: CF8095A3DCF6FBEA7E1E56E8727703E9;322.
  ) 
 Here is how much of TeX's memory you used:
- 30095 strings out of 476021
- 563714 string characters out of 5789794
+ 30093 strings out of 476021
+ 563699 string characters out of 5789794
  1954496 words of memory out of 5000000
  51384 multiletter control sequences out of 15000+600000
- 644186 words of font info for 216 fonts, out of 8000000 for 9000
+ 644138 words of font info for 215 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  117i,14n,121p,1005b,1114s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Untitled.pdf (4 pages, 836361 bytes).
+Output written on Untitled.pdf (3 pages, 834529 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
- 120 compressed objects within 2 object streams
- 19 named destinations out of 1000 (max. 500000)
+ 153 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 18 named destinations out of 1000 (max. 500000)
  61497 words of extra memory for PDF output out of 61914 (max. 10000000)
 
