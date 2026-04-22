@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.22)  22 APR 2026 14:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.22)  22 APR 2026 19:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1116,10 +1116,10 @@ Package hyperref Warning: The anchor of a bookmark and its parent's must not
 
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 (Font)              scaled to size 5.69998pt on input line 163.
-<Untitled_files/population_table.png, id=29, 235.3593pt x 453.3738pt>
-File: Untitled_files/population_table.png Graphic file (type png)
-<use Untitled_files/population_table.png>
-Package pdftex.def Info: Untitled_files/population_table.png  used on input line 166.
+<Untitled_files/Untitled_files/population_table.png, id=29, 235.3593pt x 453.3738pt>
+File: Untitled_files/Untitled_files/population_table.png Graphic file (type png)
+<use Untitled_files/Untitled_files/population_table.png>
+Package pdftex.def Info: Untitled_files/Untitled_files/population_table.png  used on input line 166.
 (pdftex.def)             Requested size: 123.05191pt x 237.03554pt.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 (Font)              scaled to size 6.64998pt on input line 170.
@@ -1136,42 +1136,42 @@ File: mt-bch.cfg 2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)
 ) [1{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 
 
- <./Untitled_files/population_table.png>]
-<Untitled_files/fig_2_3.png, id=48, 433.3791pt x 867.24pt>
-File: Untitled_files/fig_2_3.png Graphic file (type png)
-<use Untitled_files/fig_2_3.png>
-Package pdftex.def Info: Untitled_files/fig_2_3.png  used on input line 271.
+ <./Untitled_files/Untitled_files/population_table.png>]
+<Untitled_files/Untitled_files/fig_2_3.png, id=48, 433.3791pt x 867.24pt>
+File: Untitled_files/Untitled_files/fig_2_3.png Graphic file (type png)
+<use Untitled_files/Untitled_files/fig_2_3.png>
+Package pdftex.def Info: Untitled_files/Untitled_files/fig_2_3.png  used on input line 272.
 (pdftex.def)             Requested size: 123.04482pt x 246.22643pt.
-<Untitled_files/figure3_3.png, id=49, 433.62pt x 361.35pt>
-File: Untitled_files/figure3_3.png Graphic file (type png)
-<use Untitled_files/figure3_3.png>
-Package pdftex.def Info: Untitled_files/figure3_3.png  used on input line 281.
+<Untitled_files/Untitled_files/figure3_3.png, id=49, 433.62pt x 361.35pt>
+File: Untitled_files/Untitled_files/figure3_3.png Graphic file (type png)
+<use Untitled_files/Untitled_files/figure3_3.png>
+Package pdftex.def Info: Untitled_files/Untitled_files/figure3_3.png  used on input line 282.
 (pdftex.def)             Requested size: 123.04704pt x 102.5392pt.
-<Untitled_files/figure4_3.png, id=50, 433.62pt x 325.215pt>
-File: Untitled_files/figure4_3.png Graphic file (type png)
-<use Untitled_files/figure4_3.png>
-Package pdftex.def Info: Untitled_files/figure4_3.png  used on input line 291.
+<Untitled_files/Untitled_files/figure4_3.png, id=50, 433.62pt x 325.215pt>
+File: Untitled_files/Untitled_files/figure4_3.png Graphic file (type png)
+<use Untitled_files/Untitled_files/figure4_3.png>
+Package pdftex.def Info: Untitled_files/Untitled_files/figure4_3.png  used on input line 292.
 (pdftex.def)             Requested size: 123.04704pt x 92.28528pt.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 312.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 313.
 LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 6.64998pt on input line 312.
-[2{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./Untitled_files/fig_2_3.png> <./Untitled_files/figure3_3.png>]
+(Font)              scaled to size 6.64998pt on input line 313.
+[2{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./Untitled_files/Untitled_files/fig_2_3.png> <./Untitled_files/Untitled_files/figure3_3.png>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 323.
+(Font)              <8> on input line 324.
 
-Underfull \hbox (badness 1303) in paragraph at lines 372--376
+Underfull \hbox (badness 1303) in paragraph at lines 373--377
 \T1/lmr/m/it/8 (+20) en 2019\T1/lmr/m/n/8 (+20) . [][][]$\T1/phv/m/n/8 (+20) https : / / www . researchgate . net / publication / 356970163 _
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 372--376
+Underfull \hbox (badness 10000) in paragraph at lines 373--377
 \T1/phv/m/n/8 (+20) Reproduction _ arti^^\cielle _ ensemencements _ et _ suivi _ de _ la _
  []
 
 [3
 
- <./Untitled_files/figure4_3.png>] 
+ <./Untitled_files/Untitled_files/figure4_3.png>] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Untitled.aux)
  ***********
@@ -1182,15 +1182,15 @@ Package rerunfilecheck Info: File `Untitled.out' has not changed.
 (rerunfilecheck)             Checksum: 1C2C6C4CCA631CF81ABA801B21943520;718.
  ) 
 Here is how much of TeX's memory you used:
- 30408 strings out of 469296
- 567324 string characters out of 5463526
+ 30402 strings out of 469296
+ 567688 string characters out of 5463526
  1019110 words of memory out of 5000000
  58357 multiletter control sequences out of 15000+600000
- 732170 words of font info for 252 fonts, out of 8000000 for 9000
+ 731903 words of font info for 249 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  117i,14n,121p,1005b,658s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/Users/plass/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Untitled.pdf (3 pages, 897878 bytes).
+Output written on Untitled.pdf (3 pages, 898076 bytes).
 PDF statistics:
  186 PDF objects out of 1000 (max. 8388607)
  137 compressed objects within 2 object streams
