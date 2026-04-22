@@ -51,18 +51,19 @@
 
 \usepackage{graphicx}
 \setkeys{Gin}{height=0.75\textheight,keepaspectratio}
+\renewcommand{\significancestatement}[1]{}
 
 \templatetype{pnasresearcharticle}  % Choose template
 
-\title{Analyse de viabilité de population de la situation du Chavalier
-Cuivré (\emph{Moxostoma hubbsi}) en utilisant une matrice de Levkovitch
+\title{Analyse de viabilité de population de la situation du Chevalier
+Cuivré (\emph{Moxostoma hubbsi}) en utilisant une matrice de Lefkovitch
 à 3 stades}
 
 \author[a]{Tristan Plasse}
 \author[a]{Yohan Wegener}
 
-  \affil[a]{Université de Sherbrooke, Biologie, Sherbrooke, Québec, J1K
-2R1}
+  \affil[a]{Université de Sherbrooke, Département de Biologie,
+Sherbrooke, Québec, J1K 2R1}
 
 
 % Please give the surname of the lead author for the running footer
@@ -144,84 +145,99 @@ simplifié basé sur une matrice de Lefkovitch à 3 stades seulement.
 \section*{Méthodologie}\label{muxe9thodologie}
 \addcontentsline{toc}{section}{Méthodologie}
 
-Les données utilisées pour les analyses ont directement été tirées de
-l'article de Bannester-Marchand et al. (2025), qui synthétisait les
-informations recueillies par un grand nombre d'études précédentes
-(Dahlberg, 1979; Mongeau et al., 1986, 1992; Vachon, 2020, 2021a,
-2021b). Elles se présentent sous la forme de matrices de Leslie à 33
-stades où la sous-diagonale représente les taux de survie de chaque
+\subsubsection*{Données}\label{donnuxe9es}
+\addcontentsline{toc}{subsubsection}{Données}
+
+\indent Les données utilisées pour les analyses ont directement été
+tirées de l'article de Bannester-Marchand et al. (2025), qui
+synthétisait les informations recueillies par un grand nombre d'études
+précédentes (Dahlberg, 1979; Mongeau et al., 1986, 1992; Vachon, 2020,
+2021a, 2021b). Elles se présentent sous la forme de matrices de Leslie à
+33 stades où la sous-diagonale représente les taux de survie de chaque
 stade et la première rangée exprime la fécondité. À titre d'exemple, les
 paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de
 couvrir l'ensemble des incertitudes biologiques, les deux autres
-matrices de Bannester-Marchand et al. (2025) (scénarios « nul » et «
-menacée ») ont également été intégrées aux présentes analyses pour
+matrices de Bannester-Marchand et al. (2025) (scénarios «nul» et
+«menacée») ont également été intégrées aux présentes analyses pour
 permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\linewidth,height=0.9\textheight]{Untitled_files/population_table.png}
-\caption{Données utilisées pour la matrice mesurée. Est représenté : le
-stade, le taux de survie (valeur de la sous-diagonale de la matrice de
-Leslie) et la fécondité (valeur de la première rangée de la matrice de
-Leslie)}
+\caption{Données utilisées pour la matrice mesurée. Sont représentés :
+le stade, le taux de survie (valeur de la sous-diagonale de la matrice
+de Leslie) et la fécondité (valeur de la première rangée de la matrice
+de Leslie)}
 \end{figure}
 
-Afin de simplifier cette matrice en matrice de Lefkovitch à 3 stades,
-les trois stades intra-annuels de la matrice de Leslie originale,
-représentés par les termes «eggs», «larvae» et «fry», ont été combinés
-en un premier stade nommé ``Juvéniles''. Les stades 1 à 13,
-correspondant aux individus adultes non reproducteurs, ont été agrégés
-pour former le deuxième stade nommé ``Pré-adultes''. Puis, les stades 14
-à 33, correspondants aux individus adultes reproducteurs, ont été
-agrégés dans un troisième stade nommé ``Adultes''.
+\subsubsection*{Agrégation}\label{agruxe9gation}
+\addcontentsline{toc}{subsubsection}{Agrégation}
 
-La méthodologie utilisé est tirée de Hinrichsen et al. (2026). Dans un
-premier temps, la dynamique est formulée sous forme matricielle :
+Pour simplifier cette matrice en matrice de Lefkovitch à 3 stades, les
+trois stades intra-annuels de la matrice de Leslie originale,
+représentés par les termes «eggs», «larvae» et «fry», ont été combinés
+en un premier stade nommé «Juvéniles». Les stades 1 à 13, correspondant
+aux individus adultes non reproducteurs, ont été agrégés pour former le
+deuxième stade nommé «Pré-adultes». Puis, les stades 14 à 33,
+correspondants aux individus adultes reproducteurs, ont été agrégés dans
+un troisième stade nommé «Adultes».
+
+Afin de combiner les stades tout en conservant les dynamiques
+d'élasticité du modèle original, la méthodologie utilisé par Hinrichsen
+et al. (2026) a été suivie. Dans un premier temps, la dynamique est
+formulée sous forme matricielle :
 
 \[
 x(t+1) = Ax(t)
 \]
 
-où \(x(t)\) représente la distribution des individus par classe d'âge au
-temps t, et A la matrice de Leslie contenant les taux de survie et de
-fécondité.
-
-Une procédure d'agrégation est ensuite appliquée afin de réduire le
-nombre de classes. Cette étape repose sur une matrice de partition S,
-permettant de projeter la structure initiale vers une structure agrégée
-:
+\noindent où \(x(t)\) est la distribution des individus par classe d'âge
+au temps \(t\) et \(A\) est la matrice de Leslie (\(n \times n\)). Une
+procédure d'agrégation est ensuite appliquée afin de réduire le nombre
+de classes. Cette étape repose sur une matrice de partition \(P\) de
+taille \(m \times n\), permettant de projeter la structure initiale vers
+une structure agrégée :
 
 \[
-y(t) = Sx(t)
-\] où \(y(t)\) correspond à la population regroupée en classes plus
-larges.
-
-La matrice agrégée B est construite de manière à approximer la dynamique
-du système initial sur une échelle temporelle adaptée :
+y(t) = Px(t)
+\] \noindent où \(y(t)\) correspond à la population agrégée. La matrice
+agrégée \(\hat{B}\) (\(m \times m\)) est construite par :
 
 \[
-B = SA^KT
+\hat{B} = PA^kQ
 \]
 
-où \(k\) représente le nombre de pas de temps agrégés et \(T\) une
-matrice de transformation dépendant notamment de la distribution stable
-du système.
+\noindent où \(k\) représente le nombre de pas de temps passé dans le
+stade agrégé et \(Q\) est une matrice de poids d'agrégation déterminée
+par :
 
-Cette construction vise à préserver des propriétés essentielles,
-notamment le taux de croissance asymptotique \(\lambda\) (valeur propre
-dominante de A) ainsi que les élasticités, qui mesurent la sensibilité
-de \(\lambda\) aux paramètres de la matrice.
+\[
+Q = WP^\top(PWP^\top)^{-1}
+\] \noindent où \(W = \text{diag}(w)\) est la matrice diagonale de la
+distribution stable des âges (vecteur propre dominant de \(A\)). Cette
+méthode préserve le taux de croissance asymptotique \(\lambda\) ainsi
+que les élasticités du modèle initial (Hinrichsen, 2023).
 
-Comme dans l'étude de Bannester-Marchand et al. (2025), la fécondité du
-stade reproducteur comporte une portion de variabilité ajoutée dûe à la
-stochasticité. Cette variabilité à été ajouté en assumant que la
+\subsubsection*{Stochasticité et
+Variabilité}\label{stochasticituxe9-et-variabilituxe9}
+\addcontentsline{toc}{subsubsection}{Stochasticité et Variabilité}
+
+Puisque dans l'étude de Bannester-Marchand et al. (2025), la fécondité
+du stade reproducteur comporte une portion de variabilité ajoutée dûe à
+la stochasticité. Cette variabilité a été ajoutée en assumant que la
 fécondité annuelle des individus variait selon une loi normale ayant une
-moyenne de 0 et un écart-type de 0,25. Ainsi, la fécondité des individus
-varie entre aucun oeuf par année jusqu'au double de la moyenne annuelle.
-Contrairement à l'étude de Bannester-Marchand et al. (2025),où chaque
-classe d'âge subissait une variabilité différente annuellement, tous les
-individus subissent la même variabilité au niveau de la fécondité
-annuelle.
+moyenne (\(\mu\)) de 0 et un écart-type (\(\sigma\)) de 0,25. Ainsi, la
+fécondité des individus varie entre aucun oeuf par année jusqu'au double
+de la moyenne annuelle. Contrairement à l'approche de Bannester-Marchand
+et al. (2025), où chaque classe d'âge se voyait assigner une variabilité
+stochastique indépendante pour la fécondité, la présente étude applique
+une variabilité annuelle unique et synchrone à l'ensemble du stade
+«Adultes». Cette décision repose sur la logique biologique selon
+laquelle les individus reproducteurs d'une même population sont soumis
+aux mêmes fluctuations environnementales. Étant donné que l'espèce est
+restreinte à une aire de répartition limitée et à seulement deux sites
+de fraie connus, il est plus réaliste de modéliser une réponse commune
+de la fécondité face aux conditions annuelles.
 
 Pour la variabilité concernant les taux de survie, la méthode utilisée
 est celle de Bannester-Marchand et al. (2025), où l'on assume que ces
@@ -245,8 +261,8 @@ variabilité plus modérée.
 
 MÉTHODOLOGIE STOCHASTICITÉ survie \& stase.
 
-\subsection*{Résultats}\label{author-affiliations}
-\addcontentsline{toc}{subsection}{Résultats}
+\section*{Résultats}\label{author-affiliations}
+\addcontentsline{toc}{section}{Résultats}
 
 BLABLABLA
 
@@ -286,8 +302,8 @@ ZIP/postal code, for each author. Use lower case letters to match
 authors with institutions, as shown in the example. Authors with an
 ORCID ID may supply this information at submission.
 
-\subsection*{Discussion}\label{submitting-manuscripts}
-\addcontentsline{toc}{subsection}{Discussion}
+\section*{Discussion}\label{submitting-manuscripts}
+\addcontentsline{toc}{section}{Discussion}
 
 All authors must submit their articles at
 \href{http://www.pnascentral.org/cgi-bin/main.plex}{PNAScentral}. If you
@@ -317,6 +333,11 @@ le chevalier cuivré (\emph{{Moxostoma} hubbsi}) au {Canada}.
 Dahlberg, M. D. (1979). A review of survival rates of fish eggs and
 larvae in relation to impact assessments. \emph{Marine Fisheries
 Review}, \emph{41}(3).
+
+\bibitem[\citeproctext]{ref-hinrichsen_aggregation_2023}
+Hinrichsen, R. A. (2023). Aggregation of {Leslie} matrix models with
+application to ten diverse animal species. \emph{Population Ecology},
+\emph{65}(3), 146‑166. \url{https://doi.org/10.1002/1438-390X.12149}
 
 \bibitem[\citeproctext]{ref-hinrichsen_theory_2026}
 Hinrichsen, R. A., Yokomizo, H. et Salguero-Gómez, R. (2026, février).
