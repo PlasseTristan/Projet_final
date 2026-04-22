@@ -159,7 +159,7 @@ permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.9\textheight]{Untitled_files/population_table.png}
+\includegraphics[width=0.5\textwidth,height=0.9\textheight]{Untitled_files/Untitled_files/population_table.png}
 \caption{Données utilisées pour la matrice mesurée. Est représenté : le
 stade, le taux de survie (valeur de la sous-diagonale de la matrice de
 Leslie) et la fécondité (valeur de la première rangée de la matrice de
@@ -240,10 +240,26 @@ Cependant, les valeurs de \(\beta\) ont été modifées pour éviter que la
 somme de la survie annuelle et de la proportion qui reste dans le stade
 soit supérieure à 1. En effet, il serait biologiquement impossible que
 plus d'individus survivent à l'année qu'il y ait d'individus. Les
-valeurs de \(/beta\) utilisé pour ces taux sont 10, assurant ainsi une
+valeurs de \(\beta\) utilisé pour ces taux sont 10, assurant ainsi une
 variabilité plus modérée.
 
-MÉTHODOLOGIE STOCHASTICITÉ survie \& stase.
+Un modèle de viabilité des populations avec stochasticité annuelle des
+taux de survie et de fécondité a été développé selon la même méthode que
+celle proposée par Bannester-Marchand et al. (2025).
+
+Les modèles stochastiques ont été simulés avec \(N = 5000\) itérations
+sur une période de \(t = 100\) ans. La probabilité d'extinction est
+définie par la condition où l'abondance totale devient nulle :
+
+\[
+P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
+\] De plus, nous avons calculé la probabilité que l'abondance des
+individus matures \(n_{mat}\) se maintienne au-dessus de seuils
+critiques \(k\) pour favoriser la diversité génétique :
+
+\[
+P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
+\]
 
 \subsection*{Résultats}\label{author-affiliations}
 \addcontentsline{toc}{subsection}{Résultats}
@@ -252,7 +268,7 @@ BLABLABLA
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/fig_2_3.png}
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/fig_2_3.png}
 \caption{Résultats de notre analyse. Est représenté : Abondance médiane
 de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les
 scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique.
@@ -262,7 +278,7 @@ Les enveloppes colorées représentent les intervalles de confiance à 95\%
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/figure3_3.png}
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure3_3.png}
 \caption{Résultats de notre analyse. Est représenté : Les probabilités
 que les chevaliers cuivrés tombent sous un seuil de population dans les
 prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de
@@ -272,7 +288,7 @@ population. Lignes : médiane de 5000 itérations; enveloppes colorées :
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/figure4_3.png}
+\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure4_3.png}
 \caption{Résultats de notre analyse. Est représenté : L'effet
 d'augmenter l'ensemencement de larves, alevins, individus d'âges 1, et
 individus matures (âge 10) sur l'abondance de chevaliers matures sur 100
@@ -294,8 +310,6 @@ All authors must submit their articles at
 are using Overleaf to write your article, you can use the ``Submit to
 PNAS'' option in the top bar of the editor window.
 
-\showmatmethods
-\showacknow
 \pnasbreak
 
 \phantomsection\label{refs}

@@ -433,7 +433,7 @@ fig_3_opti <- function(matrice, n_iterations, n_annees = 100, nom_scenario) {
   temps_sous_seuil <- matrix(0, nrow = n_sims, ncol = length(seuils))
   
   # Calcul de la proportion du temps passé sous chaque seuil
-  temps_sous_seuil <- sapply(seuils, function(s) rowMeans(historique [,2:102]< s))
+  temps_sous_seuil <- sapply(seuils, function(s) rowMeans(historique [,2:101]< s))
 
   # Synthèse statistique 
   df_stats<-data.frame(
