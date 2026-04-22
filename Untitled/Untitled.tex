@@ -163,19 +163,11 @@ permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
 \centering
-<<<<<<< HEAD
 \includegraphics[width=0.5\linewidth,height=0.9\textheight]{Untitled_files/Untitled_files/population_table.png}
 \caption{Données utilisées pour la matrice mesurée. Sont représentés :
 le stade, le taux de survie (valeur de la sous-diagonale de la matrice
 de Leslie) et la fécondité (valeur de la première rangée de la matrice
 de Leslie)}
-=======
-\includegraphics[width=0.5\textwidth,height=0.8\textheight]{Untitled_files/Untitled_files/population_table.png}
-\caption{Données utilisées pour la matrice mesurée. Est représenté : le
-stade, le taux de survie (valeur de la sous-diagonale de la matrice de
-Leslie) et la fécondité (valeur de la première rangée de la matrice de
-Leslie)}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 \end{figure}
 
 \subsubsection*{Agrégation}\label{agruxe9gation}
@@ -212,11 +204,7 @@ y(t) = Px(t)
 agrégée \(\hat{B}\) (\(m \times m\)) est construite par :
 
 \[
-<<<<<<< HEAD
 \hat{B} = PA^kQ
-=======
-B = S A^K T
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 \]
 
 \noindent où \(k\) représente le nombre de pas de temps passé dans le
@@ -256,24 +244,31 @@ est celle de Bannester-Marchand et al. (2025), où l'on assume que ces
 taux suivent une distribution beta. La forme du paramètre \(\alpha\) est
 défini comme suit: \[
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
-<<<<<<< HEAD
 \] \noindent où \(s_{age}\) est la survie totale du stade, en ne prenant
 pas en compte les individus qui reste dans ce dernier et \(\beta\)
 correspond aux valeurs de beta définies. Les valeurs sélectionnés sont
 les valeurs tirées de Bannester-Marchand et al. (2025) ayant la plus
 grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade
 Juvéniles et de 0,75 pour le stade adultes.
-=======
-\] où \(s_{stade}\) est la survie totale du stade, en ne prenant pas en
-compte les individus qui reste dans ce dernier et \(\beta\) corespond
-aux valeurs de beta définies. Ces valeurs sont les mêmes que dans
-l'étude originale de Bannester-Marchand et al. (2025). Donc, une valeur
-de 5,05 pour le stade Juvéniles et de 0,75 pour le satde Jeunes adultes.
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans
 le même stade, la même logique que celle pour la survie a été utilisée.
 Cependant, les valeurs de \(\beta\) ont été modifiées pour éviter que la
+somme de la survie annuelle et de la proportion qui reste dans le stade
+soit supérieure à 1. En effet, il serait biologiquement impossible que
+plus d'individus survivent à l'année qu'il y ait d'individus. Les
+valeurs de \(/beta\) utilisé pour ces taux sont 10, assurant ainsi une
+variabilité plus modérée.
+
+où \(s_{stade}\) est la survie totale du stade, en ne prenant pas en
+compte les individus qui reste dans ce dernier et \(\beta\) corespond
+aux valeurs de beta définies. Ces valeurs sont les mêmes que dans
+l'étude originale de Bannester-Marchand et al. (2025). Donc, une valeur
+de 5,05 pour le stade Juvéniles et de 0,75 pour le satde Jeunes adultes.
+
+Pour la variabilité au niveau des probabilités qu'un individu reste dans
+le même stade, la même logique que celle pour la survie a été utilisée.
+Cependant, les valeurs de \(\beta\) ont été modifées pour éviter que la
 somme de la survie annuelle et de la proportion qui reste dans le stade
 soit supérieure à 1. En effet, il serait biologiquement impossible que
 plus d'individus survivent à l'année qu'il y ait d'individus. Les
@@ -284,10 +279,9 @@ Un modèle de viabilité des populations avec stochasticité annuelle des
 taux de survie et de fécondité a été développé selon la même méthode que
 celle proposée par Bannester-Marchand et al. (2025).
 
-<<<<<<< HEAD
-\section*{Résultats}\label{author-affiliations}
+\section*{Résultats}\label{ruxe9sultats}
 \addcontentsline{toc}{section}{Résultats}
-=======
+
 Les modèles stochastiques ont été simulés avec \(N = 5000\) itérations
 sur une période de \(t = 100\) ans. La probabilité d'extinction est
 définie par la condition où l'abondance totale devient nulle :
@@ -302,19 +296,9 @@ critiques \(k\) pour favoriser la diversité génétique :
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
 \]
 
-\subsection*{Résultats}\label{ruxe9sultats}
-\addcontentsline{toc}{subsection}{Résultats}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
-
-BLABLABLA
-
 \begin{figure}
 \centering
-<<<<<<< HEAD
 \includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/Untitled_files/fig_2_3.png}
-=======
-\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/fig_2_3.png}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 \caption{Résultats de notre analyse. Est représenté : Abondance médiane
 de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les
 scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique.
@@ -324,11 +308,7 @@ Les enveloppes colorées représentent les intervalles de confiance à 95\%
 
 \begin{figure}
 \centering
-<<<<<<< HEAD
 \includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure3_3.png}
-=======
-\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure3_3.png}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 \caption{Résultats de notre analyse. Est représenté : Les probabilités
 que les chevaliers cuivrés tombent sous un seuil de population dans les
 prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de
@@ -338,11 +318,7 @@ population. Lignes : médiane de 5000 itérations; enveloppes colorées :
 
 \begin{figure}
 \centering
-<<<<<<< HEAD
 \includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure4_3.png}
-=======
-\includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/figure4_3.png}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 \caption{Résultats de notre analyse. Est représenté : L'effet
 d'augmenter l'ensemencement de larves, alevins, individus d'âges 1, et
 individus matures (âge 10) sur l'abondance de chevaliers matures sur 100
@@ -351,15 +327,8 @@ nulles et menacés, les résultats étaient indistinguables de ceux
 présentés.}
 \end{figure}
 
-BLABLA
-
-<<<<<<< HEAD
 \section*{Discussion}\label{submitting-manuscripts}
 \addcontentsline{toc}{section}{Discussion}
-=======
-\subsection*{Discussion}\label{discussion}
-\addcontentsline{toc}{subsection}{Discussion}
->>>>>>> 2b521c919580cb2fb3117c9d003f67b80e30dbbc
 
 BLABLA
 
