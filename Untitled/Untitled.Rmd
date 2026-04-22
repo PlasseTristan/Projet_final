@@ -1,5 +1,8 @@
 ---
-title: Essai de modélisation de la situation du Chavalier Cuivré (*Moxostoma hubbsi*)
+title: Analyse de viabilité de population de la situation du Chavalier Cuivré (*Moxostoma hubbsi*) en utilisant une matrice de Levkovitch à 3 stades
+
+## Style de citation
+csl: universite-de-montreal-apa.csl
 
 header-includes:
   - \usepackage{graphicx}
@@ -7,27 +10,21 @@ header-includes:
   
 author:
   - name: Tristan Plasse
-    affiliation: a,1
+    affiliation: a
   - name: Yohan Wegener
-    affiliation: a,2
+    affiliation: a
 address:
   - code: a
     address: Université de Sherbrooke, Biologie, Sherbrooke, Québec, J1K 2R1
-    
-corresponding_author:
-  - code: 1
-    text: "Tristan.Plasse@USherbrooke.ca"
-  - code: 2
-    text: "Yohan.Wegener@USherbrooke.ca"   
 
 abstract: |
-  Ce travail se voit être une suite logique aux recherches effectuées sur l'état de la population de Chevalier cuivré (*Moxostoma hubbsi*), espèce endémique du Québec et considérée menacée. Des estimations stochastiques basées sur des matrices de leslie à 33 stades distincts ont été éffectuées par @bannester-marchand_population_2025. Nous avons bâtit un modèle de matrice de levkovitch à 3 stades pour estimer s'il est possible d'arriver à des résultats aussi concluants avec une méthode simplifiée. Notre méthode s'est avérée concuante et les résultats obtenus indiquent les mêmes tendances que ceux obtenus précédement par @bannester-marchand_population_2025. L'on peut donc estimer qu'une matrice de levkovich est suffisante pour modéliser une PVA et qu'une matrice de leslie n'est pas une nécéssité.
+  Ce travail s'ajoute dans la continuité des recherches portant sur l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce endémique du Québec et désignée comme menacée. Alors que des estimations stochastiques fondées sur des matrices de Leslie à 33 stades ont été réalisées par @bannester-marchand_population_2025, la présente étude propose un modèle de matrice de Lefkovitch à trois stades. L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire des résultats comparables en termes de précision. Les analyses démontrent que cette approche simplifiée s'avère concluante, les résultats obtenus suivent les mêmes tendances que ceux documentés précédemment. Donc une matrice de Lefkovitch serait suffisante pour modéliser une analyse de viabilité des populations (PVA), rendant l'utilisation d'une matrice de Leslie non essentielle dans ce contexte.
 
 keywords:
   - Chevalier Cuivré
   - Population
-  - Menacée
   - Ensemencement
+  - Analyse de viabilité
 
 ## must be one of: pnasresearcharticle (usual two-column layout), pnasmathematics (one column layout), or pnasinvited (invited submissions only)
 pnas_type: pnasresearcharticle
@@ -41,21 +38,20 @@ output: rticles::pnas_article
 ---
 
 
-Le Chevalier cuivré est une espèce de poisson d'eau douce endémique au Québec. Restreint à certaines zones du fleuve Saint-Laurent et à la rivière Richelieu, les populations sont précaires. La destruction de son habitat en est la cause principale.Seulement deux frayères sont connues à ce jour, et peu de mesures particulières ne sont mises en place pour les préserver dans le futur. Actuellement, des ensemencements sont effectuées à chaque année pour tenter de préserver une population viable. Plus de 14 000 larves et 230 000 alevins sont ainsi enscemencés dans la rivière Richelieu chaque année pour palier à un taux de recrutement très faible. Une des principale difficultées concernant la conservation de cette espèce est le grand manque de connaissances biologiques sur son histoire de vie. Une étude a été réalisée pour estimer la viabilité de la population à long terme de l'espèce selon 3 scénarios distincs qui prennent en compte la situation actuelle de l'espèce [@bannester-marchand_population_2025]. Cette étude a utilisé un modèle de matrice de leslie à 33 stades pour effectuer une PVA et pour estimer l'effet de l'enscemencement à long terme sur la population. Notre objectif pour ce travail est de répéter leurs analyses tout en construisant un modèle plus simple de matrice de levkovich à 3 stades seulement.  
-
-
-
+  Le Chevalier cuivré (*Moxostoma hubbsi*) est une espèce de poisson d'eau douce endémique du Québec, au Canada. Sa distribution étant restreinte à certains secteurs du fleuve Saint-Laurent et de la rivière Richelieu, sa population est jugée en voie de disparition [@cosepac_evaluation_2014]. La dégradation et la perte d'habitat en sont les causes principales [@cosepac_evaluation_2014]. À ce jour, seules deux frayères sont connues, et peu de mesures concrètes sont mises en place pour assurer leur préservation à perpétuité [@cosepac_evaluation_2014]. 
+  
+  Actuellement, des ensemencements sont effectués chaque année afin de maintenir une population viable. Plus de 14 000 larves et 230 000 alevins sont ainsi ensemencés dans la rivière Richelieu pour pallier le taux de recrutement très faible [@cosepac_evaluation_2014]. L'une des principales difficultés liées à la conservation de cette espèce réside dans le manque de connaissances biologiques sur ses traits d'histoire de vie. Une étude a récemment été réalisée pour estimer la viabilité à long terme de la population selon trois scénarios distincts reflétant la situation actuelle de l'espèce [@bannester-marchand_population_2025]. Cette recherche a utilisé un modèle de matrice de Leslie à 33 stades pour réaliser une analyse de viabilité de population (PVA) et évaluer l'effet des ensemencements à long terme sur la population. L'objectif de la présente étude est de reproduire ces analyses en développant un modèle simplifié basé sur une matrice de Lefkovitch à 3 stades seulement.  
 
 Méthodologie {.unnumbered}
 ========================================
 
-Les données de bases ont directement été tirées de l'article de @bannester-marchand_population_2025. Elles se présentes sous la forme d'une matrices de leslie à 33 satdes où la sous-diagonales représente les survies de chaque stade et où la fécondité est représentée par la première rangée (Fig 1).
+  Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios « nul » et « menacée ») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
 
-![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/population_table.png "Title"){ width=50% height=90% }
+![Données utilisées pour la matrice mesurée. Est représenté : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=90% }
 
-Nous avons choisi de simplifier cette matrice en matrice de levkovich à 3 stades. Les trois stades intra-annuels de la matrice de leslie originale, représentés par les termes "eggs", "larvae" et "fry", forment notre premier stade nommé "Juvéniles". Les stades 1 à 13, corespondants aux individus adultes non reproducteurs, ont été agréggés pour former notre deuxième stade nommé "Jeunes adultes". Puis, les stades 14 à 33, correspondants aux individus adultes reproducteurs, ont été agréggés dans un troisième stade nommé "Adultes". 
+  Afin de simplifier cette matrice en matrice de Lefkovitch à 3 stades, les trois stades intra-annuels de la matrice de Leslie originale, représentés par les termes «eggs», «larvae» et «fry», ont été combinés en un premier stade nommé "Juvéniles". Les stades 1 à 13, correspondant aux individus adultes non reproducteurs, ont été agrégés pour former le deuxième stade nommé "Pré-adultes". Puis, les stades 14 à 33, correspondants aux individus adultes reproducteurs, ont été agrégés dans un troisième stade nommé "Adultes". 
 
-La méthodologie utilisé est tirée de @hinrichsen_theory_2026. Dans un premier temps, la dynamique est formulée sous forme matricielle :
+  La méthodologie utilisé est tirée de @hinrichsen_theory_2026. Dans un premier temps, la dynamique est formulée sous forme matricielle :
 
 $$
 x(t+1) = Ax(t)
