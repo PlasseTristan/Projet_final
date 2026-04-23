@@ -3,6 +3,8 @@ title: "Rapport_partie_1"
 author: "Tristan Plasse & Yohan Wegener"
 date: "2026-04-07"
 output: html_document
+bibliography: litterature_saumons_morrons.bib
+csl: universite-de-montreal-apa.csl
 ---
 
 ```{r, include=FALSE,echo=FALSE}
@@ -14,21 +16,27 @@ library(DT)
 
 # Partie 1 : Recréation des résultats d'une expérience
 
-Dans le cadre de ce projet, nous allons recréer les résultats de Bannester-Marchand et al. (2025)
+Dans le cadre de ce projet, nous allons recréer les analyses de @bannester-marchand_population_2025
 
-AJOUTER BIBLIOGRAPHIE
+------------------------------------------------------------------------
 
 ## Question biologique
 
 Quelle est la situation du Chevalier cuivré (*Moxostoma hubbsi*) en considérant sa probabilité d'extinction, sa tendance démographique et l'effet de l'ensemencement ?
 
+------------------------------------------------------------------------
+
 ## Hypothèse
 
-La situation du Chevalier cuivré est précaire, elle aurait donc une probabilité d'extinction élevée, une tendance démographique à la baisse et nécessiterait un ensemencement élevé pour obtenir le maintien de sa population.
+La situation du Chevalier cuivré étant précaire, nous supposons que la population présente une probabilité d'extinction élevée, une tendance démographique à la baisse et nécessiterait un ensemencement élevé pour obtenir le maintien de sa population.
+
+------------------------------------------------------------------------
 
 ## Données et/ou informations pertinentes
 
-Les matrices de Leslie ont été tirés de \_\_\_\_\_\_\_\_, et les étapes pour les atteindre sont détaillées dans les sections 2.1 et 2.2 de l'article.
+Les matrices de Leslie ont été tirées de @bannester-marchand_population_2025, et les étapes pour les atteindre sont détaillées dans les sections 2.1 et 2.2 de l'article.
+
+##### Matrice mesurée
 
 ```{r}
 # Creation du nom de chaque stade
@@ -67,6 +75,8 @@ datatable(round(measured, 4),
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
+##### Matrice menacée
+
 ```{r}
 # Créer une matrice vide (remplie de 0)
 endangered <- matrix(0, nrow = n_stades, ncol = n_stades, 
@@ -98,6 +108,8 @@ cat("Lambda dans l'étude : 0.984", "\n")# Affichage du lambda obtenu dans l'ét
 datatable(round(endangered, 4), 
           options = list(scrollX = TRUE, pageLength = 33))
 ```
+
+##### Matrice nulle
 
 ```{r}
 # Créer une matrice vide (remplie de 0)
@@ -131,13 +143,15 @@ datatable(round(null_pred, 4),
           options = list(scrollX = TRUE, pageLength = 33))
 ```
 
-3 scénarios différents d'ensemencement ont été analysés : L'absence d’ensemencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par Bernatchez (2004) (500 000 larves ; 15 000 alevins).
+3 scénarios différents d'ensemencement ont été analysés : L'absence d’ensemencement, l'ensemencement tel que présentement effectué (231 185 larves ; 14 686 alevins) et l'ensemencement proposé par @bernatchez_considerations_2004 (500 000 larves ; 15 000 alevins).
 
 ```{r}
 stockage_nul      <- c(0, 0)# larves, alevins
 stockage_present  <- c(231185, 14868) 
 stockage_propose  <- c(500000, 15000)
 ```
+
+------------------------------------------------------------------------
 
 ## Méthode
 
@@ -153,20 +167,10 @@ De plus, nous avons calculé la probabilité que l'abondance des individus matur
 
 $$
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
-$$
+$$ Pour la survie de chaque âge, la stochasticité a été calculée à l'aide de :
 
 $$
 s_{age}(t) \sim \text{Beta} (\alpha, \beta) 
-$$
-
-$$
-\beta = 
-\begin{cases} 
-5.05 & \text{pour le groupe 1 (eggs)} \\
-20 & \text{pour le groupe 2 (larva)} \\
-75 & \text{pour le groupe 3 (fry)} \\
-0.75 & \text{pour tous les autres âges}
-\end{cases}
 $$
 
 $$
@@ -175,11 +179,26 @@ $$
 
 Où :
 
-$s_{age}(t) =$ La survie de cette classe d'âge selon l'année
+$s_{age}(t) =$ La survie de cette classe d'âge selon l'année (stochastique)
 
 $s_{age} =$ La survie théorique de cette classe d'âge
 
-La population initiale a été calculée à l'aide de :\
+$
+\beta = 
+\begin{cases} 
+5.05 & \text{pour le groupe 1 (oeufs)} \\
+20 & \text{pour le groupe 2 (larves)} \\
+75 & \text{pour le groupe 3 (alevins)} \\
+0.75 & \text{pour tous les autres âges}
+\end{cases}
+$
+
+Pour la fécondité à chaque âge, la stochasticité a été calculée à l'aide de :
+
+$$
+f_{age} \sim N(\mu,\sigma^2)
+$$
+La population initiale a été calculée à l'aide de :
 
 $$
 n_{age+1,t+1} = n_{age,t} \times s_{age}
@@ -191,15 +210,30 @@ $n_{age} =$ Nombre d'individus de cette classe d'âge particulière
 
 $s_{age} =$ La survie théorique de cette classe d'âge
 
+------------------------------------------------------------------------
+
 ## Supposition
 
+-   Les données utilisées sont valides et représentent la réalité
 
+-   La prédation et la dégradation de l'habitat sont non-existantes
 
+-   La survie des stades de moins de 1 an est représentative de l'espèce bien qu'elle soit dérivée de @dahlberg_review_1979, une étude en milieu contrôlée, sur d'autres espèces de poissons
 
+-   La survie des ensemencements est la même que la survie des individus nés en nature
+
+-   Aucun individu de moins de 10 ans n'a atteint la maturité sexuelle et tous les individus de 11 ans ou plus ont atteint la maturité
+
+-   Aucun individu ne peut vivre plus de 30 ans
+
+-   L'impact de la génétique est négligeable
+
+------------------------------------------------------------------------
 
 ## Calcul
 
 ### Structure initiale
+
 Fonction qui détermine le nombre initial de poissons à chaque stade selon le nombre de poissons matures initial.
 
 ```{r}
@@ -229,6 +263,7 @@ calculer_structure_initiale <- function(matrice_choisie, n_mature_cible) {
 ```
 
 ### Stochasticité
+
 Fonctions servant à créer une matrice de X années avec les valeurs de survie et fécondité stochastiques. Chaque ligne correspond à une année distincte et chaque colonne correspond au stade associé.
 
 ```{r}
@@ -275,6 +310,8 @@ survie_stochastique <- function(matrice, n_annees) {
 ```
 
 ### Figure 2
+
+Fonction servant à faire 5000 itérations avec chaque matrice et chaque niveau d'ensemencement afin de déterminé la progression dans le temps (jusqu'à 100 ans) du nombre d'individus matures.
 
 ```{r fct_fig_2}
 fig_2_opti <- function(matrice, n_iterations, n_annees, n_ini, stockage, nom_scenario) {
@@ -363,6 +400,8 @@ df_meas <- df_meas %>% mutate(across(c(Mediane, Inf_95, Sup_95), ~if_else(.x < 0
 ```
 
 ### Figure 3
+
+Fonction servant à faire 5000 itérations pour les 3 matrices avec un niveau d'ensemencement spécifique en calculant le pourcentage de chance que la population soit sous un seuil spécifique après 100 ans
 
 ```{r}
 
@@ -477,6 +516,8 @@ df_smoothed <- df_fig3 %>%
 
 ### Figure 4
 
+Fonction utlisant le modèle déterministe afin de savoir combien d'individus mature il y aura dans 100 ans selon un ensemencement additionnel (en plus de l’ensemencement présentement utilisé) dans le scénario mesuré.
+
 ```{r}
 fig_4 <- function(matrice_choisie, n_iterations = 100) {
   
@@ -555,6 +596,8 @@ df_fig4 <- fig_4(measured)
 
 ### Figure 2
 
+Fonction pour illustrer la figure 2
+
 ```{r,fig.width=5, fig.height=10}
 graph_fig2 <- function(d1, d2, d3) {
   
@@ -618,6 +661,8 @@ print(graphique_fig2)
 
 ### Figure 3
 
+Fonction pour illustrer la figure 3
+
 ```{r,fig.width=6, fig.height=5}
 graphique_fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
   
@@ -680,6 +725,8 @@ print(graphique_fig3)
 ```
 
 ### Figure 4
+
+Fonction pour illustrer la figure 4
 
 ```{r}
 stades <- c("Larva", "Fry", "Age 1", "Age 10")
@@ -756,13 +803,15 @@ print(graphique_fig4)
 
 ## Interprétations biologiques
 
+Le retrait des mesures d'ensemencement aurait un effet dramatique sur la population, en augmentant grandement les chances qu'elle tende vers l'extinction. Donc, l'ensemencement est une nécessité pour la survie de l'espèce. Cependant, augmenter l'ensemencement au niveau proposé par @bernatchez_considerations_2004 n'aurait probablement pas un effet très important étant donné que les courbes bleues et vertes de la figure 2 convergent vers des résultats similaires. Ensuite, l'implémentation d'ensemencement d'individus plus âgés comme les individus d'âge 1 semblerait être une alternative intéressante au niveau de la survie de l'espèce puisque le nombre nécessaire pour atteindre une population de 1000 individus matures est jusqu'à 4 ordres de grandeur plus petit ( $10^2$ comparé aux alevins). Cette étude n'est pas sans limitations tel qu'indiqué par la liste extensive de suppositions, mais elle permet d'offrir une perspective sur l'état de l'espèce en voie de disparition que représente (*Moxostoma hubbsi*).
+
 # Partie 2
 
-###Calcul
+## Calcul
 
-####Tentative de créer des matrices simplifiées
+### Tentative de créer des matrices simplifiées
 
-#####Matrice de partition (P)
+##### Matrice de partition (P)
 
 ```{r}
 n_orig_corr <- 31
@@ -776,7 +825,7 @@ P_corr[3, 11:31] <- 1      # Adultes
 rownames(P_corr) <- c("Juvéniles", "Préadultes", "Adultes")
 ```
 
-#####Measured
+##### Matrice mesurée
 
 ```{r}
 survie_annuelle_corrigee <- c(
@@ -800,7 +849,8 @@ for(i in 1:length(survie_annuelle_corrigee)) {
 }
 ```
 
-Matrice de Pondération (K)
+##### Matrice de Pondération (K)
+
 ```{r}
 # 1. Obtenir le vecteur stable w de votre matrice 'a'
 ev <- eigen(measured_corr)
@@ -814,7 +864,8 @@ W <- diag(w)
 K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
 ```
 
-Matrice agrégée
+##### Matrice agrégée
+
 ```{r}
 # 3. Calculer la matrice agrégée B (2x2)
 # Formule : B = P %*% a %*% K
@@ -826,6 +877,7 @@ print(measured_3)
 cat("Lambda initial : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
 cat("Lambda agrégé : ", max(Re(eigen(measured_3)$values)), "\n") # Calcul du lambda de la matrice
 ```
+
 ```{r}
 # Nouveau vecteur de survie condensé
 # Le premier élément est le produit des 3 premiers stades intra-annuels
@@ -850,7 +902,8 @@ for(i in 1:length(survie_annuelle_corrigee)) {
 }
 ```
 
-##### Endangered
+##### Matrice menacée
+
 ```{r}
 # 1. Obtenir le vecteur stable w de votre matrice 'a'
 ev <- eigen(endangered_corr)
@@ -873,6 +926,7 @@ print(endangered_3)
 cat("Lambda initial : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
 cat("Lambda agrégé : ", max(Re(eigen(endangered_3)$values)), "\n") # Calcul du lambda de la matrice
 ```
+
 ```{r}
 # Nouveau vecteur de survie condensé
 # Le premier élément est le produit des 3 premiers stades intra-annuels
@@ -897,7 +951,8 @@ for(i in 1:length(survie_annuelle_corrigee)) {
 }
 ```
 
-##### Null_pred
+##### Matrice nulle
+
 ```{r}
 # 1. Obtenir le vecteur stable w de votre matrice 'a'
 ev <- eigen(null_pred_corr)
@@ -920,7 +975,9 @@ print(null_pred_3)
 cat("Lambda initial : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
 cat("Lambda agrégé : ", max(Re(eigen(null_pred_3)$values)), "\n") # Calcul du lambda de la matrice
 ```
+
 #### Structure initiale
+
 ```{r}
 #Structure initiale
 calculer_structure_initiale_3 <- function(matrice_3x3, nb_adultes_cible) {
@@ -1027,7 +1084,9 @@ stase_stochastique_3 <- function(matrice, n_annees) {
   return(taux_stase)
 }
 ```
+
 #### Figure 2
+
 ```{r,fig.width=6,fig.height=12}
 fig_2_opti_3x3 <- function(matrice_3x3, n_iterations, n_annees, n_ini, stockage, nom_scenario,survie_larve_vers_fry,survie_fry_vers_age1) {
   
@@ -1163,6 +1222,7 @@ print(graphique_fig2_3)
 ```
 
 #### Figure 3
+
 ```{r}
 #___________________________________________________________________________
 ##Simulation de base pour la figure
@@ -1312,6 +1372,7 @@ fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 print(fig3_3)
 #ggsave("images/figure3_3.png", plot = fig3_3, width = 6, height = 5, dpi = 300)
 ```
+
 ```{r}
 simuler_trajectoires_adultes_3_opti <- function(matrice, n_iterations, n_annees = 100, stockage, survie_larve_vers_fry, survie_fry_vers_age1) {
   n_stades <- 3
@@ -1446,6 +1507,7 @@ print(fig3_3)
 ```
 
 #### Figure 4
+
 ```{r}
 fig_4_3x3 <- function(matrice_3x3, stockage_base, s_larve_fry, s_fry_age1, n_iterations = 100) {
   
@@ -1518,7 +1580,6 @@ df_fig4_3x3 <- fig_4_3x3(
   s_fry_age1 = 0.006
 )
 ```
-
 
 ```{r}
 stades <- c("Larva", "Fry", "Age 1", "Age 10")
@@ -1593,3 +1654,7 @@ ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 4.5,
 #Afficher la figure 4 déja construite
 print(graphique_fig4_3)
 ```
+
+------------------------------------------------------------------------
+
+## Bibliographie
