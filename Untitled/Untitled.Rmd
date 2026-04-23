@@ -52,7 +52,7 @@ Méthodologie {.unnumbered}
 
 \indent Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios «nul» et «menacée») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
 
-![Données utilisées pour la matrice mesurée. Sont représentés : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50% height=90% }
+![Données utilisées pour la matrice mesurée. Sont représentés : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50%}
 
 ### Agrégation {.unnumbered}
 
@@ -104,10 +104,10 @@ Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur un
 $$
 P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
 $$
-
 ![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
 
-De plus, nous avons calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique (figure 3) :
+Les simulations stochastiques ($N = 5000$, $t = 100$) montrent que les populations diminuent dans tous les scénarios. Le scénario « mesuré » s’effondre rapidement, avec une abondance d’individus matures qui devient très faible après quelques décennies. Les scénarios « menacé » et « null » ralentissent un peu ce déclin, mais la population continue quand même à diminuer avec le temps. On observe aussi une forte variabilité entre les simulations. Les intervalles de confiance sont larges, ce qui montre que la stochasticité a un effet important sur la dynamique. Malgré ça, les médianes suivent toutes la même tendance : la population ne se maintient pas à long terme. L'on observe que les différences entre scénarios changent surtout la vitesse du déclin, mais pas la tendance générale. Dans tous les cas, la population diminue, ce qui montre que les paramètres de survie et la structure du modèle contrôlent fortement la dynamique.
+Nous avons ensuite calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique (figure 3) :
 
 $$
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
@@ -115,11 +115,13 @@ $$
 
 ![Résultats de notre analyse. Est représenté : Les probabilités que les chevaliers cuivrés tombent sous un seuil de population dans les prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de population. Lignes : médiane de 5000 itérations; enveloppes colorées : 70% ICs](Untitled_files/figure3_3.png "Title"){ width=50% height=50% }
 
+Les probabilités de passer sous des seuils critiques augmentent rapidement. La probabilité que la population mature tombe sous 1000 individus devient élevée dans tous les scénarios, même dans le scénario « Null ». Donc, même dans les conditions les plus favorables testées, le maintien d’une population viable reste peu probable à long terme.
 Puis, nous avons calculé le nombre d'individu de 10 ans, d'individu 1 ans, de larve, et d'alevins  nécéssaire à enscemencer pour atteindre une population d'individus matures de 5000 au bout de 100 ans avec le scénario "mesuré". La population de départ est définie comme $n_{mat}=100$ (figure 4). 
 
 ![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](Untitled_files/figure4_3.png "Title"){ width=50% height=50% }
 
-Les taux de survie de chaque stade enscemencé ont été conservés comme dans l'étude de @bannester-marchand_population_2025, car l'analyse requiert des taux distincs pour chaque stades particuliers. L'analyse s'est toutefois faites avec la matrice à 3 stades.  
+Les taux de survie de chaque stade enscemencé ont été conservés comme dans l'étude de @bannester-marchand_population_2025, car l'analyse requiert des taux distincs pour chaque stades particuliers. L'analyse s'est toutefois faites avec la matrice à 3 stades. Les simulations d’ensemencement montrent que pour atteindre 5000 individus matures après 100 ans, il faut des ajouts importants. Augmenter le nombre d’individus ensemencés augmente bien la population finale, mais pas de façon proportionnelle. Les ensemencements à des stades plus avancés ont un effet bien plus grand que ceux faits au stade larvaire ou alevin.
+
 
 
 Discussion {.unnumbered}

@@ -163,7 +163,7 @@ permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth,height=0.9\textheight]{Untitled_files/Untitled_files/population_table.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{Untitled_files/Untitled_files/population_table.png}
 \caption{Données utilisées pour la matrice mesurée. Sont représentés :
 le stade, le taux de survie (valeur de la sous-diagonale de la matrice
 de Leslie) et la fécondité (valeur de la première rangée de la matrice
@@ -275,20 +275,25 @@ définie par la condition où l'abondance totale devient nulle (figure 2)
 \[
 P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
 \]
-
-\begin{figure}
-\centering
 \includegraphics[width=0.5\textwidth,height=0.5\textheight]{Untitled_files/Untitled_files/fig_2_3.png}
-\caption{Résultats de notre analyse. Est représenté : Abondance médiane
-de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les
-scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique.
-Les enveloppes colorées représentent les intervalles de confiance à 95\%
-; les lignes pleines les abondances médianes d'individus matures.}
-\end{figure}
 
-De plus, nous avons calculé la probabilité que l'abondance des individus
-matures \(n_{mat}\) se maintienne au-dessus de seuils critiques \(k\)
-pour favoriser la diversité génétique (figure 3) :
+Les simulations stochastiques (\(N = 5000\), \(t = 100\)) montrent que
+les populations diminuent dans tous les scénarios. Le scénario « mesuré
+» s'effondre rapidement, avec une abondance d'individus matures qui
+devient très faible après quelques décennies. Les scénarios « menacé »
+et « null » ralentissent un peu ce déclin, mais la population continue
+quand même à diminuer avec le temps. On observe aussi une forte
+variabilité entre les simulations. Les intervalles de confiance sont
+larges, ce qui montre que la stochasticité a un effet important sur la
+dynamique. Malgré ça, les médianes suivent toutes la même tendance : la
+population ne se maintient pas à long terme. L'on observe que les
+différences entre scénarios changent surtout la vitesse du déclin, mais
+pas la tendance générale. Dans tous les cas, la population diminue, ce
+qui montre que les paramètres de survie et la structure du modèle
+contrôlent fortement la dynamique. Nous avons ensuite calculé la
+probabilité que l'abondance des individus matures \(n_{mat}\) se
+maintienne au-dessus de seuils critiques \(k\) pour favoriser la
+diversité génétique (figure 3) :
 
 \[
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
@@ -304,8 +309,13 @@ population. Lignes : médiane de 5000 itérations; enveloppes colorées :
 70\% ICs}
 \end{figure}
 
-Puis, nous avons calculé le nombre d'individu de 10 ans, d'individu 1
-ans, de larve, et d'alevins nécéssaire à enscemencer pour atteindre une
+Les probabilités de passer sous des seuils critiques augmentent
+rapidement. La probabilité que la population mature tombe sous 1000
+individus devient élevée dans tous les scénarios, même dans le scénario
+« Null ». Donc, même dans les conditions les plus favorables testées, le
+maintien d'une population viable reste peu probable à long terme. Puis,
+nous avons calculé le nombre d'individu de 10 ans, d'individu 1 ans, de
+larve, et d'alevins nécéssaire à enscemencer pour atteindre une
 population d'individus matures de 5000 au bout de 100 ans avec le
 scénario ``mesuré''. La population de départ est définie comme
 \(n_{mat}=100\) (figure 4).
@@ -324,7 +334,12 @@ présentés.}
 Les taux de survie de chaque stade enscemencé ont été conservés comme
 dans l'étude de Bannester-Marchand et al. (2025), car l'analyse requiert
 des taux distincs pour chaque stades particuliers. L'analyse s'est
-toutefois faites avec la matrice à 3 stades.
+toutefois faites avec la matrice à 3 stades. Les simulations
+d'ensemencement montrent que pour atteindre 5000 individus matures après
+100 ans, il faut des ajouts importants. Augmenter le nombre d'individus
+ensemencés augmente bien la population finale, mais pas de façon
+proportionnelle. Les ensemencements à des stades plus avancés ont un
+effet bien plus grand que ceux faits au stade larvaire ou alevin.
 
 \section*{Discussion}\label{discussion}
 \addcontentsline{toc}{section}{Discussion}
