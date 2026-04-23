@@ -90,54 +90,41 @@ Pour la variabilité concernant les taux de survie, la méthode utilisée est ce
 $$
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 $$
-<<<<<<< HEAD
-où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le stade Jeunes adultes.
-=======
-\noindent où $s_{age}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ correspond aux valeurs de beta définies. Les valeurs sélectionnés sont les valeurs tirées de @bannester-marchand_population_2025 ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade Juvéniles et de 0,75 pour le stade adultes.
+\noindent où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ correspond aux valeurs de beta définies. Les valeurs sélectionnés sont les valeurs tirées de @bannester-marchand_population_2025 ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifiées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $/beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
-
-où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ corespond aux valeurs de beta définies. Ces valeurs sont les mêmes que dans l'étude originale de @bannester-marchand_population_2025. Donc, une valeur de 5,05 pour le stade Juvéniles et  de 0,75 pour le satde Jeunes adultes.
->>>>>>> 174f175bb752073a34c4d295c6d6483e4a69b633
-
-Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisé pour ces taux sont 10, assurant ainsi une variabilité plus modérée. 
 
 Un modèle de viabilité des populations avec stochasticité annuelle des taux de survie et de fécondité a été développé selon la même méthode que celle proposée par @bannester-marchand_population_2025.
 
 
 Résultats {.unnumbered}
 ========================
-Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur une période de $t = 100$ ans. La probabilité d'extinction est définie par la condition où l'abondance totale devient nulle :
+Les modèles stochastiques ont été simulés avec $N = 5000$ itérations sur une période de $t = 100$ ans. La probabilité d'extinction est définie par la condition où l'abondance totale devient nulle (figure 2) :
 
 $$
 P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
 $$
-De plus, nous avons calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique :
+
+![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
+
+De plus, nous avons calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique (figure 3) :
 
 $$
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
 $$
 
-<<<<<<< HEAD
-Résultats {.unnumbered}
--------------------
-Nos matrices à 3 stades nous on permis de reproduire des analyses similaires aux analyses préalablement effectuées par @bannester-marchand_population_2025. Une analyse de viabilité de la population a été effectuée pour les 3 scénarios, "mesurée", "menacé", et "null". Pour chaque scénario, un niveau d'escemencement différent à été ajouté au modèle pour représenter la réalité actuelle et les recomendations théoriques de XXX. 
-
-
-=======
->>>>>>> 174f175bb752073a34c4d295c6d6483e4a69b633
-![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
-
 ![Résultats de notre analyse. Est représenté : Les probabilités que les chevaliers cuivrés tombent sous un seuil de population dans les prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de population. Lignes : médiane de 5000 itérations; enveloppes colorées : 70% ICs](Untitled_files/figure3_3.png "Title"){ width=50% height=50% }
+
+Puis, nous avons calculé le nombre d'individu de 10 ans, d'individu 1 ans, de larve, et d'alevins  nécéssaire à enscemencer pour atteindre une population d'individus matures de 5000 au bout de 100 ans. La population de départ est définie comme $n_{mat}=100$ (figure 4). 
 
 ![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](Untitled_files/figure4_3.png "Title"){ width=50% height=50% }
 
 
 
-Discussion {#submitting-manuscripts .unnumbered}
+Discussion {.unnumbered}
 ========================
 
-BLABLA
+Nos résultats sont différents de ceux auquel @bannester-marchand_population_2025 ont obtenus. Pour tous les scénarios confondus, peut importe le nombre de larves et d'alevins enscemencés, les populations s'effondrent plus rapidement. En effet, 
 
 Bibliographie {.unnumbered}
 ----------------------
