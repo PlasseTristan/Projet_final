@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.4.22)  22 APR 2026 20:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.4.22)  22 APR 2026 20:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1153,67 +1153,66 @@ Overfull \hbox (6.75267pt too wide) in paragraph at lines 299--304
  []
 
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 311.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 312.
 LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 6.64998pt on input line 311.
+(Font)              scaled to size 6.64998pt on input line 312.
 [2 <./Untitled_files/Untitled_files/population_table.png>]
 <Untitled_files/Untitled_files/figure4_3.png, id=66, 433.62pt x 325.215pt>
 File: Untitled_files/Untitled_files/figure4_3.png Graphic file (type png)
 <use Untitled_files/Untitled_files/figure4_3.png>
-Package pdftex.def Info: Untitled_files/Untitled_files/figure4_3.png  used on input line 314.
+Package pdftex.def Info: Untitled_files/Untitled_files/figure4_3.png  used on input line 315.
 (pdftex.def)             Requested size: 252.84953pt x 189.63715pt.
 
-Overfull \hbox (6.75267pt too wide) in paragraph at lines 314--320
+Overfull \hbox (6.75267pt too wide) in paragraph at lines 315--321
  [][] 
  []
 
+[3 <./Untitled_files/Untitled_files/fig_2_3.png> <./Untitled_files/Untitled_files/figure3_3.png> <./Untitled_files/Untitled_files/figure4_3.png>]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 329.
+(hyperref)                be the same. Added a new anchor on input line 379.
 
 
-Underfull \hbox (badness 1043) in paragraph at lines 336--340
+Underfull \hbox (badness 1043) in paragraph at lines 386--390
 []\T1/lmr/m/n/9 (+20) Bannester-Marchand, N., Va-chon, N., Man-drak, N. et
  []
 
 
-Underfull \hbox (badness 1783) in paragraph at lines 342--347
+Underfull \hbox (badness 1783) in paragraph at lines 392--397
 []\T1/lmr/m/n/9 (+20) COSEPAC. (2014). Éval-u-a-tion et Rap-port de sit-u-a-
  []
 
 
-Underfull \hbox (badness 1460) in paragraph at lines 342--347
+Underfull \hbox (badness 1460) in paragraph at lines 392--397
 \T1/lmr/m/n/9 (+20) tion du COSEPAC sur le cheva-lier cuivré (\T1/lmr/m/it/9 (+20) Mox-os-
  []
 
 
-Underfull \hbox (badness 1092) in paragraph at lines 342--347
+Underfull \hbox (badness 1092) in paragraph at lines 392--397
 \T1/lmr/m/it/9 (+20) toma hubbsi\T1/lmr/m/n/9 (+20) ) au Canada. \T1/lmr/m/it/9 (+20) Comité sur la sit-u-a-tion
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 342--347
+Underfull \hbox (badness 1152) in paragraph at lines 392--397
 \T1/lmr/m/it/9 (+20) des es-pèces en péril au Canada\T1/lmr/m/n/9 (+20) , xiii + 81. [][][]$\T1/phv/m/n/9 (+20) https :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--347
+Underfull \hbox (badness 10000) in paragraph at lines 392--397
 \T1/phv/m/n/9 (+20) / / wildlife-[]species . canada . ca / species-[]risk-[]registry / virtual _
  []
 
-[3 <./Untitled_files/Untitled_files/fig_2_3.png> <./Untitled_files/Untitled_files/figure3_3.png> <./Untitled_files/Untitled_files/figure4_3.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 388--392
+
+Underfull \hbox (badness 10000) in paragraph at lines 438--442
 \T1/phv/m/n/9 (+20) 356970163 _ Reproduction _ arti^^\cielle _ ensemencements _ et _
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--392
+Underfull \hbox (badness 10000) in paragraph at lines 438--442
 \T1/phv/m/n/9 (+20) suivi _ de _ la _ population _ du _ chevalier _ cuivre _ Moxostoma _
  []
 
-[4
-
-] 
+[4] 
 enddocument/afterlastpage: lastpage setting LastPage.
 (./Untitled.aux)
  ***********
@@ -1224,15 +1223,15 @@ Package rerunfilecheck Info: File `Untitled.out' has not changed.
 (rerunfilecheck)             Checksum: 0727E4C2698BFD78E1CF7EEEF1972181;843.
  ) 
 Here is how much of TeX's memory you used:
- 29972 strings out of 476021
- 560059 string characters out of 5789794
+ 29976 strings out of 476021
+ 560083 string characters out of 5789794
  1955496 words of memory out of 5000000
  51254 multiletter control sequences out of 15000+600000
- 649102 words of font info for 219 fonts, out of 8000000 for 9000
+ 649280 words of font info for 221 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 117i,14n,121p,1005b,592s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 117i,14n,121p,1005b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/Users/wegen/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Untitled.pdf (4 pages, 852433 bytes).
+Output written on Untitled.pdf (4 pages, 856230 bytes).
 PDF statistics:
  189 PDF objects out of 1000 (max. 8388607)
  143 compressed objects within 2 object streams

@@ -306,8 +306,9 @@ population. Lignes : médiane de 5000 itérations; enveloppes colorées :
 
 Puis, nous avons calculé le nombre d'individu de 10 ans, d'individu 1
 ans, de larve, et d'alevins nécéssaire à enscemencer pour atteindre une
-population d'individus matures de 5000 au bout de 100 ans. La population
-de départ est définie comme \(n_{mat}=100\) (figure 4).
+population d'individus matures de 5000 au bout de 100 ans avec le
+scénario ``mesuré''. La population de départ est définie comme
+\(n_{mat}=100\) (figure 4).
 
 \begin{figure}
 \centering
@@ -320,10 +321,59 @@ nulles et menacés, les résultats étaient indistinguables de ceux
 présentés.}
 \end{figure}
 
-\section*{Discussion}\label{submitting-manuscripts}
+Les taux de survie de chaque stade enscemencé ont été conservés comme
+dans l'étude de Bannester-Marchand et al. (2025), car l'analyse requiert
+des taux distincs pour chaque stades particuliers. L'analyse s'est
+toutefois faites avec la matrice à 3 stades.
+
+\section*{Discussion}\label{discussion}
 \addcontentsline{toc}{section}{Discussion}
 
-BLABLA
+Nos résultats diffèrent de ceux obtenus par Bannester-Marchand et al.
+(2025). Pour tous les scénarios testés, les populations simulées avec la
+matrice de Lefkovitch à 3 stades tendent à s'effondrer plus rapidement.
+De plus, même en augmentant fortement les ensemencements, il est
+difficile de maintenir une abondance élevée d'individus matures à long
+terme. Cela suggère que notre modèle simplifié donne une vision plus
+pessimiste de la dynamique de population. Cette différence s'explique
+probablement en grande partie par la simplification du modèle. En
+passant de 33 stades à seulement 3, on perd beaucoup d'information sur
+les transitions entre classes d'âge. Même si la méthode d'agrégation
+permet de conserver certaines propriétés importantes comme le taux de
+croissance asymptotique, elle ne conserve pas nécessairement les
+dynamiques à court et moyen terme. Or, ces dynamiques sont importantes
+dans une analyse de viabilité, surtout lorsque la population est faible
+et sensible aux variations. Le traitement de la stochasticité peut aussi
+expliquer les différences observées. Dans notre modèle, la fécondité
+varie de façon synchrone pour tous les adultes, alors que dans l'étude
+de Bannester-Marchand et al. (2025), cette variabilité est indépendante
+entre classes d'âge. Ce choix rend les fluctuations plus fortes d'une
+année à l'autre. Concrètement, une mauvaise année affecte tous les
+reproducteurs en même temps, ce qui peut accélérer le déclin de la
+population. Les résultats obtenus montrent également que
+l'ensemencement, tel qu'il est modélisé ici, ne suffit pas à assurer la
+viabilité de la population. Augmenter le nombre de larves ou d'alevins
+n'a pas un effet aussi important qu'attendu sur le nombre d'adultes à
+long terme. Cela indique que les stades juvéniles et pré-adultes jouent
+un rôle critique dans la dynamique. Autrement dit, même avec beaucoup
+d'individus introduits, si la survie à ces stades est faible, peu
+d'entre eux atteignent l'âge adulte. Cela suggère que des mesures visant
+à améliorer les conditions de survie (habitat, qualité de l'eau, accès
+aux frayères) pourraient être plus efficaces que simplement augmenter
+les ensemencements. Malgré ces différences, les tendances générales
+restent cohérentes avec ce qui est connu pour l'espèce. La population
+demeure très vulnérable et dépend fortement des conditions
+environnementales et des interventions humaines. Le fait qu'il soit
+difficile de maintenir une population stable sans ensemencement confirme
+le statut préoccupant du Chevalier cuivré. Finalement, cette étude met
+en évidence les limites d'un modèle simplifié. La matrice de Lefkovitch
+à 3 stades est plus facile à utiliser et demande moins de données, mais
+elle peut introduire des biais importants. Dans ce cas-ci, elle semble
+accentuer le déclin de la population comparativement à un modèle plus
+détaillé. Donc, même si ce type de modèle peut être utile pour explorer
+rapidement des scénarios, il doit être utilisé avec prudence. Pour des
+analyses plus précises, une structure d'âge plus détaillée semble rester
+importante.
 
 \subsection*{Bibliographie}\label{bibliographie}
 \addcontentsline{toc}{subsection}{Bibliographie}
