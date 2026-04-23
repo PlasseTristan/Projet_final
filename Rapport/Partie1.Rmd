@@ -818,156 +818,70 @@ P_corr[3, 11:31] <- 1      # Adultes
 rownames(P_corr) <- c("Juvéniles", "Préadultes", "Adultes")
 ```
 
-##### Matrice corrigée
+##### Matrice aggréger
 
 ```{r}
-survie_annuelle_corrigee <- c(
-  (survie_m[1] * survie_m[2] * survie_m[3]), # Survie cumulée de l'an 1 (Oeufs -> Age 1)
-  survie_m[4:length(survie_m)] # Le reste des survies (Age 1 -> Age 30)
-)
-
-# On renomme de Age0 à Age30
-noms_stades_corr <- paste0("Age", 0:30)
-n_stades_corr <- length(noms_stades_corr)
-
-measured_corr <- matrix(0, nrow = n_stades_corr, ncol = n_stades_corr, 
-                        dimnames = list(noms_stades_corr, noms_stades_corr))
-
-# Remplir la fécondité (décalée de 2 rangs vers la gauche)
-measured_corr[1, 11:30] <- fecondite_m 
-
-# Remplir la sous-diagonale
-for(i in 1:length(survie_annuelle_corrigee)) {
-  measured_corr[i+1, i] <- survie_annuelle_corrigee[i]
-}
-```
-
-##### Matrice de Pondération (K)
-
-```{r}
-# 1. Obtenir le vecteur stable w de votre matrice 'a'
-ev <- eigen(measured_corr)
-w  <- Re(ev$vectors[,1])
-w  <- w / sum(w)
-
-# 2. Calculer la matrice de pondération K
-# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
-W <- diag(w)
-# K est la matrice qui redistribue w dans les super-stades
-K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
-```
-
-##### Matrice mesurée
-
-```{r}
-# 3. Calculer la matrice agrégée B (2x2)
-# Formule : B = P %*% a %*% K
-measured_3 <- P_corr %*% measured_corr %*% K
-
-colnames(measured_3) <- rownames(measured_3) <- c("Juvéniles", "Préadultes", "Adultes")
-print(measured_3)
-
-cat("Lambda Modèle Complet : ", max(Re(eigen(measured)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda Modèle Agrégé  : ", max(Re(eigen(measured_3)$values)), "\n") # Calcul du lambda de la matrice
-```
-
-##### Matrice menacée
-
-```{r}
-# Nouveau vecteur de survie condensé
-# Le premier élément est le produit des 3 premiers stades intra-annuels
-survie_annuelle_corrigee <- c(
-  (survie_e[1] * survie_e[2] * survie_e[3]), # Survie cumulée de l'an 1 (Oeufs -> Age 1)
-  survie_e[4:length(survie_e)] # Le reste des survies (Age 1 -> Age 30)
-)
-
-# Nouvelle structure : "Year 0" (regroupe Oeufs/Larve/Alevins) puis "Age 1" à "Age 30"
-noms_stades_corr <- c("Juvéniles", paste0("Age", 1:30))
-n_stades_corr <- length(noms_stades_corr)
-
-endangered_corr <- matrix(0, nrow = n_stades_corr, ncol = n_stades_corr, 
-                        dimnames = list(noms_stades_corr, noms_stades_corr))
-
-# Remplir la fécondité (décalée de 2 rangs vers la gauche)
-endangered_corr[1, 11:30] <- fecondite_e 
-
-# Remplir la sous-diagonale
-for(i in 1:length(survie_annuelle_corrigee)) {
-  endangered_corr[i+1, i] <- survie_annuelle_corrigee[i]
+agreger_matrice <- function(survie, fecondite, P_corr, label = "Scénario") {
+  
+  # 1. Préparation de la survie corrigée
+  # (Produit des 3 premiers stades + le reste)
+  survie_corr <- c(prod(survie[1:3]), survie[4:length(survie)])
+  
+  # 2. Construction de la matrice complète (31x31)
+  n_stades <- length(survie_corr) + 1
+  mat_full <- matrix(0, nrow = n_stades, ncol = n_stades)
+  rownames(mat_full) <- colnames(mat_full) <- c("Juvéniles", paste0("Age", 1:(n_stades-1)))
+  
+  # Remplissage fécondité et survie
+  mat_full[1, 11:30] <- fecondite
+  for(i in 1:length(survie_corr)) {
+    mat_full[i+1, i] <- survie_corr[i]
+  }
+  
+  # 3. Calcul de l'agrégation (K et B)
+  ev <- eigen(mat_full)
+  w  <- Re(ev$vectors[,1])
+  w  <- w / sum(w)
+  
+  W <- diag(w)
+  # Matrice de pondération K
+  K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
+  
+  # Matrice agrégée B
+  mat_agregee <- P_corr %*% mat_full %*% K
+  colnames(mat_agregee) <- rownames(mat_agregee) <- rownames(P_corr)
+  
+  # 4. Affichage des résultats
+  cat("\n---", label, "---\n")
+  cat("Lambda Complet : ", max(Re(eigen(mat_full)$values)), "\n")
+  cat("Lambda Agrégé : ", max(Re(eigen(mat_agregee)$values)), "\n")
+  
+  return(list(full = mat_full, aggregated = mat_agregee))
 }
 ```
 
 ```{r}
-# 1. Obtenir le vecteur stable w de votre matrice 'a'
-ev <- eigen(endangered_corr)
-w  <- Re(ev$vectors[,1])
-w  <- w / sum(w)
-
-# 2. Calculer la matrice de pondération K
-# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
-W <- diag(w)
-# K est la matrice qui redistribue w dans les super-stades
-K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
-
-# 3. Calculer la matrice agrégée B (2x2)
-# Formule : B = P %*% a %*% K
-endangered_3 <- P_corr %*% endangered_corr %*% K
-
-colnames(endangered_3) <- rownames(endangered_3) <- c("Juvéniles", "Préadultes", "Adultes")
-print(endangered_3)
-
-cat("Lambda Modèle Complet : ", max(Re(eigen(endangered)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda Modèle Agrégé  : ", max(Re(eigen(endangered_3)$values)), "\n") # Calcul du lambda de la matrice
+n_orig_corr <- 31
+n_super <- 3
+P_corr <- matrix(0, nrow = n_super, ncol = n_orig_corr)
+P_corr[1, 1] <- 1
+P_corr[2, 2:10] <- 1
+P_corr[3, 11:31] <- 1
+rownames(P_corr) <- c("Juvéniles", "Préadultes", "Adultes")
 ```
 
 ```{r}
-# Nouveau vecteur de survie condensé
-# Le premier élément est le produit des 3 premiers stades intra-annuels
-survie_annuelle_corrigee <- c(
-  (survie_n[1] * survie_n[2] * survie_n[3]), # Survie cumulée de l'an 1 (Oeufs -> Age 1)
-  survie_n[4:length(survie_n)] # Le reste des survies (Age 1 -> Age 30)
-)
-
-# Nouvelle structure : "Year 0" (regroupe Oeufs/Larve/Alevins) puis "Age 1" à "Age 30"
-noms_stades_corr <- c("Juvéniles", paste0("Age", 1:30))
-n_stades_corr <- length(noms_stades_corr)
-
-null_pred_corr <- matrix(0, nrow = n_stades_corr, ncol = n_stades_corr, 
-                        dimnames = list(noms_stades_corr, noms_stades_corr))
-
-# Remplir la fécondité (décalée de 2 rangs vers la gauche)
-null_pred_corr[1, 11:30] <- fecondite_n 
-
-# Remplir la sous-diagonale
-for(i in 1:length(survie_annuelle_corrigee)) {
-  null_pred_corr[i+1, i] <- survie_annuelle_corrigee[i]
-}
+# Calcul pour chaque scénario
+res_measured   <- agreger_matrice(survie_m, fecondite_m, P_corr, "Mesuré")
+res_endangered <- agreger_matrice(survie_e, fecondite_e, P_corr, "Menacé")
+res_null       <- agreger_matrice(survie_n, fecondite_n, P_corr, "Nul")
 ```
-
-##### Matrice nulle
-
 ```{r}
-# 1. Obtenir le vecteur stable w de votre matrice 'a'
-ev <- eigen(null_pred_corr)
-w  <- Re(ev$vectors[,1])
-w  <- w / sum(w)
-
-# 2. Calculer la matrice de pondération K
-# (Elle assure que BP = PA, ou B = PAP* en notation simplifiée)
-W <- diag(w)
-# K est la matrice qui redistribue w dans les super-stades
-K <- W %*% t(P_corr) %*% solve(P_corr %*% W %*% t(P_corr))
-
-# 3. Calculer la matrice agrégée B (2x2)
-# Formule : B = P %*% a %*% K
-null_pred_3 <- P_corr %*% null_pred_corr %*% K
-
-colnames(null_pred_3) <- rownames(null_pred_3) <- c("Juvéniles", "Préadultes", "Adultes")
-print(null_pred_3)
-
-cat("Lambda Modèle Complet : ", max(Re(eigen(null_pred)$values)), "\n") # Calcul du lambda de la matrice
-cat("Lambda Modèle Agrégé  : ", max(Re(eigen(null_pred_3)$values)), "\n") # Calcul du lambda de la matrice
+measured_3<-res_measured$aggregated
+endangered_3<-res_endangered$aggregated
+null_pred_3<-res_null$aggregated
 ```
+
 
 ### Structure initiale
 
