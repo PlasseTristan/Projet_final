@@ -9,12 +9,20 @@ output:
     toc: true            # Table des matières
 ---
 
-```{r, include=FALSE,echo=FALSE}
-library(scales)
-library(tidyverse)
-library(patchwork)
-library(DT)
-library(kableExtra)
+```{r setup, include=FALSE,echo=FALSE}
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+
+required_packages <- c("scales","tidyverse", "patchwork", "DT","kableExtra")
+
+installed <- rownames(installed.packages())
+
+for (pkg in required_packages) {
+  if (!(pkg %in% installed)) {
+    install.packages(pkg)
+  }
+  library(pkg, character.only = TRUE)
+}
 ```
 
 # Partie 1 : Recréation des résultats d'une expérience
