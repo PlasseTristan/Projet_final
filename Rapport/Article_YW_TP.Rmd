@@ -1,16 +1,6 @@
 ---
 title: Analyse de viabilité de population de la situation du Chevalier Cuivré (*Moxostoma hubbsi*) en utilisant une matrice de Lefkovitch à 3 stades
 
-## Style de citation
-csl: universite-de-montreal-apa.csl
-acknowledgments: |
-significance: |
-
-header-includes:
-  - \usepackage{graphicx}
-  - \setkeys{Gin}{height=0.75\textheight,keepaspectratio}
-  - \renewcommand{\significancestatement}[1]{}
-  
 author:
   - name: Tristan Plasse
     affiliation: a
@@ -20,27 +10,31 @@ address:
   - code: a
     address: Université de Sherbrooke, Département de Biologie, Sherbrooke, Québec, J1K 2R1
 
-abstract: |
-  Ce travail s'ajoute dans la continuité des recherches portant sur l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce endémique du Québec et désignée comme menacée. Alors que des estimations stochastiques fondées sur des matrices de Leslie à 33 stades ont été réalisées par @bannester-marchand_population_2025, la présente étude propose un modèle de matrice de Lefkovitch à trois stades. L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire des résultats comparables en termes de précision. Les analyses démontrent que cette approche simplifiée s'avère concluante, les résultats obtenus suivent les mêmes tendances que ceux documentés précédemment. Donc une matrice de Lefkovitch serait suffisante pour modéliser une analyse de viabilité des populations (PVA), rendant l'utilisation d'une matrice de Leslie non essentielle dans ce contexte.
+header-includes:
+  - \usepackage{graphicx}
+  - \setkeys{Gin}{height=0.75\textheight,keepaspectratio}
+  - \renewcommand{\significancestatement}[1]{}
+  - \date{}
+  - \makeatletter \def\@isdraft{0} \makeatother
+  - \makeatletter \def\watermark{} \makeatother
+  - \PassOptionsToPackage{nopatch=eqnum}{microtype}
 
-keywords:
-  - Chevalier Cuivré
-  - Population
-  - Ensemencement
-  - Analyse de viabilité
-
-## must be one of: pnasresearcharticle (usual two-column layout), pnasmathematics (one column layout), or pnasinvited (invited submissions only)
+# Paramètres de contenu
 pnas_type: pnasresearcharticle
-
 bibliography: litterature_saumons_morrons.bib
-
-## change to true to add optional line numbering
 lineno: false
 
-output: rticles::pnas_article
+abstract: |
+  Ce travail s'inscrit dans la continuité des recherches portant sur l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce endémique du Québec et désignée comme menacée. Alors que des estimations stochastiques fondées sur des matrices de Leslie à 33 stades ont été réalisées par @bannester-marchand_population_2025, la présente étude propose un modèle de matrice de Lefkovitch à trois stades. L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire des résultats comparables en termes de précision. Les analyses démontrent que cette approche simplifiée s'avère concluante, les résultats obtenus suivent des tendances similaires que ceux documentés précédemment. Par contre, les résultats du modèle à 3 stades sont plus pessimistes, par conséquent, une approche plus alarmiste devrait potentiellement être adoptée.
+
+# Sortie
+output: 
+  rticles::pnas_article:
+    keep_tex: true
 ---
 
-Le Chevalier cuivré (*Moxostoma hubbsi*) est une espèce de poisson d'eau douce endémique du Québec, au Canada. Sa distribution étant restreinte à certains secteurs du fleuve Saint-Laurent et de la rivière Richelieu, sa population est jugée en voie de disparition [@cosepac_evaluation_2014]. La dégradation et la perte d'habitat en sont les causes principales [@cosepac_evaluation_2014]. À ce jour, seules deux frayères sont connues, et peu de mesures concrètes sont mises en place pour assurer leur préservation à perpétuité [@cosepac_evaluation_2014]. 
+
+Le Chevalier cuivré (*Moxostoma hubbsi*) est une espèce de poisson d'eau douce endémique du Québec, au Canada. Sa distribution étant restreinte à certains secteurs du fleuve Saint-Laurent et de la rivière Richelieu, sa population est désignée comme en voie de disparition. La dégradation et la perte d'habitat en sont les causes principales [@cosepac_evaluation_2014]. À ce jour, seules deux frayères sont connues, et peu de mesures concrètes sont mises en place pour assurer leur préservation à perpétuité [@cosepac_evaluation_2014]. 
   
 Actuellement, des ensemencements sont effectués chaque année afin de maintenir une population viable. Plus de 14 000 larves et 230 000 alevins sont ainsi ensemencés dans la rivière Richelieu pour pallier le taux de recrutement très faible [@cosepac_evaluation_2014]. L'une des principales difficultés liées à la conservation de cette espèce réside dans le manque de connaissances biologiques sur ses traits d'histoire de vie. Une étude a récemment été réalisée pour estimer la viabilité à long terme de la population selon trois scénarios distincts reflétant la situation actuelle de l'espèce [@bannester-marchand_population_2025]. Cette recherche a utilisé un modèle de matrice de Leslie à 33 stades pour réaliser une analyse de viabilité de population (PVA) et évaluer l'effet des ensemencements à long terme sur la population. L'objectif de la présente étude est de reproduire ces analyses en développant un modèle simplifié basé sur une matrice de Lefkovitch à 3 stades seulement.  
 
@@ -52,13 +46,13 @@ Méthodologie {.unnumbered}
 
 \indent Les données utilisées pour les analyses ont directement été tirées de l'article de @bannester-marchand_population_2025, qui synthétisait les informations recueillies par un grand nombre d'études précédentes [@vachon_recherche_2020; @vachon_reproduction_2021-1; @vachon_reproduction_2021-2; @mongeau_biologie_1992; @dahlberg_review_1979; @mongeau_biologie_1986]. Elles se présentent sous la forme de matrices de Leslie à 33 stades où la sous-diagonale représente les taux de survie de chaque stade et la première rangée exprime la fécondité. À titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques, les deux autres matrices de @bannester-marchand_population_2025 (scénarios «nul» et «menacée») ont également été intégrées aux présentes analyses pour permettre une comparaison exhaustive des modèles simplifiés.
 
-![Données utilisées pour la matrice mesurée. Sont représentés : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](Untitled_files/population_table.png "Title"){ width=50%}
+![Données utilisées pour la matrice mesurée. Sont représentés : le stade, le taux de survie (valeur de la sous-diagonale de la matrice de Leslie) et la fécondité (valeur de la première rangée de la matrice de Leslie)](images/population_table.png "Title"){ width=50%}
 
 ### Agrégation {.unnumbered}
 
 Pour simplifier cette matrice en matrice de Lefkovitch à 3 stades, les trois stades intra-annuels de la matrice de Leslie originale, représentés par les termes «eggs», «larvae» et «fry», ont été combinés en un premier stade nommé «Juvéniles». Les stades 4 à 13, correspondant aux individus adultes non reproducteurs, ont été agrégés pour former le deuxième stade nommé «Pré-adultes». Puis, les stades 14 à 33, correspondants aux individus adultes reproducteurs, ont été agrégés dans un troisième stade nommé «Adultes». 
 
-Afin de combiner les stades tout en conservant les dynamiques d'élasticité du modèle original, la méthodologie utilisé par @hinrichsen_theory_2026 a été suivie. Dans un premier temps, la dynamique est formulée sous forme matricielle :
+Afin de combiner les stades tout en conservant les dynamiques d'élasticité du modèle original, la méthodologie utilisée par @hinrichsen_theory_2026 a été suivie. Dans un premier temps, la dynamique est formulée sous forme matricielle :
 
 $$
 x(t+1) = Ax(t)
@@ -90,9 +84,9 @@ Pour la variabilité concernant les taux de survie, la méthode utilisée est ce
 $$
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 $$
-\noindent où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui reste dans ce dernier et $\beta$ correspond aux valeurs de beta définies. Les valeurs sélectionnés sont les valeurs tirées de @bannester-marchand_population_2025 ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
+\noindent où $s_{stade}$ est la survie totale du stade, en ne prenant pas en compte les individus qui restent dans ce dernier et $\beta$ correspond aux valeurs de beta définies. Les valeurs sélectionnées sont les valeurs tirées de @bannester-marchand_population_2025 ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05 pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
 
-Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifiées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs de $\beta$ utilisés pour ces taux sont 1 et 0.75, assurant ainsi une variabilité plus modérée. 
+Pour la variabilité au niveau des probabilités qu'un individu reste dans le même stade, la même logique que celle pour la survie a été utilisée. Cependant, les valeurs de $\beta$ ont été modifiées pour éviter que la somme de la survie annuelle et de la proportion qui reste dans le stade soit supérieure à 1. En effet, il serait biologiquement impossible que plus d'individus survivent à l'année qu'il y ait d'individus. Les valeurs utilisées pour ces taux sont 1 et 0.75, assurant ainsi une variabilité plus modérée. 
 
 ### Modélisation {.unnumbered}
 Un modèle de viabilité des populations avec stochasticité annuelle des taux de survie et de fécondité a été développé selon la même méthode que celle proposée par @bannester-marchand_population_2025.
@@ -106,21 +100,21 @@ Résultats {.unnumbered}
 $$
 P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
 $$
-![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basées sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](Untitled_files/fig_2_3.png "Title"){ width=50% height=50% }
+![Résultats de notre analyse. Est représenté : Abondance médiane de chevaliers cuivrés, basée sur 5000 itérations stochastiques pour les scénarios (a) nulle, (b) menace, (c) mesurée de notre modèle dynamique. Les enveloppes colorées représentent les intervalles de confiance à 95% ; les lignes pleines les abondances médianes d’individus matures.](images/fig_2_3.png "Title"){ width=50% height=50% }
 
-Les simulations stochastiques montrent que les populations diminuent dans tous les scénarios. Le scénario « mesuré » (c) s’effondre rapidement, avec une abondance d’individus matures qui devient très faible après quelques décennies. Les scénarios « menacé » (b) et « nulle » (a) ralentissent un peu ce déclin, mais la population continue quand même à diminuer avec le temps. On observe aussi une forte variabilité entre les simulations. Les intervalles de confiance sont larges, ce qui montre que la stochasticité a un effet important sur la dynamique. Malgré ça, les médianes suivent toutes la même tendance : la population ne se maintient pas à long terme. L'on observe que les différences entre scénarios changent surtout la vitesse du déclin, mais pas la tendance générale. Dans tous les cas, la population diminue, ce qui montre que les paramètres de survie et la structure du modèle contrôlent fortement la dynamique.
+Les simulations stochastiques montrent que les populations diminuent dans tous les scénarios. Le scénario « mesuré » (c) s’effondre rapidement, avec une abondance d’individus matures qui devient très faible après quelques décennies. Les scénarios « menacé » (b) et « nulle » (a) ralentissent un peu ce déclin, mais la population continue quand même à diminuer avec le temps. On observe aussi une forte variabilité entre les simulations. Les intervalles de confiance sont larges, ce qui montre que la stochasticité a un effet important sur la dynamique. Malgré cela, les médianes suivent toutes la même tendance : la population ne se maintient pas à long terme. On observe que les différences entre scénarios changent surtout la vitesse du déclin, mais pas la tendance générale. Dans tous les cas, la population diminue, ce qui montre que les paramètres de survie et la structure du modèle contrôlent fortement la dynamique.
 Nous avons ensuite calculé la probabilité que l'abondance des individus matures $n_{mat}$ se maintienne au-dessus de seuils critiques $k$ pour favoriser la diversité génétique (figure 3) :
 
 $$
 P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
 $$
 
-![Résultats de notre analyse. Est représenté : Les probabilités que les chevaliers cuivrés tombent sous un seuil de population dans les prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de population. Lignes : médiane de 5000 itérations; enveloppes colorées : 70% ICs](Untitled_files/figure3_3.png "Title"){ width=50% height=50% }
+![Résultats de notre analyse. Est représenté : Les probabilités que les chevaliers cuivrés tombent sous un seuil de population dans les prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de population. Lignes : médiane de 5000 itérations; enveloppes colorées : 70% ICs](images/figure3_3.png "Title"){ width=50% height=50% }
 
 Les probabilités de passer sous des seuils critiques augmentent rapidement. La probabilité que la population mature tombe sous 1000 individus devient élevée dans tous les scénarios, même dans le scénario « Null ». Donc, même dans les conditions les plus favorables testées, le maintien d’une population viable reste peu probable à long terme.
-Puis, nous avons calculé le nombre d'individu de 10 ans, d'individu 1 ans, de larves, et d'alevins  nécessaires à ensemencer pour atteindre une population d'individus matures de 5000 au bout de 100 ans avec le scénario "mesuré". La population de départ est définie comme $n_{mat}=100$ (figure 4). 
+Puis, nous avons calculé le nombre d'individus de 10 ans, d'individus 1 ans, de larves, et d'alevins  nécessaires à ensemencer pour atteindre une population d'individus matures de 5000 au bout de 100 ans avec le scénario "mesuré". La population de départ est définie comme $n_{mat}=100$ (figure 4). 
 
-![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](Untitled_files/figure4_3.png "Title"){ width=50% height=50% }
+![Résultats de notre analyse. Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré. Lors de l’application aux scénarios nulles et menacés, les résultats étaient indistinguables de ceux présentés.](images/figure4_3.png "Title"){ width=50% height=50% }
 
 Les taux de survie de chaque stade enscemencé ont été conservés comme dans l'étude de @bannester-marchand_population_2025, car l'analyse requiert des taux distincs pour chaque stades particuliers. L'analyse s'est toutefois faite avec la matrice à 3 stades. Les simulations d’ensemencement montrent que pour atteindre 5000 individus matures après 100 ans, il faut des ajouts importants. Augmenter le nombre d’individus ensemencés augmente bien la population finale, mais pas de façon proportionnelle. Les ensemencements à des stades plus avancés ont un effet bien plus grand que ceux faits au stade larvaire ou alevin.
 

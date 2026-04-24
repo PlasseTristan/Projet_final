@@ -52,6 +52,10 @@
 \usepackage{graphicx}
 \setkeys{Gin}{height=0.75\textheight,keepaspectratio}
 \renewcommand{\significancestatement}[1]{}
+\date{}
+\makeatletter \def\@isdraft{0} \makeatother
+\makeatletter \def\watermark{} \makeatother
+\PassOptionsToPackage{nopatch=eqnum}{microtype}
 
 \templatetype{pnasresearcharticle}  % Choose template
 
@@ -80,23 +84,22 @@ Sherbrooke, Québec, J1K 2R1}
 \correspondingauthor{\textsuperscript{} }
 
 % Keywords are not mandatory, but authors are strongly encouraged to provide them. If provided, please include two to five keywords, separated by the pipe symbol, e.g:
- \keywords{  Chevalier Cuivré |  Population |  Ensemencement |  Analyse
-de viabilité  } 
+
 
 \begin{abstract}
-Ce travail s'ajoute dans la continuité des recherches portant sur l'état
-de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce
-endémique du Québec et désignée comme menacée. Alors que des estimations
-stochastiques fondées sur des matrices de Leslie à 33 stades ont été
-réalisées par Bannester-Marchand et al. (2025), la présente étude
-propose un modèle de matrice de Lefkovitch à trois stades. L'objectif
-est d'évaluer la capacité d'une méthode simplifiée à produire des
-résultats comparables en termes de précision. Les analyses démontrent
-que cette approche simplifiée s'avère concluante, les résultats obtenus
-suivent les mêmes tendances que ceux documentés précédemment. Donc une
-matrice de Lefkovitch serait suffisante pour modéliser une analyse de
-viabilité des populations (PVA), rendant l'utilisation d'une matrice de
-Leslie non essentielle dans ce contexte.
+Ce travail s'inscrit dans la continuité des recherches portant sur
+l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une
+espèce endémique du Québec et désignée comme menacée. Alors que des
+estimations stochastiques fondées sur des matrices de Leslie à 33 stades
+ont été réalisées par Bannester-Marchand et al. (2025), la présente
+étude propose un modèle de matrice de Lefkovitch à trois stades.
+L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire
+des résultats comparables en termes de précision. Les analyses
+démontrent que cette approche simplifiée s'avère concluante, les
+résultats obtenus suivent des tendances similaires que ceux documentés
+précédemment. Par contre, les résultats du modèle à 3 stades sont plus
+pessimistes, par conséquent, une approche plus alarmiste devrait
+potentiellement être adoptée.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
@@ -121,21 +124,21 @@ Leslie non essentielle dans ce contexte.
 Le Chevalier cuivré (\emph{Moxostoma hubbsi}) est une espèce de poisson
 d'eau douce endémique du Québec, au Canada. Sa distribution étant
 restreinte à certains secteurs du fleuve Saint-Laurent et de la rivière
-Richelieu, sa population est jugée en voie de disparition (COSEPAC,
-2014). La dégradation et la perte d'habitat en sont les causes
-principales (COSEPAC, 2014). À ce jour, seules deux frayères sont
-connues, et peu de mesures concrètes sont mises en place pour assurer
-leur préservation à perpétuité (COSEPAC, 2014).
+Richelieu, sa population est désignée comme en voie de disparition. La
+dégradation et la perte d'habitat en sont les causes principales
+(COSEPAC 2014). À ce jour, seules deux frayères sont connues, et peu de
+mesures concrètes sont mises en place pour assurer leur préservation à
+perpétuité (COSEPAC 2014).
 
 Actuellement, des ensemencements sont effectués chaque année afin de
 maintenir une population viable. Plus de 14 000 larves et 230 000
 alevins sont ainsi ensemencés dans la rivière Richelieu pour pallier le
-taux de recrutement très faible (COSEPAC, 2014). L'une des principales
+taux de recrutement très faible (COSEPAC 2014). L'une des principales
 difficultés liées à la conservation de cette espèce réside dans le
 manque de connaissances biologiques sur ses traits d'histoire de vie.
 Une étude a récemment été réalisée pour estimer la viabilité à long
 terme de la population selon trois scénarios distincts reflétant la
-situation actuelle de l'espèce (Bannester-Marchand et al., 2025). Cette
+situation actuelle de l'espèce (Bannester-Marchand et al. 2025). Cette
 recherche a utilisé un modèle de matrice de Leslie à 33 stades pour
 réaliser une analyse de viabilité de population (PVA) et évaluer l'effet
 des ensemencements à long terme sur la population. L'objectif de la
@@ -151,19 +154,19 @@ simplifié basé sur une matrice de Lefkovitch à 3 stades seulement.
 \indent Les données utilisées pour les analyses ont directement été
 tirées de l'article de Bannester-Marchand et al. (2025), qui
 synthétisait les informations recueillies par un grand nombre d'études
-précédentes (Dahlberg, 1979; Mongeau et al., 1986, 1992; Vachon, 2020,
-2021a, 2021b). Elles se présentent sous la forme de matrices de Leslie à
-33 stades où la sous-diagonale représente les taux de survie de chaque
-stade et la première rangée exprime la fécondité. À titre d'exemple, les
-paramètres du scénario « mesuré » sont illustrés à la Figure 1. Afin de
-couvrir l'ensemble des incertitudes biologiques, les deux autres
-matrices de Bannester-Marchand et al. (2025) (scénarios «nul» et
-«menacée») ont également été intégrées aux présentes analyses pour
-permettre une comparaison exhaustive des modèles simplifiés.
+précédentes (Vachon 2020, 2021a, 2021b; Mongeau, Dumont, and Cloutier
+1992, 1986; Dahlberg 1979). Elles se présentent sous la forme de
+matrices de Leslie à 33 stades où la sous-diagonale représente les taux
+de survie de chaque stade et la première rangée exprime la fécondité. À
+titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à
+la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques,
+les deux autres matrices de Bannester-Marchand et al. (2025) (scénarios
+«nul» et «menacée») ont également été intégrées aux présentes analyses
+pour permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{Untitled_files/population_table.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{images/population_table.png}
 \caption{Données utilisées pour la matrice mesurée. Sont représentés :
 le stade, le taux de survie (valeur de la sous-diagonale de la matrice
 de Leslie) et la fécondité (valeur de la première rangée de la matrice
@@ -176,16 +179,16 @@ de Leslie)}
 Pour simplifier cette matrice en matrice de Lefkovitch à 3 stades, les
 trois stades intra-annuels de la matrice de Leslie originale,
 représentés par les termes «eggs», «larvae» et «fry», ont été combinés
-en un premier stade nommé «Juvéniles». Les stades 1 à 13, correspondant
+en un premier stade nommé «Juvéniles». Les stades 4 à 13, correspondant
 aux individus adultes non reproducteurs, ont été agrégés pour former le
 deuxième stade nommé «Pré-adultes». Puis, les stades 14 à 33,
 correspondants aux individus adultes reproducteurs, ont été agrégés dans
 un troisième stade nommé «Adultes».
 
 Afin de combiner les stades tout en conservant les dynamiques
-d'élasticité du modèle original, la méthodologie utilisé par Hinrichsen
-et al. (2026) a été suivie. Dans un premier temps, la dynamique est
-formulée sous forme matricielle :
+d'élasticité du modèle original, la méthodologie utilisée par
+Hinrichsen, Yokomizo, and Salguero-Gómez (2026) a été suivie. Dans un
+premier temps, la dynamique est formulée sous forme matricielle :
 
 \[
 x(t+1) = Ax(t)
@@ -216,22 +219,22 @@ Q = WP^\top(PWP^\top)^{-1}
 \] \noindent où \(W = \text{diag}(w)\) est la matrice diagonale de la
 distribution stable des âges (vecteur propre dominant de \(A\)). Cette
 méthode préserve le taux de croissance asymptotique \(\lambda\) ainsi
-que les élasticités du modèle initial (Hinrichsen, 2023).
+que les élasticités du modèle initial (Hinrichsen 2023).
 
 \subsubsection*{Stochasticité et
 Variabilité}\label{stochasticituxe9-et-variabilituxe9}
 \addcontentsline{toc}{subsubsection}{Stochasticité et Variabilité}
 
 Puisque dans l'étude de Bannester-Marchand et al. (2025), la fécondité
-du stade reproducteur comporte une portion de variabilité ajoutée due à
-la stochasticité. Cette variabilité a été ajoutée en assumant que la
-fécondité annuelle des individus variait selon une loi normale ayant une
-moyenne (\(\mu\)) de 0 et un écart-type (\(\sigma\)) de 0,25. Ainsi, la
-fécondité des individus varie entre aucun œuf par année jusqu'au double
-de la moyenne annuelle. Contrairement à l'approche de Bannester-Marchand
-et al. (2025), où chaque classe d'âge se voyait assigner une variabilité
-stochastique indépendante pour la fécondité, la présente étude applique
-une variabilité annuelle unique et synchrone à l'ensemble du stade
+du stade reproducteur comporte une portion de variabilité ajoutée. Cette
+stochasticité a été ajoutée en assumant que la fécondité annuelle des
+individus variait selon une loi normale ayant une moyenne (\(\mu\)) de 0
+et un écart-type (\(\sigma\)) de 0,25. Ainsi, la fécondité des individus
+varie entre aucun œuf par année jusqu'au double de la moyenne annuelle.
+Contrairement à l'approche de Bannester-Marchand et al. (2025), où
+chaque classe d'âge se voyait assigner une variabilité stochastique
+indépendante pour la fécondité, la présente étude applique une
+variabilité annuelle unique et synchrone à l'ensemble du stade
 «Adultes». Cette décision repose sur la logique biologique selon
 laquelle les individus reproducteurs d'une même population sont soumis
 aux mêmes fluctuations environnementales. Étant donné que l'espèce est
@@ -245,11 +248,11 @@ taux suivent une distribution beta. La forme du paramètre \(\alpha\) est
 défini comme suit: \[
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
 \] \noindent où \(s_{stade}\) est la survie totale du stade, en ne
-prenant pas en compte les individus qui reste dans ce dernier et
+prenant pas en compte les individus qui restent dans ce dernier et
 \(\beta\) correspond aux valeurs de beta définies. Les valeurs
-sélectionnés sont les valeurs tirées de Bannester-Marchand et al. (2025)
-ayant la plus grande variabilité pour le stade. Donc, une valeur de 5,05
-pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
+sélectionnées sont les valeurs tirées de Bannester-Marchand et al.
+(2025) ayant la plus grande variabilité pour le stade. Donc, une valeur
+de 5,05 pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
 
 Pour la variabilité au niveau des probabilités qu'un individu reste dans
 le même stade, la même logique que celle pour la survie a été utilisée.
@@ -257,8 +260,11 @@ Cependant, les valeurs de \(\beta\) ont été modifiées pour éviter que la
 somme de la survie annuelle et de la proportion qui reste dans le stade
 soit supérieure à 1. En effet, il serait biologiquement impossible que
 plus d'individus survivent à l'année qu'il y ait d'individus. Les
-valeurs de \(/beta\) utilisé pour ces taux sont 10, assurant ainsi une
+valeurs utilisées pour ces taux sont 1 et 0.75, assurant ainsi une
 variabilité plus modérée.
+
+\subsubsection*{Modélisation}\label{moduxe9lisation}
+\addcontentsline{toc}{subsubsection}{Modélisation}
 
 Un modèle de viabilité des populations avec stochasticité annuelle des
 taux de survie et de fécondité a été développé selon la même méthode que
@@ -267,26 +273,26 @@ celle proposée par Bannester-Marchand et al. (2025).
 \section*{Résultats}\label{ruxe9sultats}
 \addcontentsline{toc}{section}{Résultats}
 
-Les modèles stochastiques ont été simulés avec \(N = 5000\) itérations
-sur une période de \(t = 100\) ans. La probabilité d'extinction est
-définie par la condition où l'abondance totale devient nulle (figure 2)
-:
+\indent Les modèles stochastiques ont été simulés avec \(N = 5000\)
+itérations sur une période de \(t = 100\) ans. La probabilité
+d'extinction est définie par la condition où l'abondance totale devient
+nulle (figure 2) :
 
 \[
 P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
 \]
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/fig_2_3.png}
+\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/fig_2_3.png}
 
-Les simulations stochastiques (\(N = 5000\), \(t = 100\)) montrent que
-les populations diminuent dans tous les scénarios. Le scénario « mesuré
-» s'effondre rapidement, avec une abondance d'individus matures qui
-devient très faible après quelques décennies. Les scénarios « menacé »
-et « null » ralentissent un peu ce déclin, mais la population continue
-quand même à diminuer avec le temps. On observe aussi une forte
-variabilité entre les simulations. Les intervalles de confiance sont
-larges, ce qui montre que la stochasticité a un effet important sur la
-dynamique. Malgré ça, les médianes suivent toutes la même tendance : la
-population ne se maintient pas à long terme. L'on observe que les
+Les simulations stochastiques montrent que les populations diminuent
+dans tous les scénarios. Le scénario « mesuré » (c) s'effondre
+rapidement, avec une abondance d'individus matures qui devient très
+faible après quelques décennies. Les scénarios « menacé » (b) et « nulle
+» (a) ralentissent un peu ce déclin, mais la population continue quand
+même à diminuer avec le temps. On observe aussi une forte variabilité
+entre les simulations. Les intervalles de confiance sont larges, ce qui
+montre que la stochasticité a un effet important sur la dynamique.
+Malgré cela, les médianes suivent toutes la même tendance : la
+population ne se maintient pas à long terme. On observe que les
 différences entre scénarios changent surtout la vitesse du déclin, mais
 pas la tendance générale. Dans tous les cas, la population diminue, ce
 qui montre que les paramètres de survie et la structure du modèle
@@ -301,7 +307,7 @@ P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/figure3_3.png}
+\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/figure3_3.png}
 \caption{Résultats de notre analyse. Est représenté : Les probabilités
 que les chevaliers cuivrés tombent sous un seuil de population dans les
 prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de
@@ -314,15 +320,15 @@ rapidement. La probabilité que la population mature tombe sous 1000
 individus devient élevée dans tous les scénarios, même dans le scénario
 « Null ». Donc, même dans les conditions les plus favorables testées, le
 maintien d'une population viable reste peu probable à long terme. Puis,
-nous avons calculé le nombre d'individu de 10 ans, d'individu 1 ans, de
-larve, et d'alevins nécéssaire à enscemencer pour atteindre une
+nous avons calculé le nombre d'individus de 10 ans, d'individus 1 ans,
+de larves, et d'alevins nécessaires à ensemencer pour atteindre une
 population d'individus matures de 5000 au bout de 100 ans avec le
 scénario ``mesuré''. La population de départ est définie comme
 \(n_{mat}=100\) (figure 4).
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{Untitled_files/figure4_3.png}
+\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/figure4_3.png}
 \caption{Résultats de notre analyse. Est représenté : L'effet
 d'augmenter l'ensemencement de larves, alevins, individus d'âges 1, et
 individus matures (âge 10) sur l'abondance de chevaliers matures sur 100
@@ -334,7 +340,7 @@ présentés.}
 Les taux de survie de chaque stade enscemencé ont été conservés comme
 dans l'étude de Bannester-Marchand et al. (2025), car l'analyse requiert
 des taux distincs pour chaque stades particuliers. L'analyse s'est
-toutefois faites avec la matrice à 3 stades. Les simulations
+toutefois faite avec la matrice à 3 stades. Les simulations
 d'ensemencement montrent que pour atteindre 5000 individus matures après
 100 ans, il faut des ajouts importants. Augmenter le nombre d'individus
 ensemencés augmente bien la population finale, mais pas de façon
@@ -344,40 +350,40 @@ effet bien plus grand que ceux faits au stade larvaire ou alevin.
 \section*{Discussion}\label{discussion}
 \addcontentsline{toc}{section}{Discussion}
 
-Nos résultats diffèrent de ceux obtenus par Bannester-Marchand et al.
-(2025). Pour tous les scénarios testés, les populations simulées avec la
-matrice de Lefkovitch à 3 stades tendent à s'effondrer plus rapidement.
-De plus, même en augmentant fortement les ensemencements, il est
-difficile de maintenir une abondance élevée d'individus matures à long
-terme. Cela suggère que notre modèle simplifié donne une vision plus
-pessimiste de la dynamique de population. Cette différence s'explique
-probablement en grande partie par la simplification du modèle. En
-passant de 33 stades à seulement 3, on perd beaucoup d'information sur
-les transitions entre classes d'âge. Même si la méthode d'agrégation
-permet de conserver certaines propriétés importantes comme le taux de
-croissance asymptotique, elle ne conserve pas nécessairement les
-dynamiques à court et moyen terme. Or, ces dynamiques sont importantes
-dans une analyse de viabilité, surtout lorsque la population est faible
-et sensible aux variations. Le traitement de la stochasticité peut aussi
-expliquer les différences observées. Dans notre modèle, la fécondité
-varie de façon synchrone pour tous les adultes, alors que dans l'étude
-de Bannester-Marchand et al. (2025), cette variabilité est indépendante
-entre classes d'âge. Ce choix rend les fluctuations plus fortes d'une
-année à l'autre. Concrètement, une mauvaise année affecte tous les
-reproducteurs en même temps, ce qui peut accélérer le déclin de la
-population. Les résultats obtenus montrent également que
-l'ensemencement, tel qu'il est modélisé ici, ne suffit pas à assurer la
-viabilité de la population. Augmenter le nombre de larves ou d'alevins
-n'a pas un effet aussi important qu'attendu sur le nombre d'adultes à
-long terme. Cela indique que les stades juvéniles et pré-adultes jouent
-un rôle critique dans la dynamique. Autrement dit, même avec beaucoup
-d'individus introduits, si la survie à ces stades est faible, peu
-d'entre eux atteignent l'âge adulte. Cela suggère que des mesures visant
-à améliorer les conditions de survie (habitat, qualité de l'eau, accès
-aux frayères) pourraient être plus efficaces que simplement augmenter
-les ensemencements. Malgré ces différences, les tendances générales
-restent cohérentes avec ce qui est connu pour l'espèce. La population
-demeure très vulnérable et dépend fortement des conditions
+\indent Nos résultats diffèrent de ceux obtenus par Bannester-Marchand
+et al. (2025). Pour tous les scénarios testés, les populations simulées
+avec la matrice de Lefkovitch à 3 stades tendent à s'effondrer plus
+rapidement. De plus, même en augmentant fortement les ensemencements, il
+est difficile de maintenir une abondance élevée d'individus matures à
+long terme. Cela suggère que notre modèle simplifié donne une vision
+plus pessimiste de la dynamique de population. Cette différence
+s'explique probablement en grande partie par la simplification du
+modèle. En passant de 33 stades à seulement 3, on perd beaucoup
+d'information sur les transitions entre classes d'âge. Même si la
+méthode d'agrégation permet de conserver certaines propriétés
+importantes comme le taux de croissance asymptotique, elle ne conserve
+pas nécessairement les dynamiques à court et moyen terme. Or, ces
+dynamiques sont importantes dans une analyse de viabilité, surtout
+lorsque la population est faible et sensible aux variations. Le
+traitement de la stochasticité peut aussi expliquer les différences
+observées. Dans notre modèle, la fécondité varie de façon synchrone pour
+tous les adultes, alors que dans l'étude de Bannester-Marchand et al.
+(2025), cette variabilité est indépendante entre classes d'âge. Ce choix
+rend les fluctuations plus fortes d'une année à l'autre. Concrètement,
+une mauvaise année affecte tous les reproducteurs en même temps, ce qui
+peut accélérer le déclin de la population. Les résultats obtenus
+montrent également que l'ensemencement, tel qu'il est modélisé ici, ne
+suffit pas à assurer la viabilité de la population. Augmenter le nombre
+de larves ou d'alevins n'a pas un effet aussi important qu'attendu sur
+le nombre d'adultes à long terme. Cela indique que les stades juvéniles
+et pré-adultes jouent un rôle critique dans la dynamique. Autrement dit,
+même avec beaucoup d'individus introduits, si la survie à ces stades est
+faible, peu d'entre eux atteignent l'âge adulte. Cela suggère que des
+mesures visant à améliorer les conditions de survie (habitat, qualité de
+l'eau, accès aux frayères) pourraient être plus efficaces que simplement
+augmenter les ensemencements. Malgré ces différences, les tendances
+générales restent cohérentes avec ce qui est connu pour l'espèce. La
+population demeure très vulnérable et dépend fortement des conditions
 environnementales et des interventions humaines. Le fait qu'il soit
 difficile de maintenir une population stable sans ensemencement confirme
 le statut préoccupant du Chevalier cuivré. Finalement, cette étude met
@@ -398,62 +404,62 @@ importante.
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-bannester-marchand_population_2025}
-Bannester-Marchand, N., Vachon, N., Mandrak, N. et Blanchet, F. (2025).
-Population viability analysis of the endangered copper redhorse
-\emph{{Moxostoma} hubbsi}. \emph{Endangered Species Research},
-\emph{57}, 21‑31. \url{https://doi.org/10.3354/esr01395}
+Bannester-Marchand, N, N Vachon, Ne Mandrak, and Fg Blanchet. 2025.
+{``Population Viability Analysis of the Endangered Copper Redhorse
+\emph{{Moxostoma} Hubbsi}.''} \emph{Endangered Species Research} 57
+(May): 21--31. \url{https://doi.org/10.3354/esr01395}.
 
 \bibitem[\citeproctext]{ref-cosepac_evaluation_2014}
-COSEPAC. (2014). Évaluation et {Rapport} de situation du {COSEPAC} sur
-le chevalier cuivré (\emph{{Moxostoma} hubbsi}) au {Canada}.
-\emph{Comité sur la situation des espèces en péril au Canada}, xiii +
+COSEPAC. 2014. {``Évaluation Et {Rapport} de Situation Du {COSEPAC} Sur
+Le Chevalier Cuivré (\emph{{Moxostoma} Hubbsi}) Au {Canada}.''}
+\emph{Comité Sur La Situation Des Espèces En Péril Au Canada}, xiii +
 81.
-\url{https://wildlife-species.canada.ca/species-risk-registry/virtual_sara/files/cosewic/sr_Copper\%20Redhorse_2014_f.pdf}
+\url{https://wildlife-species.canada.ca/species-risk-registry/virtual_sara/files/cosewic/sr_Copper\%20Redhorse_2014_f.pdf}.
 
 \bibitem[\citeproctext]{ref-dahlberg_review_1979}
-Dahlberg, M. D. (1979). A review of survival rates of fish eggs and
-larvae in relation to impact assessments. \emph{Marine Fisheries
-Review}, \emph{41}(3).
+Dahlberg, Michael D. 1979. {``A Review of Survival Rates of Fish Eggs
+and Larvae in Relation to Impact Assessments.''} \emph{Marine Fisheries
+Review} 41 (3).
 
 \bibitem[\citeproctext]{ref-hinrichsen_aggregation_2023}
-Hinrichsen, R. A. (2023). Aggregation of {Leslie} matrix models with
-application to ten diverse animal species. \emph{Population Ecology},
-\emph{65}(3), 146‑166. \url{https://doi.org/10.1002/1438-390X.12149}
+Hinrichsen, Richard A. 2023. {``Aggregation of {Leslie} Matrix Models
+with Application to Ten Diverse Animal Species.''} \emph{Population
+Ecology} 65 (3): 146--66. \url{https://doi.org/10.1002/1438-390X.12149}.
 
 \bibitem[\citeproctext]{ref-hinrichsen_theory_2026}
-Hinrichsen, R. A., Yokomizo, H. et Salguero-Gómez, R. (2026, février).
-From theory to application: {Elasticity}-consistent aggregation of
-{Leslie} matrix population models for comparative demography. bioRxiv.
-\url{https://doi.org/10.64898/2026.02.04.703802}
+Hinrichsen, Richard A., Hiroyuki Yokomizo, and Roberto Salguero-Gómez.
+2026. {``From Theory to Application: {Elasticity}-Consistent Aggregation
+of {Leslie} Matrix Population Models for Comparative Demography.''}
+bioRxiv. \url{https://doi.org/10.64898/2026.02.04.703802}.
 
 \bibitem[\citeproctext]{ref-mongeau_biologie_1986}
-Mongeau, J.-R., Dumont, P. et Cloutier, L. (1986). \emph{La biologie du
-{Suceur} cuivré, \emph{{Moxostoma} hubbsi}, une espèce rare et endémique
-à la région de {Montréal}, {Québec}, {Canada}}.
-\url{https://portals.iucn.org/library/node/15279}
+Mongeau, Jean-René, Pierre Dumont, and Louise Cloutier. 1986. \emph{La
+Biologie Du {Suceur} Cuivré, \emph{{Moxostoma} Hubbsi}, Une Espèce Rare
+Et Endémique à La Région de {Montréal}, {Québec}, {Canada}}.
+\url{https://portals.iucn.org/library/node/15279}.
 
 \bibitem[\citeproctext]{ref-mongeau_biologie_1992}
-Mongeau, J.-R., Dumont, P. et Cloutier, L. (1992). La biologie du suceur
-cuivré (\emph{{Moxostoma} hubbsi}) comparée à celle de quatre autres
-espèces de \emph{Moxostoma} (\emph{{M}. anisurum, {M}. carinatum, {M}.
-macrolepidotum} et \emph{{M}. valenciennesi}). \emph{Canadian Journal of
-Zoology}, \emph{70}(7), 1354‑1363. \url{https://doi.org/10.1139/z92-191}
+---------. 1992. {``La Biologie Du Suceur Cuivré (\emph{{Moxostoma}
+Hubbsi}) Comparée à Celle de Quatre Autres Espèces de \emph{Moxostoma}
+(\emph{{M}. Anisurum, {M}. Carinatum, {M}. Macrolepidotum} Et \emph{{M}.
+Valenciennesi}).''} \emph{Canadian Journal of Zoology} 70 (7): 1354--63.
+\url{https://doi.org/10.1139/z92-191}.
 
 \bibitem[\citeproctext]{ref-vachon_recherche_2020}
-Vachon, N. (2020). \emph{Recherche de subadultes du chevalier cuivré et
-suivi du recrutement en 2016}.
-\url{https://doi.org/10.13140/RG.2.2.33614.79689}
+Vachon, Nathalie. 2020. \emph{Recherche de Subadultes Du Chevalier
+Cuivré Et Suivi Du Recrutement En 2016}.
+\url{https://doi.org/10.13140/RG.2.2.33614.79689}.
 
 \bibitem[\citeproctext]{ref-vachon_reproduction_2021-1}
-Vachon, N. (2021a). \emph{Reproduction artificielle, ensemencements et
-suivi de la population du chevalier cuivré (\emph{{Moxostoma} hubbsi})
-en 2018}.
+---------. 2021a. \emph{Reproduction Artificielle, Ensemencements Et
+Suivi de La Population Du Chevalier Cuivré (\emph{{Moxostoma} Hubbsi})
+En 2018}.
 
 \bibitem[\citeproctext]{ref-vachon_reproduction_2021-2}
-Vachon, N. (2021b). \emph{Reproduction artificielle, ensemencements et
-suivi de la population du chevalier cuivré (\emph{{Moxostoma} hubbsi})
-en 2019}.
-\url{https://www.researchgate.net/publication/356970163_Reproduction_artificielle_ensemencements_et_suivi_de_la_population_du_chevalier_cuivre_Moxostoma_hubbsi_en_2019}
+---------. 2021b. {``Reproduction Artificielle, Ensemencements Et Suivi
+de La Population Du Chevalier Cuivré (\emph{{Moxostoma} Hubbsi}) En
+2019.''}
+\url{https://www.researchgate.net/publication/356970163_Reproduction_artificielle_ensemencements_et_suivi_de_la_population_du_chevalier_cuivre_Moxostoma_hubbsi_en_2019}.
 
 \end{CSLReferences}
 
