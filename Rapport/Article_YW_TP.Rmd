@@ -4,7 +4,7 @@ author:
   - name: Tristan Plasse & Yohan Wegener
 
 abstract: |
-  Ce travail s'inscrit dans la continuité des recherches portant sur l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce endémique du Québec et désignée comme menacée. Alors que des estimations stochastiques fondées sur des matrices de Leslie à 33 stades ont été réalisées par @bannester-marchand_population_2025, la présente étude propose un modèle de matrice de Lefkovitch à trois stades. L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire des résultats comparables en termes de précision. Les analyses démontrent que cette approche simplifiée s'avère concluante, les résultats obtenus suivent des tendances similaires que ceux documentés précédemment. Par contre, les résultats du modèle à 3 stades sont plus pessimistes, par conséquent, une approche plus alarmiste devrait potentiellement être adoptée.
+  Ce travail s'inscrit dans la continuité des recherches portant sur l'état de la population du Chevalier cuivré (Moxostoma hubbsi), une espèce endémique du Québec et désignée comme menacée. Alors que des estimations stochastiques fondées sur des matrices de Leslie à 33 stades ont été réalisées par @bannester-marchand_population_2025, la présente étude propose un modèle de matrice de Lefkovitch à trois stades. L'objectif est d'évaluer la capacité d'une méthode simplifiée à produire des résultats comparables en termes de précision. Les analyses démontrent que cette approche simplifiée s'avère concluante, les résultats obtenus suivent des tendances similaires que ceux documentés précédemment. Par contre, les résultats du modèle à 3 stades sont plus pessimistes. Par conséquent, une approche plus alarmiste devrait potentiellement être adoptée.
 bibliography: litterature_saumons_morrons.bib
 csl: universite-de-montreal-apa.csl
 
@@ -153,7 +153,7 @@ Les simulations stochastiques indiquent un déclin démographique dans l'ensembl
 
 <br>
 
-Les probabilités de passer sous des seuils critiques augmentent rapidement (Figure 3). La probabilité que la population mature chute sous la barre des 1000 individus devient élevée dans tous les scénarios, y compris pour le scénario « nul ». Ainsi, même sous les hypothèses les plus optimistes, le maintien d'une population viable à long terme apparaît peu probable sans intervention majeure.
+Les probabilités de passer sous des seuils critiques augmentent rapidement (Figure 2). La probabilité que la population mature chute sous la barre des 1000 individus devient élevée dans tous les scénarios, y compris pour le scénario « nul ». Ainsi, même sous les hypothèses les plus optimistes, le maintien d'une population viable à long terme apparaît peu probable sans intervention majeure.
  
 
 ![**Figure 3 : Ensemencement nécessaire pour atteindre 5000 individus matures.** Est représenté : L’effet d’augmenter l’ensemencement de larves, alevins, individus d’âges 1, et individus matures (âge 10) sur l’abondance de chevaliers matures sur 100 ans dans notre scénario mesuré.](images/figure4_3.png "Title"){ width=80% height=80% }
@@ -161,7 +161,7 @@ Les probabilités de passer sous des seuils critiques augmentent rapidement (Fig
 
 <br>
 
-Les simulations d'ensemencement révèlent que des apports massifs sont nécessaires pour atteindre une cible de 5000 individus matures après un siècle.Si l'augmentation du nombre d'individus introduits accroît l'abondance finale, cette relation n'est pas proportionnelle. Notamment, les ensemencements réalisés à des stades de vie plus avancés (individus d'un an ou matures) présentent une efficacité nettement supérieure à ceux effectués aux stades larvaires ou d'alevins (Figure 4).
+Les simulations d'ensemencement révèlent que des apports massifs sont nécessaires pour atteindre une cible de 5000 individus matures après un siècle.Si l'augmentation du nombre d'individus introduits accroît l'abondance finale, cette relation n'est pas proportionnelle. Notamment, les ensemencements réalisés à des stades de vie plus avancés (individus d'un an ou matures) présentent une efficacité nettement supérieure à ceux effectués aux stades larvaires ou d'alevins (Figure 3).
 
 Discussion {.unnumbered}
 ========================
