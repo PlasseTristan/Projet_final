@@ -152,16 +152,16 @@ simplifié basé sur une matrice de Lefkovitch à 3 stades seulement.
 \addcontentsline{toc}{subsubsection}{Données}
 
 \indent Les données utilisées pour les analyses ont directement été
-tirées de l'article de Bannester-Marchand et al. (2025), qui
-synthétisait les informations recueillies par un grand nombre d'études
-précédentes (Vachon 2020, 2021a, 2021b; Mongeau, Dumont, and Cloutier
-1992, 1986; Dahlberg 1979). Elles se présentent sous la forme de
-matrices de Leslie à 33 stades où la sous-diagonale représente les taux
-de survie de chaque stade et la première rangée exprime la fécondité. À
+tirées de l'article de Bannester-Marchand et al. (2025), laquelle
+synthétise les paramètres biologiques issus de plusieurs études
+antérieures (Vachon 2020, 2021a, 2021b; Mongeau, Dumont, and Cloutier
+1992, 1986; Dahlberg 1979). Ces données sont structurées sous forme de
+matrices de Leslie à 33 stades, où la sous-diagonale représente les taux
+de survie inter-stades et la première rangée exprime la fécondité. À
 titre d'exemple, les paramètres du scénario « mesuré » sont illustrés à
 la Figure 1. Afin de couvrir l'ensemble des incertitudes biologiques,
 les deux autres matrices de Bannester-Marchand et al. (2025) (scénarios
-«nul» et «menacée») ont également été intégrées aux présentes analyses
+«nul» et «menacé») ont également été intégrées aux présentes analyses
 pour permettre une comparaison exhaustive des modèles simplifiés.
 
 \begin{figure}
@@ -176,138 +176,137 @@ de Leslie)}
 \subsubsection*{Agrégation}\label{agruxe9gation}
 \addcontentsline{toc}{subsubsection}{Agrégation}
 
-Pour simplifier cette matrice en matrice de Lefkovitch à 3 stades, les
-trois stades intra-annuels de la matrice de Leslie originale,
-représentés par les termes «eggs», «larvae» et «fry», ont été combinés
-en un premier stade nommé «Juvéniles». Les stades 4 à 13, correspondant
-aux individus adultes non reproducteurs, ont été agrégés pour former le
-deuxième stade nommé «Pré-adultes». Puis, les stades 14 à 33,
-correspondants aux individus adultes reproducteurs, ont été agrégés dans
-un troisième stade nommé «Adultes».
+Pour réduire la complexité du modèle vers une matrice de Lefkovitch à
+trois stades, les stades intra-annuels de la matrice originale (« eggs
+», « larvae » et « fry ») ont été combinés en un premier stade nommé «
+Juvéniles ». Les stades 4 à 13, correspondant aux individus adultes non
+reproducteurs, ont été agrégés pour former le stade « Pré-adultes ».
+Enfin, les stades 14 à 33, regroupant les individus matures, forment le
+stade « Adultes ».
 
-Afin de combiner les stades tout en conservant les dynamiques
-d'élasticité du modèle original, la méthodologie utilisée par
-Hinrichsen, Yokomizo, and Salguero-Gómez (2026) a été suivie. Dans un
-premier temps, la dynamique est formulée sous forme matricielle :
+Afin de préserver les dynamiques d'élasticité du modèle original, nous
+avons appliqué la méthode d'agrégation décrite par Hinrichsen, Yokomizo,
+and Salguero-Gómez (2026). La dynamique initiale est formulée sous forme
+matricielle :
 
 \[
 x(t+1) = Ax(t)
 \]
 
 \noindent où \(x(t)\) est la distribution des individus par classe d'âge
-au temps \(t\) et \(A\) est la matrice de Leslie (\(n \times n\)). Une
-procédure d'agrégation est ensuite appliquée afin de réduire le nombre
-de classes. Cette étape repose sur une matrice de partition \(P\) de
-taille \(m \times n\), permettant de projeter la structure initiale vers
-une structure agrégée :
+au temps \(t\) et \(A\) est la matrice de Leslie (\(n \times n\)). La
+projection vers la structure agrégée \(y(t)\) repose sur une matrice de
+partition \(P\) (\(m \times n\)) :
 
 \[
 y(t) = Px(t)
-\] \noindent où \(y(t)\) correspond à la population agrégée. La matrice
-agrégée \(\hat{B}\) (\(m \times m\)) est construite par :
+\] La matrice agrégée \(\hat{B}\) (\(m \times m\)) est ensuite
+construite selon :
 
 \[
 \hat{B} = PA^kQ
 \]
 
-\noindent où \(k\) représente le nombre de pas de temps passé dans le
-stade agrégé et \(Q\) est une matrice de poids d'agrégation déterminée
-par :
+\noindent où \(k\) représente le temps de résidence dans le stade et
+\(Q\) est une matrice de poids d'agrégation définie par :
 
 \[
 Q = WP^\top(PWP^\top)^{-1}
-\] \noindent où \(W = \text{diag}(w)\) est la matrice diagonale de la
-distribution stable des âges (vecteur propre dominant de \(A\)). Cette
-méthode préserve le taux de croissance asymptotique \(\lambda\) ainsi
-que les élasticités du modèle initial (Hinrichsen 2023).
+\] \noindent où \(W = \text{diag}(w)\) correspond à la distribution
+stable des âges (vecteur propre dominant de \(A\)). Cette approche
+permet de conserver le taux de croissance asymptotique \(\lambda\) ainsi
+que les propriétés de sensibilité du modèle initial (Hinrichsen 2023).
 
 \subsubsection*{Stochasticité et
 Variabilité}\label{stochasticituxe9-et-variabilituxe9}
 \addcontentsline{toc}{subsubsection}{Stochasticité et Variabilité}
 
-Puisque dans l'étude de Bannester-Marchand et al. (2025), la fécondité
-du stade reproducteur comporte une portion de variabilité ajoutée. Cette
-stochasticité a été ajoutée en assumant que la fécondité annuelle des
-individus variait selon une loi normale ayant une moyenne (\(\mu\)) de 0
-et un écart-type (\(\sigma\)) de 0,25. Ainsi, la fécondité des individus
-varie entre aucun œuf par année jusqu'au double de la moyenne annuelle.
+Dans l'étude de Bannester-Marchand et al. (2025), la fécondité comporte
+une part de variabilité stochastique. Cette stochasticité a été ajoutée
+en supposant que la fécondité annuelle des individus variait selon une
+loi normale ayant une moyenne (\(\mu\)) de 0 et un écart-type
+(\(\sigma\)) de 0,25. Ainsi, la fécondité des individus varie entre
+aucun œuf par année jusqu'au double de la moyenne annuelle.
 Contrairement à l'approche de Bannester-Marchand et al. (2025), où
-chaque classe d'âge se voyait assigner une variabilité stochastique
-indépendante pour la fécondité, la présente étude applique une
-variabilité annuelle unique et synchrone à l'ensemble du stade
-«Adultes». Cette décision repose sur la logique biologique selon
-laquelle les individus reproducteurs d'une même population sont soumis
-aux mêmes fluctuations environnementales. Étant donné que l'espèce est
-restreinte à une aire de répartition limitée et à seulement deux sites
-de fraie connus, il est plus réaliste de modéliser une réponse commune
-de la fécondité face aux conditions annuelles.
+chaque classe d'âge possédait une variabilité indépendante, la présente
+étude applique une variabilité annuelle synchrone à l'ensemble du stade
+« Adultes ». Cette décision repose sur une logique biologique : les
+individus reproducteurs d'une même population sont soumis aux mêmes
+fluctuations environnementales. Étant donné que l'espèce est restreinte
+à une aire de répartition limitée et à seulement deux sites de fraie
+connus, il est plus réaliste de modéliser une réponse commune de la
+fécondité face aux conditions annuelles.
 
-Pour la variabilité concernant les taux de survie, la méthode utilisée
-est celle de Bannester-Marchand et al. (2025), où l'on assume que ces
-taux suivent une distribution beta. La forme du paramètre \(\alpha\) est
-défini comme suit: \[
+Pour les taux de survie, nous avons suivi la méthode de
+Bannester-Marchand et al. (2025) en utilisant une distribution bêta. Le
+paramètre \(\alpha\) est défini comme suit : \[
 \frac{s_{stade} \times \beta}{1 - s_{stade}}
-\] \noindent où \(s_{stade}\) est la survie totale du stade, en ne
-prenant pas en compte les individus qui restent dans ce dernier et
-\(\beta\) correspond aux valeurs de beta définies. Les valeurs
-sélectionnées sont les valeurs tirées de Bannester-Marchand et al.
-(2025) ayant la plus grande variabilité pour le stade. Donc, une valeur
-de 5,05 pour le stade Juvéniles et de 0,75 pour le stade Pré-adultes.
-
-Pour la variabilité au niveau des probabilités qu'un individu reste dans
-le même stade, la même logique que celle pour la survie a été utilisée.
-Cependant, les valeurs de \(\beta\) ont été modifiées pour éviter que la
-somme de la survie annuelle et de la proportion qui reste dans le stade
-soit supérieure à 1. En effet, il serait biologiquement impossible que
-plus d'individus survivent à l'année qu'il y ait d'individus. Les
-valeurs utilisées pour ces taux sont 1 et 0.75, assurant ainsi une
-variabilité plus modérée.
+\] \noindent où \(s_{stade}\) est la survie du stade et \(\beta\)
+représente la variabilité. Nous avons sélectionné les valeurs de
+Bannester-Marchand et al. (2025) offrant la plus grande variabilité,
+soit \(\beta = 5,05\) pour les Juvéniles et \(\beta = 0,75\) pour les
+Pré-adultes. Pour les probabilités de rester dans un stade, les valeurs
+de \(\beta\) ont été ajustées (1 et 0,75) afin d'assurer que la somme de
+la survie et de la stase demeure biologiquement cohérente (inférieure ou
+égale à 1).
 
 \subsubsection*{Modélisation}\label{moduxe9lisation}
 \addcontentsline{toc}{subsubsection}{Modélisation}
 
-Un modèle de viabilité des populations avec stochasticité annuelle des
-taux de survie et de fécondité a été développé selon la même méthode que
-celle proposée par Bannester-Marchand et al. (2025).
+Le modèle de viabilité des populations (PVA) a été simulé sur
+\(N = 5000\) itérations pour une période de \(t = 100\) ans. La
+probabilité d'extinction est définie par l'atteinte d'une abondance
+nulle :
+
+\[
+P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
+\] \noindent Nous avons également évalué la probabilité que l'abondance
+des individus matures (\(n_{mat}\)) se maintienne au-dessus de seuils
+critiques \(k\) (0 et 1000 individus) pour favoriser la diversité
+génétique :
+
+\[
+P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
+\] Enfin, nous avons testé l'efficacité des ensemencements pour
+atteindre une cible de 5000 individus matures. Bien que l'analyse
+utilise la matrice agrégée à trois stades, les taux de survie
+spécifiques aux stades ensemencés (larves, alevins, individus d'un an et
+de dix ans) ont été maintenus identiques à ceux de Bannester-Marchand et
+al. (2025) pour garantir la comparabilité des stratégies d'intervention.
 
 \section*{Résultats}\label{ruxe9sultats}
 \addcontentsline{toc}{section}{Résultats}
 
-\indent Les modèles stochastiques ont été simulés avec \(N = 5000\)
-itérations sur une période de \(t = 100\) ans. La probabilité
-d'extinction est définie par la condition où l'abondance totale devient
-nulle (figure 2) :
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=1\textheight]{images/fig_2_3.png}
+\caption{Résultats de notre analyse. Est représenté : Abondance médiane
+de chevaliers cuivrés, basée sur 5000 itérations stochastiques pour les
+scénarios (a) nul, (b) menacé, (c) mesuré de notre modèle dynamique. Les
+enveloppes colorées représentent les intervalles de confiance à 95\% ;
+les lignes pleines les abondances médianes d'individus matures.}
+\end{figure}
 
-\[
-P_{ext} = P(\exists t \in [0, 100] : n_{total}(t) = 0)
-\]
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/fig_2_3.png}
-
-Les simulations stochastiques montrent que les populations diminuent
-dans tous les scénarios. Le scénario « mesuré » (c) s'effondre
-rapidement, avec une abondance d'individus matures qui devient très
-faible après quelques décennies. Les scénarios « menacé » (b) et « nulle
-» (a) ralentissent un peu ce déclin, mais la population continue quand
-même à diminuer avec le temps. On observe aussi une forte variabilité
-entre les simulations. Les intervalles de confiance sont larges, ce qui
-montre que la stochasticité a un effet important sur la dynamique.
-Malgré cela, les médianes suivent toutes la même tendance : la
-population ne se maintient pas à long terme. On observe que les
-différences entre scénarios changent surtout la vitesse du déclin, mais
-pas la tendance générale. Dans tous les cas, la population diminue, ce
-qui montre que les paramètres de survie et la structure du modèle
-contrôlent fortement la dynamique. Nous avons ensuite calculé la
-probabilité que l'abondance des individus matures \(n_{mat}\) se
-maintienne au-dessus de seuils critiques \(k\) pour favoriser la
-diversité génétique (figure 3) :
-
-\[
-P(n_{mat}(t) > k), \quad \forall t \in [0, 100] \text{ où } k \in \{0, 1000\}
-\]
+\indent Les simulations stochastiques indiquent un déclin démographique
+dans l'ensemble des scénarios testés. Le scénario « mesuré » (c) montre
+l'effondrement le plus rapide, avec une abondance d'individus matures
+devenant résiduelle après seulement quelques décennies. Bien que les
+scénarios « menacé » (b) et « nul » (a) ralentissent la vitesse de
+déclin, la tendance à la baisse demeure constante au fil du temps. Une
+forte variabilité inter-simulations est observée, comme en témoignent
+les larges intervalles de confiance, soulignant l'impact prépondérant de
+la stochasticité sur la dynamique de l'espèce, bien que celle-ci soit
+plus faible que celle observée dans Bannester-Marchand et al. (2025).
+Malgré cette incertitude, les médianes convergent vers une conclusion
+identique : la population ne parvient pas à se maintenir à long terme.
+On observe que les différences entre scénarios changent surtout la
+vitesse du déclin, mais pas la tendance générale, ce qui suggère que les
+paramètres de survie et la structure du modèle contrôlent fortement la
+dynamique.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/figure3_3.png}
+\includegraphics[width=1\linewidth,height=1\textheight]{images/figure3_3.png}
 \caption{Résultats de notre analyse. Est représenté : Les probabilités
 que les chevaliers cuivrés tombent sous un seuil de population dans les
 prochaines 100 ans, basé sur nos scénarios dynamique stochastiques de
@@ -316,88 +315,95 @@ population. Lignes : médiane de 5000 itérations; enveloppes colorées :
 \end{figure}
 
 Les probabilités de passer sous des seuils critiques augmentent
-rapidement. La probabilité que la population mature tombe sous 1000
-individus devient élevée dans tous les scénarios, même dans le scénario
-« Null ». Donc, même dans les conditions les plus favorables testées, le
-maintien d'une population viable reste peu probable à long terme. Puis,
-nous avons calculé le nombre d'individus de 10 ans, d'individus 1 ans,
-de larves, et d'alevins nécessaires à ensemencer pour atteindre une
-population d'individus matures de 5000 au bout de 100 ans avec le
-scénario ``mesuré''. La population de départ est définie comme
-\(n_{mat}=100\) (figure 4).
+rapidement (Figure 3). La probabilité que la population mature chute
+sous la barre des 1000 individus devient élevée dans tous les scénarios,
+y compris pour le scénario « nul ». Ainsi, même sous les hypothèses les
+plus optimistes, le maintien d'une population viable à long terme
+apparaît peu probable sans intervention majeure.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth,height=0.5\textheight]{images/figure4_3.png}
+\includegraphics[width=1\linewidth,height=1\textheight]{images/figure4_3.png}
 \caption{Résultats de notre analyse. Est représenté : L'effet
 d'augmenter l'ensemencement de larves, alevins, individus d'âges 1, et
 individus matures (âge 10) sur l'abondance de chevaliers matures sur 100
-ans dans notre scénario mesuré. Lors de l'application aux scénarios
-nulles et menacés, les résultats étaient indistinguables de ceux
-présentés.}
+ans dans notre scénario mesuré.}
 \end{figure}
 
-Les taux de survie de chaque stade enscemencé ont été conservés comme
-dans l'étude de Bannester-Marchand et al. (2025), car l'analyse requiert
-des taux distincs pour chaque stades particuliers. L'analyse s'est
-toutefois faite avec la matrice à 3 stades. Les simulations
-d'ensemencement montrent que pour atteindre 5000 individus matures après
-100 ans, il faut des ajouts importants. Augmenter le nombre d'individus
-ensemencés augmente bien la population finale, mais pas de façon
-proportionnelle. Les ensemencements à des stades plus avancés ont un
-effet bien plus grand que ceux faits au stade larvaire ou alevin.
+Les simulations d'ensemencement révèlent que des apports massifs sont
+nécessaires pour atteindre une cible de 5000 individus matures après un
+siècle.Si l'augmentation du nombre d'individus introduits accroît
+l'abondance finale, cette relation n'est pas proportionnelle. Notamment,
+les ensemencements réalisés à des stades de vie plus avancés (individus
+d'un an ou matures) présentent une efficacité nettement supérieure à
+ceux effectués aux stades larvaires ou d'alevins (Figure 4).
 
 \section*{Discussion}\label{discussion}
 \addcontentsline{toc}{section}{Discussion}
 
 \indent Nos résultats diffèrent de ceux obtenus par Bannester-Marchand
-et al. (2025). Pour tous les scénarios testés, les populations simulées
-avec la matrice de Lefkovitch à 3 stades tendent à s'effondrer plus
-rapidement. De plus, même en augmentant fortement les ensemencements, il
-est difficile de maintenir une abondance élevée d'individus matures à
-long terme. Cela suggère que notre modèle simplifié donne une vision
-plus pessimiste de la dynamique de population. Cette différence
-s'explique probablement en grande partie par la simplification du
-modèle. En passant de 33 stades à seulement 3, on perd beaucoup
-d'information sur les transitions entre classes d'âge. Même si la
-méthode d'agrégation permet de conserver certaines propriétés
-importantes comme le taux de croissance asymptotique, elle ne conserve
-pas nécessairement les dynamiques à court et moyen terme. Or, ces
-dynamiques sont importantes dans une analyse de viabilité, surtout
-lorsque la population est faible et sensible aux variations. Le
-traitement de la stochasticité peut aussi expliquer les différences
-observées. Dans notre modèle, la fécondité varie de façon synchrone pour
-tous les adultes, alors que dans l'étude de Bannester-Marchand et al.
-(2025), cette variabilité est indépendante entre classes d'âge. Ce choix
-rend les fluctuations plus fortes d'une année à l'autre. Concrètement,
-une mauvaise année affecte tous les reproducteurs en même temps, ce qui
-peut accélérer le déclin de la population. Les résultats obtenus
-montrent également que l'ensemencement, tel qu'il est modélisé ici, ne
-suffit pas à assurer la viabilité de la population. Augmenter le nombre
-de larves ou d'alevins n'a pas un effet aussi important qu'attendu sur
-le nombre d'adultes à long terme. Cela indique que les stades juvéniles
-et pré-adultes jouent un rôle critique dans la dynamique. Autrement dit,
-même avec beaucoup d'individus introduits, si la survie à ces stades est
-faible, peu d'entre eux atteignent l'âge adulte. Cela suggère que des
-mesures visant à améliorer les conditions de survie (habitat, qualité de
-l'eau, accès aux frayères) pourraient être plus efficaces que simplement
-augmenter les ensemencements. Malgré ces différences, les tendances
-générales restent cohérentes avec ce qui est connu pour l'espèce. La
-population demeure très vulnérable et dépend fortement des conditions
-environnementales et des interventions humaines. Le fait qu'il soit
-difficile de maintenir une population stable sans ensemencement confirme
-le statut préoccupant du Chevalier cuivré. Finalement, cette étude met
-en évidence les limites d'un modèle simplifié. La matrice de Lefkovitch
-à 3 stades est plus facile à utiliser et demande moins de données, mais
-elle peut introduire des biais importants. Dans ce cas-ci, elle semble
-accentuer le déclin de la population comparativement à un modèle plus
-détaillé. Donc, même si ce type de modèle peut être utile pour explorer
-rapidement des scénarios, il doit être utilisé avec prudence. Pour des
-analyses plus précises, une structure d'âge plus détaillée semble rester
-importante.
+et al. (2025). Dans tous les scénarios testés, les populations simulées
+avec la matrice de Lefkovitch à trois stades tendent à s'effondrer plus
+rapidement. De plus, même une augmentation massive des ensemencements ne
+parvient pas à maintenir une abondance élevée d'individus matures à long
+terme. Ces observations suggèrent que notre modèle simplifié offre une
+vision plus pessimiste de la dynamique de la population.
 
-\subsection*{Bibliographie}\label{bibliographie}
-\addcontentsline{toc}{subsection}{Bibliographie}
+\indent Cette divergence s'explique probablement par la simplification
+structurelle du modèle. Le passage de 33 stades à seulement trois
+entraîne une perte substantielle d'information sur les transitions entre
+les classes d'âge. Bien que la méthode d'agrégation utilisée permette de
+conserver certaines propriétés asymptotiques, comme le taux de
+croissance (\(\lambda\)), elle ne capture pas nécessairement les
+dynamiques transitoires à court et moyen terme. Or, ces dynamiques sont
+cruciales dans une analyse de viabilité des populations (PVA),
+particulièrement lorsque l'effectif est faible et sensible aux
+fluctuations.
+
+Le traitement de la stochasticité peut aussi expliquer les différences
+observées. Dans notre modèle, la fécondité varie de façon synchrone pour
+l'ensemble des adultes, alors que Bannester-Marchand et al. (2025)
+appliquaient une variabilité indépendante entre les classes d'âge. Ce
+choix amplifie les fluctuations annuelles : concrètement, une année
+environnementale défavorable affecte simultanément tous les
+reproducteurs, ce qui peut accélérer le déclin démographique. À cet
+égard, il serait pertinent de tester différentes approches de
+modélisation de la stochasticité. L'absence de consensus dans la
+littérature sur la méthode optimale pour combiner les variabilités
+inter-stades lors d'une agrégation constitue une limite ici explorée ;
+une paramétrisation plus fine, appuyée par une expertise accrue en
+dynamique stochastique, permettrait potentiellement de converger
+davantage vers les résultats du modèle détaillé.
+
+Les résultats obtenus montrent également que l'ensemencement, tel qu'il
+est modélisé ici, ne suffit pas à assurer la viabilité de la population.
+L'augmentation du nombre de larves ou d'alevins n'a pas l'impact
+escompté sur l'abondance des adultes à long terme. Cela souligne le rôle
+critique des stades juvéniles et pré-adultes : si la survie à ces étapes
+de vie est trop faible, le recrutement vers le stade adulte demeure
+insuffisant, quel que soit l'effort d'introduction initial. Par
+conséquent, des mesures visant à améliorer les conditions de survie
+(restauration de l'habitat, qualité de l'eau, accès aux frayères)
+pourraient s'avérer plus efficaces qu'une simple intensification des
+ensemencements.
+
+Malgré ces différences, les tendances générales demeurent cohérentes
+avec les connaissances actuelles sur l'espèce. La population reste
+extrêmement vulnérable et dépendante des interventions humaines. La
+difficulté à maintenir une population stable sans soutien artificiel
+confirme le statut précaire du Chevalier cuivré.
+
+En conclusion, cette étude met en évidence les limites inhérentes aux
+modèles simplifiés. Si la matrice de Lefkovitch à trois stades est plus
+parcimonieuse et exige moins de données, elle introduit des biais
+importants qui, dans ce cas précis, semblent accentuer le déclin de la
+population. Bien que ce type de modèle soit utile pour explorer
+rapidement divers scénarios, il doit être utilisé avec prudence. Pour
+des analyses de viabilité plus précises, le maintien d'une structure
+d'âge détaillée demeure essentiel.
+
+\section*{Bibliographie}\label{bibliographie}
+\addcontentsline{toc}{section}{Bibliographie}
 
 \pnasbreak
 
