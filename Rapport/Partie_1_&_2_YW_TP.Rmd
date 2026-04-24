@@ -641,7 +641,7 @@ graph_fig2 <- function(d1, d2, d3) {
 # Pour l'afficher :
 graphique_fig2 <- graph_fig2(df_nul, df_end, df_mea)
 print(graphique_fig2)
-#ggsave("images/fig2.png",graphique_fig2, width = 5.5, height = 10)
+ggsave("images/fig2.png",graphique_fig2, width = 5.5, height = 10)
 ```
 
 ### Figure 3
@@ -706,7 +706,7 @@ graphique_fig3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 
 # Afficher la figure 3
 print(graphique_fig3)
-#ggsave("images/figure3.png", plot = graphique_fig3, width = 6, height = 5, dpi = 300)
+ggsave("images/figure3.png", plot = graphique_fig3, width = 6, height = 5, dpi = 300)
 ```
 
 ### Figure 4
@@ -781,7 +781,7 @@ graphique_fig4 <- ggplot(df_fig4,
       axis.title      = element_text(size = 12),
       plot.margin     = margin(40, 20, 10, 10)
     )
-#ggsave("images/figure4.png", plot = graphique_fig4, width = 6, height = 4.5, dpi = 300)
+ggsave("images/figure4.png", plot = graphique_fig4, width = 6, height = 4.5, dpi = 300)
 #Afficher la figure 4 déja construite
 print(graphique_fig4)
 ```
@@ -1326,7 +1326,7 @@ graph_fig2 <- function(d1, d2, d3) {
 # Pour l'afficher :
 graphique_fig2_3 <- graph_fig2(df_null, df_end, df_meas)
 print(graphique_fig2_3)
-#ggsave("images/fig2_3.png",graphique_fig2, width = 5.5, height = 10)
+ggsave("images/fig2_3.png",graphique_fig2, width = 5.5, height = 10)
 ```
 
 ### Figure 3
@@ -1384,7 +1384,7 @@ fig3_3 <- ggplot(df_smoothed, aes(x = Threshold, group = Scenario)) +
 
 # Afficher la figure 3
 print(fig3_3)
-#ggsave("images/figure3_3.png", plot = fig3_3, width = 6, height = 5, dpi = 300)
+ggsave("images/figure3_3.png", plot = fig3_3, width = 6, height = 5, dpi = 300)
 ```
 
 ### Figure 4
@@ -1446,7 +1446,7 @@ graphique_fig4_3 <- ggplot(df_fig4_3x3,
       axis.title      = element_text(size = 12),
       plot.margin     = margin(40, 20, 10, 10)
     )
-#ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 4.5, dpi = 300)
+ggsave("images/figure4_3.png", plot = graphique_fig4_3, width = 6, height = 4.5, dpi = 300)
 #Afficher la figure 4 déja construite
 print(graphique_fig4_3)
 ```
